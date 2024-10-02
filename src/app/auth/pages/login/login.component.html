@@ -1,0 +1,42 @@
+<div class="relative flex items-center justify-center flex-col min-h-screen">
+
+    <!-- Imagen de fondo -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style="background-image: url('../../../../assets/images/login/fondo2.png');">
+    </div>
+
+    <div
+        class="relative bg-[#396CB3] backdrop-filter rounded-xl overflow-hidden w-[90%] max-w-[500px] min-h-[580px] p-6 sm:p-8 md:p-10">
+
+        <div class="absolute top-0 h-full transition-all duration-600 ease-in-out left-0 w-full z-20">
+            <a href="https://oftalmokids.com.co/">
+                <i class="fa-solid fa-arrow-left text-white z-20 buttonVolver text-xl cursor-pointer"></i>
+            </a>
+            <!-- Formulario -->
+            <form class="flex items-center justify-center flex-col h-full">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mt-[-10rem]">Iniciar Sesión</h2>
+                <img src="../../../../assets/images/login/ojos_blancos.png" alt="ojitos" class="w-[40%] mt-6">
+
+                <!-- Campos de entrada -->
+                <div class="w-full mb-4 mt-2 flex flex-col items-center">
+                    <label for="documento" class="text-white block mb-2 text-left w-[80%]">Usuario</label>
+                    <input type="text" formControlName="documento"
+                        class="bg-white rounded py-2 px-4 w-[80%] outline-none">
+                </div>
+                
+                <div class="w-full mb-4 mt-2 flex flex-col items-center">
+                    <label for="password" class="text-white block mb-2 text-left w-[80%]">Contraseña</label>
+                    <input type="password" formControlName="password"
+                        class="bg-white rounded py-2 px-4 w-[80%] outline-none">
+                </div>
+                
+                <!-- Enlace y Botón -->
+                <a href="#" class="text-sm text-gray-300 mb-4 mt-[25px]">¿Olvidaste tu contraseña?</a>
+                <button type="submit"
+                    class="bg-sky-500 text-white text-sm sm:text-base py-2 px-6 rounded-xl font-semibold uppercase hover:bg-sky-700 transition-colors">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
