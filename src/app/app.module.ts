@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared.module';
 import { AuthModule } from './auth/auth.module';
 import { SuperadminModule } from './superadmin/superadmin.module';
-import { AdminModule } from './admin/admin.module';
 import { UsuarioModule } from './usuario/usuario.module';
 
 @NgModule({
@@ -20,7 +19,6 @@ import { UsuarioModule } from './usuario/usuario.module';
     SharedModule,
     AuthModule,
     SuperadminModule,
-    AdminModule,
     UsuarioModule
   ],
   providers: [

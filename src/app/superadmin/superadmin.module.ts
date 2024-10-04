@@ -12,6 +12,7 @@ import { HistoriaClinicaComponent } from './pages/historia-clinica/historia-clin
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
 
+import { SharedModule } from '../shared.module';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ForoComponent } from './pages/foro/foro.component';
   imports: [
     CommonModule,
     RouterModule,
-    SuperadminRoutingModule
+    SuperadminRoutingModule,
+    SharedModule
   ]
 })
 export class SuperadminModule { }
