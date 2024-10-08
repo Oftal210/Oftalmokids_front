@@ -9,9 +9,13 @@ import { AuthModule } from './auth/auth.module';
 import { SuperadminModule } from './superadmin/superadmin.module';
 import { UsuarioModule } from './usuario/usuario.module';
 
+import { MenuComponent } from './menu/menu.component';
+
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,

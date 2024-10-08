@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { AddPacienteComponent } from '../add-paciente/add-paciente.component';
+import { AddHijoComponent } from '../add-hijo/add-hijo.component';
 
 @Component({
-  selector: 'app-paciente',
-  templateUrl: './paciente.component.html',
-  styleUrl: './paciente.component.css'
+  selector: 'app-list-hijo',
+  templateUrl: './list-hijo.component.html',
+  styleUrl: './list-hijo.component.css'
 })
-export class PacienteComponent {
+export class ListHijoComponent {
   constructor(
     private _matDialog: MatDialog
   ) {}
 
   abrirModal(): void {
-    this._matDialog.open(AddPacienteComponent, {
+    this._matDialog.open(AddHijoComponent, {
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '0ms'
     });

@@ -11,6 +11,7 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { HistoriaClinicaComponent } from './pages/historia-clinica/historia-clinica.component';
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
+import { AddPacienteComponent } from './pages/add-paciente/add-paciente.component';
 
 import { SharedModule } from '../shared.module';
 
@@ -23,7 +24,8 @@ import { SharedModule } from '../shared.module';
     PerfilComponent,
     HistoriaClinicaComponent,
     AddAdminComponent,
-    ForoComponent
+    ForoComponent,
+    AddPacienteComponent
   ],
   imports: [
     CommonModule,

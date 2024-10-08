@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CalificacionComponent } from './pages/calificacion/calificacion.component';
+import { ListHijoComponent } from './pages/list-hijo/list-hijo.component';
+
 const routes: Routes =  [
   {
     path:'',
     children:[
       {path:'dashboard', component: CalificacionComponent},
+      {path:'hijo', component: ListHijoComponent},
     ]
   }
 ]

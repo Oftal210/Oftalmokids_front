@@ -1,1 +1,23 @@
 <!-- Este archivo contiene el menú -->
+<nav class="sidebar fixed top-0 left-0 h-screen overflow-y-auto flex flex-col p-4 z-10 w-52 border bg-white">
+
+    <!-- Encabezado y botón de colapso -->
+    <header class="relative z-20">
+        <div class="flex mt-4">
+            <img src="../../assets/images/logo_sin_fondo.png" alt="logo">
+        </div>
+    </header>
+
+    <div class="flex flex-col justify-start md:pt-36 pt-56">
+        <ul class="space-y-4">
+            <!-- <li *ngFor="let item of menuItems" class="group h-12 flex items-center z-20 hover:bg-[#00ACC9] rounded-[5px] hover:text-white">
+                <a
+                   routerLinkActive="bg-[#00ACC9] text-white" 
+                   class="appearance-none no-underline flex items-center w-full h-full p-1.5 rounded-md">
+                    <i class="{{item.icon}} text-center text-xl min-w-[60px] pr-[20px]"></i>
+                    <span class="text nav-text text-base " *ngIf="isExpanded">{{ item.name }}</span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+</nav>
