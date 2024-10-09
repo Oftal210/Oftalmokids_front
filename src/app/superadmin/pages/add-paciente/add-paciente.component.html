@@ -1,17 +1,18 @@
 <!-- Diseño de modal para registrar Pacientes -->
 <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg w-[90%] md:w-[70%] lg:w-[45%] p-6 max-h-[90vh] overflow-y-auto">
-        <h2 class="text-xl font-bold mb-4 text-center titulo">Registro</h2>
+    <div class="bg-white rounded-lg shadow-lg ml-48 w-[70%] md:w-[70%] lg:w-[38%] p-6 max-h-[80vh] overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-4 text-center mt-2">Registro</h2>
 
         <form>
-            <div class="grid grid-cols-2 gap-4 mt-6">
+            <!-------------- Datos del padre -------------->
 
-                <!-------------- Datos del padre -------------->
+            <p class="text-center text-lg text-[#2EBBEE] font-semibold mt-8">Información de padre o tutor</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5 ml-12">
                 <!-- Id -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -19,7 +20,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -27,15 +28,15 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
                 <!-- Teléfono -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Teléfono</label>
-                    <input type="email" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    <input type="tel" id="" name=""
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -43,29 +44,34 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Email</label>
                     <input type="email" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
                 <!-- Contraseña -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                    <input type="email" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    <input type="password" id="" name=""
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
+            </div>
 
-                <!-------------- Datos del paciente  -------------->
+            <div class="border border-sky-200 mt-5"></div>
+            <!-------------- Datos del paciente  -------------->
 
-                <!--Tipo de documento -->
+            <div>
+                <p class="text-center text-lg text-[#2EBBEE] font-semibold mt-8">Información del paciente</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6 ml-12">
+                <!-- Tipo de documento -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Tipo de documento</label>
                     <select id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
-                        <option>
-
-                        </option>
+                        <option></option>
                     </select>
                 </div>
 
@@ -73,7 +79,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -81,7 +87,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -89,7 +95,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -97,7 +103,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
                     <input type="date" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -105,7 +111,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Edad</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
 
@@ -113,7 +119,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Género</label>
                     <input type="text" id="" name=""
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                 </div>
             </div>
