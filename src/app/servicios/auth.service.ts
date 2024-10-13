@@ -14,14 +14,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-
   registro(user: User ):Observable<any> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.http.post<any>(this.url + "registro", user,{ headers })
+    return this.http.post<any>(this.url + "registrarse", user,{ headers })
   }
-
-
-
-
 
 }
