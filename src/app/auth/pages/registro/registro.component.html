@@ -13,7 +13,8 @@
                 <i class="fa-solid fa-arrow-left text-white z-20 buttonVolver text-xl cursor-pointer mt-2"></i>
             </a>
             <!-- Formulario -->
-            <form class="flex items-center justify-center flex-col h-full">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()"
+                class="flex items-center justify-center flex-col h-full">
                 <h2 class="text-3xl sm:text-4xl font-bold text-white mt-[-5rem]">Registro</h2>
                 <img src="../../../../assets/images/login/ojos_blancos.png" alt="ojitos" class="w-[35%] mt-6">
 
@@ -21,51 +22,83 @@
 
                     <!-- N° documento -->
                     <div class="mb-4">
-                        <label for="numeroDocumento" class="ml-[8%] block text-sm font-medium text-white">N° documento</label>
-                        <input type="text" id="numeroDocumento" name="numeroDocumento"
-                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <label for="numeroDocumento" class="ml-[8%] block text-sm font-medium text-white">N°
+                            documento</label>
+                        <input type="text" id="numeroDocumento" formControlName="documento"
+                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            [ngClass]="{'border-red-500': registerForm.get('documento')?.invalid && registerForm.get('documento')?.touched}">
+                        <p *ngIf="registerForm.get('documento')?.invalid && registerForm.get('documento')?.touched"
+                            class="mt-1 text-xs text-red-500">
+                            {{ registerForm.get('documento')?.errors?.['lengthError'] || 'Este campo es requerido' }}
+                        </p>
                     </div>
-        
+
                     <!-- Nombre -->
                     <div class="mb-4">
                         <label for="nombre" class="ml-[8%] block text-sm font-medium text-white">Nombre</label>
-                        <input type="text" id="nombre" name="nombre"
-                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" id="nombre" formControlName="nombre"
+                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            [ngClass]="{'border-red-500': registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched}">
+                        <p *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
+                            class="mt-1 text-xs text-red-500">
+                            {{ registerForm.get('nombre')?.errors?.['hasNumbers'] || 'Este campo es requerido' }}
+                        </p>
                     </div>
-        
+
                     <!-- Apellido -->
                     <div class="mb-4">
                         <label for="apellido" class="ml-[8%] block text-sm font-medium text-white">Apellido</label>
-                        <input type="text" id="apellido" name="apellido"
-                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" id="apellido" formControlName="apellido"
+                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            [ngClass]="{'border-red-500': registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched}">
+                        <p *ngIf="registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched"
+                            class="mt-1 text-xs text-red-500">
+                            {{ registerForm.get('apellido')?.errors?.['hasNumbers'] || 'Este campo es requerido' }}
+                        </p>
                     </div>
-        
+
                     <!-- Email -->
                     <div class="mb-4">
                         <label for="email" class="ml-[8%] block text-sm font-medium text-white">E-mail</label>
-                        <input type="email" id="email" name="email"
-                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="email" id="email" formControlName="email"
+                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
+                        <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                            class="mt-1 text-xs text-red-500">
+                            Por favor, ingrese un correo electrónico válido
+                        </p>
                     </div>
-        
+
                     <!-- Teléfono -->
                     <div class="mb-4">
                         <label for="telefono" class="ml-[8%] block text-sm font-medium text-white">Teléfono</label>
-                        <input type="text" id="telefono" name="telefono"
-                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="tel" id="telefono" formControlName="telefono"
+                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            [ngClass]="{'border-red-500': registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched}">
+                        <p *ngIf="registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched"
+                            class="mt-1 text-xs text-red-500">
+                            {{ registerForm.get('telefono')?.errors?.['lengthError'] || 'Este campo es requerido' }}
+                        </p>
                     </div>
-        
+
                     <!-- Contraseña -->
                     <div class="mb-4">
                         <label for="password" class="ml-[8%] block text-sm font-medium text-white">Contraseña</label>
-                        <input type="password" id="password" name="password"
-                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <input type="password" id="password" formControlName="contrasena"
+                            class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            [ngClass]="{'border-red-500': registerForm.get('contrasena')?.invalid && registerForm.get('contrasena')?.touched}">
+                        <p *ngIf="registerForm.get('contrasena')?.invalid && registerForm.get('contrasena')?.touched"
+                            class="mt-1 text-xs text-red-500">
+                            {{ registerForm.get('contrasena')?.errors?.['passwordStrength'] || 'Este campo es requerido'}}
+                        </p>
                     </div>
                 </div>
-                
                 <!-- Botón -->
                 <button type="submit"
-                    class="bg-sky-500 text-white text-sm sm:text-base py-2 px-6 rounded-xl font-semibold uppercase hover:bg-sky-700 transition-colors mt-[20px]">
-                    Registrar
+                    class="bg-sky-500 text-white text-sm sm:text-base py-2 px-6 rounded-xl font-semibold uppercase hover:bg-sky-700 transition-colors mt-[20px]"
+                    [disabled]="registerForm.invalid || isSubmitting">
+                    {{ isSubmitting ? 'Registrando...' : 'Registrar' }}
+                    <!-- Registrar -->
                 </button>
             </form>
         </div>
