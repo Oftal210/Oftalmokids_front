@@ -48,6 +48,7 @@ export class VerificacionComponent {
   }
 
   verificarEmail(): void {
+    // console.log('Email:', this.email, 'Código de verificación:', this.codigoVerificacion);
     this.authService.verificarEmail(this.email, this.codigoVerificacion).subscribe(
       data => {
         this.router.navigate(['/login']);
@@ -55,14 +56,12 @@ export class VerificacionComponent {
       },
       error => {
         console.log('Error al verificar el correo electrónico:', error);
-        // if (error.status === 422) {
-        //   console.log('Datos inválidos');
-        // } else if (error.status === 404) {
-        //   console.log('El correo no está registrado');
-        // } else if (error.status === 400) {
-        //   console.log('Código de verificación incorrecto');
-        // }
-        // this.router.navigate(['/verificacion']);
+        if (error.status === 404) {
+          console.log('El correo no está registrado');
+        } else if (error.status === 400) {
+          console.log('Código de verificación incorrecto');
+        }
+        this.router.navigate(['/verificacion']);
       }
     )
   }

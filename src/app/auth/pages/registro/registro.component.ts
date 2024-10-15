@@ -124,7 +124,8 @@ export class RegistroComponent implements OnInit {
       apellido: ['', [Validators.required, this.noNumbersValidator]],
       telefono: ['', [Validators.required, this.celularValidator]],
       email: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, this.passwordValidator]]
+      contrasena: ['', [Validators.required, Validators.minLength(8),this.passwordValidator]],
+      id_rol: ['']
     });
   }
 
@@ -145,7 +146,9 @@ export class RegistroComponent implements OnInit {
       this.registerForm.get('apellido')?.value,
       this.registerForm.get('telefono')?.value,
       this.registerForm.get('email')?.value,
-      this.registerForm.get('contrasena')?.value
+      this.registerForm.get('contrasena')?.value,
+      this.registerForm.get('id_rol')?.value
+
     );
 
     this.authService.registro(user).subscribe({
