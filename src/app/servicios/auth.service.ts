@@ -19,4 +19,10 @@ export class AuthService {
     return this.http.post<any>(this.url + "registrarse", user,{ headers })
   }
 
+  verificarEmail(email: string, codigo: string): Observable<any>{
+    const body = {email, codigo}
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(`${this.url}validate_email`, body, { headers })
+  }
+
 }

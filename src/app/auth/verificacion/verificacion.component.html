@@ -1,0 +1,36 @@
+<div class="max-w-6xl mx-auto">
+    <div class="flex justify-center items-center h-screen">
+        <div class="py-12 px-5 container rounded overflow-hidden shadow-lg bg-white w-11/12 lg:w-[600px] h-[400px] ">
+            <div class="flex flex-col items-center justify-center text-center">
+                <p class="text-black">Ingrese el código de verificación que fue enviado a su correo:</p>
+                <strong class="mb-2">{{email}}</strong>
+            </div>
+            <div class="max-w-full flex flex-wrap  justify-center space-x-1">
+                <div class="mb-4">
+                    <input type="text" #txt1 class="w-12 h-12 text-center border rounded-md" maxlength="1"
+                        (keyup)="move($event, '', txt1, txt2)" />
+                </div>
+                <div class="mb-4">
+                    <input type="text" #txt2 class="w-12 h-12 text-center border rounded-md" maxlength="1"
+                        (keyup)="move($event, txt1, txt2, txt3)" />
+                </div>
+                <div class="mb-4">
+                    <input type="text" #txt3 class="w-12 h-12 text-center border rounded-md" maxlength="1"
+                        (keyup)="move($event, txt2, txt3, txt4)" />
+                </div>
+                <div class="mb-4">
+                    <input type="text" #txt4 class="w-12 h-12 text-center border rounded-md" maxlength="1"
+                        (keyup)="move($event, txt3, txt4, txt5)" />
+                </div>
+                <div class="mb-4">
+                    <input type="text" #txt5 class="w-12 h-12 text-center border rounded-md" maxlength="1"
+                        (keyup)="move($event, txt4, txt5, '')" />
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    (click)="verificarEmail()">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
