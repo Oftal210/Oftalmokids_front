@@ -7,7 +7,8 @@ import { ReactiveFormsModule} from '@angular/forms';
 
 import { LoginComponent } from './pages/login/login.component';
 import { RegistroComponent } from './pages/registro/registro.component';
-import { VerificacionComponent } from './verificacion/verificacion.component';
+import { VerificacionComponent } from './pages/verificacion/verificacion.component';
+import { RecuperarContrasenaComponent } from './pages/recuperar-contrasena/recuperar-contrasena.component';
 
 
 
@@ -16,7 +17,8 @@ import { VerificacionComponent } from './verificacion/verificacion.component';
   declarations: [
     LoginComponent,
     RegistroComponent,
-    VerificacionComponent
+    VerificacionComponent,
+    RecuperarContrasenaComponent
   ],
   imports: [
     CommonModule,

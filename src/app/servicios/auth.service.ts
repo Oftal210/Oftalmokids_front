@@ -25,4 +25,8 @@ export class AuthService {
     return this.http.post<any>(`${this.url}validate_email`, body, { headers })
   }
 
+  recuperarContrasena(email: string){
+    return this.http.post(this.url+ "recuperar_contrasena", {email: email});
+  }
+
 }

@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../servicios/auth.service';
+import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
   selector: 'app-verificacion',
