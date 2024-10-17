@@ -11,6 +11,8 @@ import { SuperadminModule } from './superadmin/superadmin.module';
 import { UsuarioModule } from './usuario/usuario.module';
 
 import { MenuComponent } from './menu/menu.component';
+import { AuthInterceptor } from './interceptores/auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 @NgModule({
@@ -29,7 +31,10 @@ import { MenuComponent } from './menu/menu.component';
   ],
   providers: [
     provideClientHydration(),
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    {provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,},
   ],
   bootstrap: [AppComponent]
 })

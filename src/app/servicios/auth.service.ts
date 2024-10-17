@@ -29,4 +29,10 @@ export class AuthService {
     return this.http.post(this.url+ "recuperar_contrasena", {email: email});
   }
 
+  login(documento: any, contrasena: any) {
+    return this.http.post(this.url + "login", { documento: documento, contrasena: contrasena });
+  }
+
+  
+
 }

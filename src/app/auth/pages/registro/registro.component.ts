@@ -85,3 +85,4 @@ export class RegistroComponent implements OnInit {
     return /\d/.test(control.value) ? { hasNumbers: 'El campo no debe contener números' } : null;
   }
 }
+

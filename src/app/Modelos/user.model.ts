@@ -1,12 +1,12 @@
 export class User {
     id?: number;
-    documento: string | null;
+    documento: string;
     nombre: string | null;
     apellido: string | null;
     telefono: string | null;
     email: string | null;
     contrasena: string | null;
-    id_rol?: number | null;
+    id_rol: number; 
     constructor (
         id:number,
         documento: string,
@@ -15,7 +15,7 @@ export class User {
         telefono: string,
         email: string,
         contrasena: string,
-        id_rol: number
+        id_rol: number,
     ){
         this.id = id;
         this.documento = documento;
