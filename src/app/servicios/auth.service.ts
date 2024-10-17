@@ -25,4 +25,10 @@ export class AuthService {
     return this.http.post<any>(`${this.url}validate_email`, body, { headers })
   }
 
+  login(documento: any, contrasena: any) {
+    return this.http.post(this.url + "login", { documento: documento, contrasena: contrasena });
+  }
+
+  
+
 }
