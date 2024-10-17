@@ -33,6 +33,14 @@ export class AuthService {
     return this.http.post(this.url + "login", { documento: documento, contrasena: contrasena });
   }
 
-  
+  /* Verifica si el usuario está autenticado */
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  // Método para obtener el token almacenado en localStorage
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
 
 }

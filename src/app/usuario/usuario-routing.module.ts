@@ -9,8 +9,8 @@ const routes: Routes =  [
   {
     path:'',
     children:[
-      {path:'dashboard', component: CalificacionComponent},
-      {path:'hijo', component: ListHijoComponent},
+      {path:'dashboard', component: CalificacionComponent, data: { title: 'Dashboard', icon: 'fa-solid fa-chart-pie', showInMenu: true } },
+      {path:'hijo', component: ListHijoComponent, data: { title: 'Hijo', icon: 'fa-solid fa-chart-pie', showInMenu: true } },
     ]
   }
 ]
