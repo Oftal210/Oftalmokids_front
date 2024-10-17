@@ -85,19 +85,19 @@ login(): void {
     this.loginService.login(documento, contrasena).subscribe(
         (rs: any) => {
             this.reply = rs;
-            console.log('API response:', rs);
+            //console.log('API response:', rs);
             if (this.reply) {
                 // this.reply.user.id_rol = Number(this.reply.user.id_rol);
-                localStorage.setItem('token', this.reply.access_token);
-                localStorage.setItem('identity', JSON.stringify(this.reply.user));
-                localStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
+                sessionStorage.setItem('token', this.reply.access_token);
+                sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
+                sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
                 this.token = this.reply.access_token;
                 if (this.reply.user) {
-                    localStorage.setItem('documento', this.reply.user.documento.toString());
+                    localStorage.setItem('documento', this.reply.user.documento);
                 }
-                // this.alertService.successAlert('Exito', 'Inicio de sesión exitoso');
+                //alert('Inicio de sesión exitoso');
                 setTimeout(() => {
-                    location.reload();
+                    this.router.navigate(['/dashboard']);
                 }, 2000);
             }
             this.isSubmitting = false;
