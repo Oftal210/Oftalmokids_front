@@ -32,8 +32,8 @@ constructor(
 
 validateToken(): void {
   if (!this.token) {
-      this.token = localStorage.getItem("token");
-      let identityJSON = localStorage.getItem('identity');
+      this.token = sessionStorage.getItem("token");
+      let identityJSON = sessionStorage.getItem('identity');
 
       if (identityJSON) {
           let identity = JSON.parse(identityJSON);
@@ -85,15 +85,16 @@ login(): void {
     this.loginService.login(documento, contrasena).subscribe(
         (rs: any) => {
             this.reply = rs;
-            //console.log('API response:', rs);
+            console.log('API response:', rs);
             if (this.reply) {
                 // this.reply.user.id_rol = Number(this.reply.user.id_rol);
+                console.log('id_rol login',this.reply.user.id_rol);
                 sessionStorage.setItem('token', this.reply.access_token);
                 sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
                 sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
                 this.token = this.reply.access_token;
                 if (this.reply.user) {
-                    localStorage.setItem('documento', this.reply.user.documento);
+                    sessionStorage.setItem('documento', this.reply.user.documento);
                 }
                 //alert('Inicio de sesión exitoso');
                 setTimeout(() => {
@@ -128,7 +129,7 @@ getRoleName(rolId: number | undefined | null): string {
         case 1:
             return 'SuperAdministrador';
         default:
-            return 'Emprendedor';
+            return 'Padre';
     }
 }
 
