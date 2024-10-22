@@ -4,7 +4,42 @@
     <!-- Imagen de fondo -->
     <div class="inset-0 bg-cover bg-center bg-no-repeat w-[104rem] h-[52rem] ml-[13rem] z-0 flex justify-center"
         style="background-image: url('../../../../assets/images/fondo_vistas.jpg');">
-        <div class="bg-white w-11/12 h-[44rem] mt-16">
+
+        <div class="bg-white w-11/12 h-[44rem] mt-16 rounded-lg flex flex-col items-center justify-center ">
+
+            <h1 class="text-4xl text-center mb-6 pt-2">Bienvenido al Dashboard</h1>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl w-full px-4 justify-items-center">
+                <!-- Primer contenedor (Izquierda) -->
+                <div class="bg-white p-6 rounded-lg shadow-md w-3/4 flex flex-col items-center text-center border-solid border-stone-300 border">
+                    <!-- Icono circular -->
+                    <div class="bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full mb-3">
+                        <i class="fa-solid fa-user-group"></i> <!-- Puedes usar FontAwesome para íconos -->
+                    </div>
+                    <!-- Texto -->
+                    <p class="text-gray-600 text-xl">Padres Registrados</p>
+                    <!-- Número -->
+                    <p class="text-3xl font-bold">{{ padres }}</p>
+                </div>
+
+                <!-- Segundo contenedor (Derecha) -->
+                <div class="bg-white p-6 rounded-lg shadow-md w-3/4 flex flex-col items-center text-center border-solid border-stone-300 border">
+                    <!-- Icono circular -->
+                    <div
+                        class="bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full mb-3">
+                        <i class="fa-solid fa-users"></i> <!-- Puedes usar FontAwesome para íconos -->
+                    </div>
+                    <!-- Texto -->
+                    <p class="text-gray-600 text-xl">Hijos Registrados</p>
+                    <!-- Número -->
+                    <p class="text-3xl font-bold">{{ hijos }}</p>
+                </div>
+            </div>
+
+            <h2 class="text-4xl text-center pt-4">Consultas Por Meses en el Año</h2>
+
+            <div id="main" class="items-center" style="width: 100%; height: 400px;"></div>
+
         </div>
     </div>
 </div>
