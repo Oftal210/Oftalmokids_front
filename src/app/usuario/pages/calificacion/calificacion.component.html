@@ -14,103 +14,29 @@
             <!--<div class="space-y-5 w-1/2 md:max-w-full">-->
             <div class="space-y-5 w-full sm:w-3/4 md:w-3/4 lg:w-1/2 mx-auto">
 
-                <!-- Contenedor 1 -->
-                <div class="flex justify-between items-center p-2 bg-white border border-gray-300 rounded-lg shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
-                    <p class="text-gray-700">Estas usando las gafas o lentes permanentes</p>
+                <div *ngFor="let tema of temas; let i = index" class="flex justify-between items-center p-2 bg-white rounded-lg border-solid border-stone-300 border shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
+                    <p class="text">{{ tema.texto }}</p>
                     <div class="flex space-x-2 pl-4">
-                        <button class="bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia arriba -->
+
+                        <button class="like-btn bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out" [ngClass]="{'bg-blue-600': tema.calificado && tema.respuesta === 'like', 'bg-blue-300': !tema.calificado || tema.respuesta !== 'like'}" (click)="calificarTema(i, 'like')">
                             <img width="40" height="40" src="https://img.icons8.com/stickers/50/facebook-like.png" alt="facebook-like"/>
                         </button>
-                        <button class="bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia abajo -->
+
+                        <button class="dislike-btn bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out" [ngClass]="{'bg-red-600': tema.calificado && tema.respuesta === 'dislike', 'bg-red-400': !tema.calificado || tema.respuesta !== 'dislike'}" (click)="calificarTema(i, 'dislike')">
                             <img width="40" height="40" src="https://img.icons8.com/stickers/50/thumbs-down.png" alt="thumbs-down"/>
                         </button>
                     </div>
                 </div>
-
-                <div class="flex justify-between items-center p-2 bg-white border border-gray-300 rounded-lg shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
-                    <p class="text-gray-700">Estas usando los medicamentos</p>
-                    <div class="flex space-x-2 pl-4">
-                        <button class="bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia arriba -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/facebook-like.png" alt="facebook-like"/>
-                        </button>
-                        <button class="bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia abajo -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/thumbs-down.png" alt="thumbs-down"/>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center p-2 bg-white border border-gray-300 rounded-lg shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
-                    <p class="text-gray-700">Estas limitando el uso de pantallas</p>
-                    <div class="flex space-x-2 pl-4">
-                        <button class="bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia arriba -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/facebook-like.png" alt="facebook-like"/>
-                        </button>
-                        <button class="bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia abajo -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/thumbs-down.png" alt="thumbs-down"/>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center p-2 bg-white rounded-lg border-solid border-stone-300 border shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
-                    <p class="text-gray-700">Estas realizando actividad al aire libre</p>
-                    <div class="flex space-x-2 pl-4">
-                        <button class="bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia arriba -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/facebook-like.png" alt="facebook-like"/>
-                        </button>
-                        <button class="bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia abajo -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/thumbs-down.png" alt="thumbs-down"/>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center p-2 bg-white rounded-lg border-solid border-stone-300 border shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
-                    <p class="text-gray-700">Estas llevando buena alimentación</p>
-                    <div class="flex space-x-2 pl-4">
-                        <button class="bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia arriba -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/facebook-like.png" alt="facebook-like"/>
-                        </button>
-                        <button class="bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia abajo -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/thumbs-down.png" alt="thumbs-down"/>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center p-2 bg-white rounded-lg border-solid border-stone-300 border shadow-[3px_5px_2px_rgba(0,0,0,0.1)]">
-                    <p class="text-gray-700">Ya tienes que solicitar cita control?</p>
-                    <div class="flex space-x-2 pl-4">
-                        <button class="bg-blue-300 hover:bg-blue-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia arriba -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/facebook-like.png" alt="facebook-like"/>
-                        </button>
-                        <button class="bg-red-400 hover:bg-red-600 text-white rounded-full p-2 transition duration-200 ease-in-out">
-                            <!-- Icono de pulgar hacia abajo -->
-                            <img width="40" height="40" src="https://img.icons8.com/stickers/50/thumbs-down.png" alt="thumbs-down"/>
-                        </button>
-                    </div>
-                </div>
-
                 <div class="flex flex-col items-center justify-center">
                     <!-- Botón centrado -->
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" (click)="tomarDatos()">
                       ENVIAR
                     </button>
                 </div>
-                
-            </div>
-            <div class="w-11/12 sm:h-[44rem] max-w-full rounded-lg mt-3">        
-                <canvas id="gaugeChart" width="400" height="200"></canvas>
-            </div>
 
+                <canvas id="gaugeChart" width="400" height="200"></canvas>
+                
+            </div>        
         </div>
     </div>
 </div>
