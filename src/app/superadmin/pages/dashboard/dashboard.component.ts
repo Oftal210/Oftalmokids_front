@@ -110,5 +110,4 @@ export class DashboardComponent {
       this.chart.resize(); // Ajustar el gráfico cuando se redimensiona la ventana
     }
   }
-
 }
