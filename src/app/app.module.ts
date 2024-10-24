@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration} from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +23,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     SharedModule,

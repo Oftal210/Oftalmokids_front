@@ -8,6 +8,7 @@ import { AddHijoComponent } from './pages/add-hijo/add-hijo.component';
 import { ListHijoComponent } from './pages/list-hijo/list-hijo.component';
 
 import { SharedModule } from '../shared.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SharedModule } from '../shared.module';
     CommonModule,
     RouterModule,
     UsuarioRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule 
   ]
 })
 export class UsuarioModule { }
