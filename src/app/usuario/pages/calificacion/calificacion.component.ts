@@ -76,30 +76,6 @@ export class CalificacionComponent implements AfterViewInit {
     this.gauge.set(0); // Inicializa el medidor en 0
   }
 
-  // calificarTema(index: number, respuesta: 'like' | 'dislike'): void {
-  //   const tema = this.temas[index];
-  //   if (tema.calificado && tema.respuesta === respuesta) {
-  //     // Si ya está calificado con la misma respuesta, no hacer nada
-  //     return;
-  //   }
-
-  //   // Actualizar la cuenta de respuestas "sí"
-  //   if (tema.respuesta === 'like') {
-  //     this.yesAnswers--;
-  //   }
-
-  //   // Actualizar con la nueva respuesta
-  //   tema.calificado = true;
-  //   tema.respuesta = respuesta;
-
-  //   if (respuesta === 'like') {
-  //     this.yesAnswers++;
-  //   }
-
-  //   this.finalValue = this.yesAnswers; // Guarda el valor final
-  //   this.gauge.set(this.finalValue); // Asegurarse de que el valor final esté dentro del rango 0-6 
-  // }
-
   calificarTema(index: number, respuesta: 'like' | 'dislike'): void {
     const tema = this.temas[index];
     if (tema.calificado && tema.respuesta === respuesta) {
@@ -107,18 +83,29 @@ export class CalificacionComponent implements AfterViewInit {
       return;
     }
 
+    // Actualizar la cuenta de respuestas "sí"
+    if (tema.respuesta === 'like') {
+      this.yesAnswers--;
+    }
+
+    // Actualizar con la nueva respuesta
+    tema.calificado = true;
+    tema.respuesta = respuesta;
+
     if (respuesta === 'like') {
-      tema.calificado = true;
-      tema.respuesta = respuesta;
-      this.updateGauge('like');
-    } else if (respuesta === 'dislike') {
+      this.yesAnswers++;
+    } else {
       this.abrirModal(index);
     }
+
+    this.finalValue = this.yesAnswers; // Guarda el valor final
+    this.gauge.set(this.finalValue); // Asegurarse de que el valor final esté dentro del rango 0-6 
+    console.log(this.finalValue)
   }
 
   abrirModal(index: number): void {
     this.currentIndex = index;
-    this.motivo = ''; // Limpiar el motivo anterior
+    this.motivo = '';
     this.isModalOpen = true;
   }
 
@@ -131,20 +118,8 @@ export class CalificacionComponent implements AfterViewInit {
       this.temas[this.currentIndex].calificado = true;
       this.temas[this.currentIndex].respuesta = 'dislike';
       this.temas[this.currentIndex].motivo = this.motivo;
-      this.updateGauge('dislike');
       this.cerrarModal();
     }
-  }
-
-  updateGauge(type: 'like' | 'dislike'): void {
-    if (type === 'like') {
-      this.yesAnswers++;
-    } else if (type === 'dislike' && this.yesAnswers > 0) {
-      this.yesAnswers--;
-    }
-
-    this.finalValue = this.yesAnswers;
-    this.gauge.set(this.finalValue); // Asegurarse de que el valor final esté dentro del rango 0-6
   }
 
   tomarDatos() {
