@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
-import { DashboardService } from '../../../servicios/dashboard.service';
+import { PadreService } from '../../../servicios/padre.service';
 
 declare var Gauge: any;
 
@@ -34,7 +34,7 @@ export class CalificacionComponent implements AfterViewInit {
     { texto: 'Ya tienes que solicitar cita control?', calificado: false, respuesta: '' , motivo:''}
   ];
 
-  constructor(private renderer: Renderer2, private el: ElementRef, private dashboardService: DashboardService) {}
+  constructor(private renderer: Renderer2, private el: ElementRef, private padreService: PadreService) {}
 
   ngAfterViewInit(): void {
     const script = this.renderer.createElement('script');
@@ -142,7 +142,7 @@ export class CalificacionComponent implements AfterViewInit {
     console.log(hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr);
 
     //Enviamos los datos convertidos 
-    this.dashboardService.enviarPreconsulta(hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, punt_precon, motivo_gafas, motivo_medic,motivo_panta, motivo_activ, motivo_buen, motivo_contr).subscribe(response => {
+    this.padreService.enviarPreconsulta(hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, punt_precon, motivo_gafas, motivo_medic,motivo_panta, motivo_activ, motivo_buen, motivo_contr).subscribe(response => {
       console.log('Respuesta del servidor:', response);
     }, error => {
       console.error('Error al enviar los datos:', error);

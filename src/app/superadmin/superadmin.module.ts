@@ -12,8 +12,10 @@ import { HistoriaClinicaComponent } from './pages/historia-clinica/historia-clin
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
 import { AddPacienteComponent } from './pages/add-paciente/add-paciente.component';
+import { AddForoComponent } from './pages/add-foro/add-foro.component';
 
 import { SharedModule } from '../shared.module';
+import { FormsModule } from '@angular/forms'; 
 
 
 @NgModule({
@@ -25,13 +27,15 @@ import { SharedModule } from '../shared.module';
     HistoriaClinicaComponent,
     AddAdminComponent,
     ForoComponent,
-    AddPacienteComponent
+    AddPacienteComponent,
+    AddForoComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     SuperadminRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class SuperadminModule { }

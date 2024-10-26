@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import * as echarts from 'echarts';
-import { DashboardService } from '../../../servicios/dashboard.service';
+import { SuperadminService } from '../../../servicios/superadmin.service';
 import { Subject } from 'rxjs'; // Importar Subject
 import { takeUntil } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class DashboardComponent {
   // variable para manejar la carga de la conuslta
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private superadminservice: SuperadminService) {}
 
   // funciones que se inician al cargar el documento 
   ngOnInit(): void {
@@ -77,7 +77,7 @@ export class DashboardComponent {
   }
   // Funcion para buscar cuantos registros hay que hijos
   cargarNumeroHijos(): void {
-    this.dashboardService.obtenerPacientes()
+    this.superadminservice.obtenerNumeroPacientes()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.hijos = data;
@@ -86,7 +86,7 @@ export class DashboardComponent {
 
   // Funcion para buscar el numero de padres y mostrarlo
   cargarNumeroPadres(): void {
-    this.dashboardService.obtenerPadres()
+    this.superadminservice.obtenerPadres()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe( data => {
         this.padres = data;
@@ -95,7 +95,7 @@ export class DashboardComponent {
 
   // Funcion para buscar el numero de padres y mostrarlo
   cargarMeses(): void {
-    this.dashboardService.obtenerConsultasxMeses()
+    this.superadminservice.obtenerConsultasxMeses()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe( data => {
         this.meses = data;

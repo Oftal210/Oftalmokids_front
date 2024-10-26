@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        recoleta: ['"Recoleta"', 'Georgia', '"Times New Roman"', 'Times', 'serif'],
+      },
+    },
   },
   plugins: [],
 }
