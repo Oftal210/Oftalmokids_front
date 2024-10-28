@@ -29,6 +29,8 @@ export class ForoComponent {
 
   foros: any[] = [];
 
+  hijos: any[] = [];
+
   private unsubscribe$ = new Subject<void>();
 
   screenSmall = window.innerWidth < 1024;
@@ -45,6 +47,7 @@ export class ForoComponent {
   ngOnInit() {
     // Ejemplo de datos que pueden venir de la base de datos
     this.cargarRegistrosforo();
+    this.cargarRegistroHijos();
   }
 
   openDialog(): void {
@@ -101,6 +104,15 @@ export class ForoComponent {
         resolve();
       });
     })
+  }
+
+  cargarRegistroHijos(): void {
+    this.superadminservice.obtenerRegistroPaciente()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      console.log(data);
+      this.hijos = data;
+    });
   }
 
   // funcion para scrollear hasta el ultimo registros encontrado

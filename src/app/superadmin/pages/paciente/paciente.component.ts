@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 // Para usar al hacer la llamada al API
@@ -16,7 +16,7 @@ import { AddPacienteComponent } from '../add-paciente/add-paciente.component';
   templateUrl: './paciente.component.html',
   styleUrl: './paciente.component.css'
 })
-export class PacienteComponent {
+export class PacienteComponent implements OnInit {
   
   hijos: any[] = [];
 
@@ -29,7 +29,7 @@ export class PacienteComponent {
 
   ngOnInit() {
     // Ejemplo de datos que pueden venir de la base de datos
-    //this.cargarRegistroHijos();
+    this.cargarRegistroHijos();
   }
 
   abrirModal(): void {
@@ -40,16 +40,15 @@ export class PacienteComponent {
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+  // ngOnDestroy(): void {
+  //   this.unsubscribe$.next();
+  //   this.unsubscribe$.complete();
+  // }
 
   // funcion para traer a los hijos 
   cargarRegistroHijos(): void {
-    this.superadminservice.obtenerRegistroPaciente()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
+    debugger
+    this.superadminservice.obtenerRegistroPaciente().subscribe(data => {
       console.log(data);
       this.hijos = data;
     });
