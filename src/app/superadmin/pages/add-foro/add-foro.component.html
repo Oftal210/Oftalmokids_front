@@ -1,0 +1,32 @@
+<div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+    <div class="bg-sky-100 rounded-lg shadow-lg p-6 w-1/2" (keydown.enter)="tomarDatos()">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold">Nuevo Mensaje del Foro</h2>
+        <button (click)="cerrar()" class="text-gray-500 hover:text-gray-800 text-3xl">
+          &times;
+        </button>
+      </div>
+  
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700">Titulo</label>
+        <input 
+          type="text" [(ngModel)]="inputTitulo"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2" 
+          placeholder="Escriba el titulo para este mensaje..." />
+      </div>
+  
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700">Contenido</label>
+        <textarea 
+          rows="4" [(ngModel)]="inputContenido"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2 resize-none" 
+          placeholder="Escriba el texto que contendra..."></textarea>
+      </div>
+  
+      <div class="mt-6 flex justify-end">
+        <button (click)="cerrar()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+        <button (click)="tomarDatos()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Confirmar</button>
+      </div>
+    </div>
+  </div>
+  
