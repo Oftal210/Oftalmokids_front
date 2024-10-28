@@ -6,6 +6,8 @@ import { UsuarioRoutingModule } from './usuario-routing.module';
 import { CalificacionComponent } from './pages/calificacion/calificacion.component';
 import { AddHijoComponent } from './pages/add-hijo/add-hijo.component';
 import { ListHijoComponent } from './pages/list-hijo/list-hijo.component';
+import { InicioComponent } from './pages/inicio/inicio.component';
+import { PerfilPadreComponent } from './pages/perfil-padre/perfil-padre.component';
 
 import { SharedModule } from '../shared.module';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +16,9 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     CalificacionComponent,
     AddHijoComponent,
-    ListHijoComponent
+    ListHijoComponent,
+    InicioComponent,
+    PerfilPadreComponent
   ],
   imports: [
     CommonModule,
