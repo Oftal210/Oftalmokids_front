@@ -29,10 +29,9 @@ export class DashboardComponent {
   constructor(private superadminservice: SuperadminService) {}
 
   // funciones que se inician al cargar el documento 
-  ngOnInit(): void {
-    this.initChart();           // si este no se ejecuta primero, la pagina no carga
-    this.cargarNumeroHijos();   // llama la funcion de los hijos
+  ngOnInit(): void { 
     this.cargarNumeroPadres();  // llama la funcion de los padres
+    this.cargarNumeroHijos();   // llama la funcion de los hijos
     this.cargarMeses();         // llama la funcion de los hijos
   }
 
@@ -99,7 +98,7 @@ export class DashboardComponent {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe( data => {
         this.meses = data;
-        this.initChart() 
+        this.initChart();
     })
   }
 

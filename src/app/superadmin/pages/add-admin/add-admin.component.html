@@ -1,61 +1,117 @@
 <!-- Diseño de modal para registrar SuperAdmin -->
 <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mt-0">
-    <div class="bg-white rounded-lg shadow-lg ml-48 w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv]">
-      <h2 class="text-2xl font-bold mb-4 text-center mt-6">Registro</h2>
-  
-      <form>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-7 ml-12">
-  
-          <!-- Id -->
-          <div class="mb-4">
-            <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
-            <input type="text" id="" name=""
-              class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-          </div>
-  
-          <!-- Nombre -->
-          <div class="mb-4">
-            <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
-            <input type="text" id="" name=""
-              class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-          </div>
-  
-          <!-- Apellido -->
-          <div class="mb-4">
-            <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
-            <input type="text" id="" name=""
-              class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-          </div>
-  
-          <!-- Teléfono -->
-          <div class="mb-4">
-            <label for="" class="block text-sm font-medium text-gray-700">Teléfono</label>
-            <input type="email" id="" name="" 
-              class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-          </div>
+  <div
+    class="bg-white rounded-lg shadow-lg ml-48 w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv] overflow-auto md:overflow-hidden">
+    <h2 class="text-2xl font-bold mb-4 text-center mt-6">Registro</h2>
 
-          <!-- Email -->
-          <div class="mb-4">
-            <label for="" class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" id="" name="" 
-              class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-          </div>
+    <form (ngSubmit)="tomarDatos()" [formGroup]="administradorForm">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-7 ml-12">
 
-          <!-- Contraseña -->
-          <div class="mb-4">
-            <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
-            <input type="email" id="" name="" 
-              class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+        <!-- Id -->
+        <div class="mb-4">
+          <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
+          <input type="text" name="documento" formControlName="documento" maxlength="10" (input)="onInputChangeNoEspacio($event)"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required>
+          <div *ngIf="administradorForm.get('documento')?.hasError('required') && administradorForm.get('documento')?.touched"
+            class="text-red-500 font-medium text-sm">
+            El documento es requerido.
           </div>
-  
+          <div
+            *ngIf="administradorForm.get('documento')?.hasError('pattern') && administradorForm.get('documento')?.touched"
+            class="text-red-500 font-medium text-sm">
+            El documento solo numeros, max 10.
+          </div>
         </div>
-  
-        <!-- Botones -->
-        <div class="flex justify-end mt-6">
-          <button (click)="cerrar()" type="button" class="bg-[#80BA27] hover:bg-[#7cb02d] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
-          <button type="submit" class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Guardar</button>
+
+        <!-- Nombre -->
+        <div class="mb-4">
+          <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
+          <input type="text" name="nombre" formControlName="nombre" maxlength="50" (input)="onInputChangeEspacio($event)"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required>
+          <div *ngIf="administradorForm.get('nombre')?.hasError('required') && administradorForm.get('nombre')?.touched"
+            class="text-red-500 font-medium text-sm">
+            El nombre es requerido.
+          </div>
+          <div
+            *ngIf="administradorForm.get('nombre')?.hasError('pattern') && administradorForm.get('nombre')?.touched" class="text-red-500 font-medium text-sm">
+            El nombre debe contener solo letras, max 50.
+          </div>
         </div>
-      </form>
-    </div>
+
+        <!-- Apellido -->
+        <div class="mb-4">
+          <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
+          <input type="text" name="apellido" formControlName="apellido" maxlength="50" (input)="onInputChangeEspacio($event)"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required>
+          <div *ngIf="administradorForm.get('apellido')?.hasError('required') && administradorForm.get('apellido')?.touched"
+            class="text-red-500 font-medium text-sm">
+            El apellido es requerido.
+          </div>
+          <div
+            *ngIf="administradorForm.get('apellido')?.hasError('pattern') && administradorForm.get('apellido')?.touched" class="text-red-500 font-medium text-sm">
+            El apellido debe contener solo letras, max 50.
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="mb-4">
+          <label for="" class="block text-sm font-medium text-gray-700">Teléfono</label>
+          <input type="text" name="telefono" formControlName="telefono" maxlength="10" (input)="onInputChangeNoEspacio($event)"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required>
+          <div
+            *ngIf="administradorForm.get('telefono')?.hasError('required') && administradorForm.get('telefono')?.touched" class="text-red-500 font-medium text-sm">
+            El contraseña es requerida.
+          </div>
+          <div
+            *ngIf="administradorForm.get('telefono')?.hasError('pattern') && administradorForm.get('telefono')?.touched" class="text-red-500 font-medium text-sm">
+            El telefono solo numeros, max 13.
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" name="email" formControlName="email" (input)="onInputChangeNoEspacio($event)"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required>
+          <div *ngIf="administradorForm.get('email')?.hasError('email') && administradorForm.get('email')?.touched" 
+            class="text-red-500 font-medium text-sm">
+            El email debe ser valido.
+          </div>
+          <div *ngIf="administradorForm.get('email')?.hasError('required') && administradorForm.get('email')?.touched" 
+            class="text-red-500 font-medium text-sm">
+            El email es requerido.
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-4">
+          <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <input type="password" name="" formControlName="password" (input)="onInputChangeNoEspacio($event)"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            required>
+          <div *ngIf="administradorForm.get('password')?.hasError('required') && administradorForm.get('password')?.touched" 
+            class="text-red-500 font-medium text-sm">
+            El contraseña es requerida.
+          </div>
+          <div *ngIf="administradorForm.get('password')?.hasError('minlength') && administradorForm.get('password')?.touched" 
+            class="text-red-500 font-medium text-sm">
+            Minimo 8 caracteres.
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end mt-6">
+        <button (click)="cerrar()" type="button"
+          class="bg-[#80BA27] hover:bg-[#7cb02d] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+        <button type="submit"
+          class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Guardar</button>
+      </div>
+    </form>
   </div>
-  
+</div>

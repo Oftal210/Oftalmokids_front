@@ -9,12 +9,16 @@
             <div class="flex flex-col sm:flex-row items-center justify-between mt-10 space-y-4 sm:space-y-0">
                 <p class="text-2xl md:text-4xl font-semibold ml-4 md:ml-24"> Equipo de trabajo </p>
                 <!-- Input de buscar -->
-                <div class="relative w-full md:max-w-xs ml-auto md:mr-14 border h-10 rounded-xl">
-                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                <div class="relative w-full md:max-w-xs ml-auto border h-10 rounded-xl"
+                    [ngClass]="{'md:mr-14': !botonVisible, 'mr-0': botonVisible}">
+                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                          (click)="buscarRegistroUsuario()">
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
-                    <input type="text" class="w-11/12 h-full pl-4 pr-5 rounded-xl focus:outline-none">
+                    <input type="text" class="w-11/12 h-full pl-4 pr-5 rounded-xl focus:outline-none" [(ngModel)]="inputDatoBusqueda">
                 </div>
+                <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"
+                   [ngClass]="{'invisible': !botonVisible, 'cursor-default': !botonVisible}" style="color: #00ACC9;"></i>
                 <button (click)="abrirModal()" class="h-10 bg-[#2EBBEE] text-white py-2 px-4 rounded-xl hover:bg-[#32aeda] focus:outline-none mr-8 md:mr-20">
                     Crear
                 </button>
@@ -34,20 +38,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-50">
-                            <td>12345678</td>
-                            <td>Veronica</td>
-                            <td>León Mendez</td>
-                            <td>3265478951</td>
-                            <td>leon.gmail.com</td>
+                        <tr *ngFor="let usuario of usuarios | paginate: { itemsPerPage: cantreg, currentPage: p }" class="hover:bg-gray-50">
+                            <td>{{ usuario.documento }}</td>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
+                            <td>{{ usuario.telefono }}</td>
+                            <td>{{ usuario.email }}</td>
                             <td class="px-12 py-4">
-                                <i class="fa-solid fa-toggle-off fa-xl" style="color: #000000;"></i>
+                                <i *ngIf="usuario.activo === 0" class="fa-solid fa-toggle-off fa-xl cursor-pointer" 
+                                    style="color: #000000;" title="Inactivo" (click)="desactivarAdministrador('inactivo', usuario.documento)"></i>
+                                <i *ngIf="usuario.activo === 1" class="fa-solid fa-toggle-on fa-xl cursor-pointer" 
+                                    style="color: #00ACC9;" title="Activo" (click)="desactivarAdministrador('activo', usuario.documento)"></i>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            
+            <div class="flex justify-center mt-4">
+                <pagination-controls 
+                    (pageChange)="p = $event" 
+                    previousLabel="Anterior"
+                    nextLabel="Siguiente">
+                </pagination-controls>
+            </div>
         </div>
     </div>
 </div>

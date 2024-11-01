@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration} from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +14,7 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { MenuComponent } from './menu/menu.component';
 import { AuthInterceptor } from './interceptores/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
+ 
 
 @NgModule({
   declarations: [
@@ -29,7 +29,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SharedModule,
     AuthModule,
     SuperadminModule,
-    UsuarioModule
+    UsuarioModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideClientHydration(),

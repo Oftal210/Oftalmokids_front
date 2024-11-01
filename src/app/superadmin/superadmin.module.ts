@@ -15,7 +15,8 @@ import { AddPacienteComponent } from './pages/add-paciente/add-paciente.componen
 import { AddForoComponent } from './pages/add-foro/add-foro.component';
 
 import { SharedModule } from '../shared.module';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -35,7 +36,9 @@ import { FormsModule } from '@angular/forms';
     RouterModule,
     SuperadminRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class SuperadminModule { }

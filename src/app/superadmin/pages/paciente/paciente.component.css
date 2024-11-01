@@ -1,0 +1,7 @@
+.invisible {
+    display: none; /* O usa visibility: hidden; si prefieres mantener el espacio */
+  }
+  
+  .cursor-default {
+    cursor: default; /* Cambiar a cursor normal */
+  }
