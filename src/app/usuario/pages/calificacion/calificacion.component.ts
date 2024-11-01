@@ -20,7 +20,7 @@ export class CalificacionComponent implements AfterViewInit {
   isModalOpen: boolean = false;
   currentIndex: number = -1;
   motivo: string = '';
-  documentoHijo = 3; // Tomamos el id del hijo 
+  documentoHijo = 1; // Tomamos el id del hijo 
   yesAnswers: number = 0;
   totalQuestions: number = 6;
   gauge: any;
