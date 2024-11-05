@@ -1,0 +1,68 @@
+<app-header></app-header>
+
+<div class="relative flex items-center justify-center mt-24">
+    <!-- Imagen de fondo -->
+    <div class="inset-0 bg-cover bg-center bg-no-repeat w-[104rem] h-[52rem] ml-[13rem] z-0 flex justify-center"
+        style="background-image: url('../../../../assets/images/fondo_vistas.jpg');">
+        
+        <div class="bg-white w-11/12 h-[44rem] mt-16 rounded-lg flex flex-col items-center justify-start p-4 overflow-y-auto">
+
+            <h1 class="text-4xl text-center mb-6 pt-2">Monitoreo Semanal del Tratamiento</h1>
+
+            
+            <!-- Contenedor principal -->
+            <div *ngFor="let preconsulta of preconsultas || []; let i = index" class="w-11/12 border-b border-slate-400 m-4 pb-4">
+                <p class="text-right text-lg mb-2 mr-8 cursor-pointer" (click)="toggleVisibility(i)"
+                >Fecha de la Consulta: {{ preconsulta.fecha_preconsulta }}</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" 
+                    [ngClass]="{ 'max-h-0 opacity-0 overflow-hidden': !isVisible(i), 'opacity-100 transition-all duration-300 ease-in-out': isVisible(i)}">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2">¿Está usando las gafas o lentes permanentes?</p>
+                        <input type="text" class="border rounded-lg w-11/12 p-2 bg-zinc-100 resize-none ocultar-barra" disabled [value]="procesarResultadoPrecon(preconsulta.uso_gafa_lentes, preconsulta.motivo_uso_gafas)">
+                        
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2">¿Está usando los medicamentos?</p>
+                        <input type="text" class="border rounded-lg w-11/12 p-2 bg-zinc-100" disabled
+                        [value]=" procesarResultadoPrecon(preconsulta.uso_medicamento, preconsulta.motivo_uso_medicam) ">
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2">¿Está limitando el uso de pantallas?</p>
+                        <input type="text" class="border rounded-lg w-11/12 p-2 bg-zinc-100" disabled
+                        [value]=" procesarResultadoPrecon(preconsulta.limit_pantalla, preconsulta.motiv_limit_pantalla) ">
+                    </div>
+
+                    <!-- Contenedor secundario 4 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2">¿Está realizando actividad al aire libre?</p>
+                        <input type="text" class="border rounded-lg w-11/12 p-2 bg-zinc-100" disabled 
+                        [value]=" procesarResultadoPrecon(preconsulta.activid_air_libre, preconsulta.motiv_acti_libre) ">
+                    </div>
+
+                    <!-- Contenedor secundario 5 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2">¿Está llevando buena alimentación?</p>
+                        <input type="text" class="border rounded-lg w-11/12 p-2 bg-zinc-100" disabled
+                        [value]=" procesarResultadoPrecon(preconsulta.buena_aliment, preconsulta.motiv_bue_alimen) ">
+                    </div>
+
+                    <!-- Contenedor secundario 6 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2">¿Ya tienes que solicitar cita de control?</p>
+                        <input type="text" class="border rounded-lg w-11/12 p-2 bg-zinc-100" disabled
+                        [value]=" procesarResultadoPrecon(preconsulta.solicitar_control, preconsulta.motiv_soli_control) ">
+                    </div>
+                </div>
+            </div>
+
+            <canvas id="gaugeChart" width="400" height="200"></canvas>
+
+        </div>
+    </div>
+</div>

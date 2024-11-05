@@ -68,7 +68,7 @@
           </div>
           <div
             *ngIf="administradorForm.get('telefono')?.hasError('pattern') && administradorForm.get('telefono')?.touched" class="text-red-500 font-medium text-sm">
-            El telefono solo numeros, max 13.
+            El telefono solo numeros, max 10.
           </div>
         </div>
 
@@ -91,7 +91,7 @@
         <!-- Contraseña -->
         <div class="mb-4">
           <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
-          <input type="password" name="" formControlName="password" (input)="onInputChangeNoEspacio($event)"
+          <input type="password" name="password" formControlName="password" (input)="onInputChangeNoEspacio($event)"
             class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required>
           <div *ngIf="administradorForm.get('password')?.hasError('required') && administradorForm.get('password')?.touched" 

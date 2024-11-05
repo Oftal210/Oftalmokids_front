@@ -70,11 +70,21 @@ export class SuperadminService {
   // Metodo para buscar el super administrador unicamente
   buscarSuperAdministrador(admin: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/usuariosuperadmin/${admin}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
-  }  
+  }
+  
+  // Metodo para buscar los registros de preconsultas de un hijo especifico
+  buscarPreconsultasHijo(hijo: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/preconsdelhijo/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
+  // Metodo para buscar los registros de preconsultas de un hijo especifico
+  buscarPromedioPreconsultasHijo(hijo: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/promediomespreconsulta/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
   
   // Metodo para guardar o insertar un hijo
-  guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any) {
-    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, foto:'ruta-foto'});
+  guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any) {
+    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, foto:'ruta-foto', edad:edad, genero:genero});
   }
 
   // Metodo para guardar o insertar un Padre

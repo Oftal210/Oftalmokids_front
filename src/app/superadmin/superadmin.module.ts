@@ -13,10 +13,12 @@ import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
 import { AddPacienteComponent } from './pages/add-paciente/add-paciente.component';
 import { AddForoComponent } from './pages/add-foro/add-foro.component';
+import { MonitoreoSemanalComponent } from './pages/monitoreo-semanal/monitoreo-semanal.component';
 
 import { SharedModule } from '../shared.module';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     AddAdminComponent,
     ForoComponent,
     AddPacienteComponent,
-    AddForoComponent
+    AddForoComponent,
+    MonitoreoSemanalComponent
   ],
   imports: [
     CommonModule,

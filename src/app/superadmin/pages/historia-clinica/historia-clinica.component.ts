@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -7,4 +9,22 @@ import { Component } from '@angular/core';
 })
 export class HistoriaClinicaComponent {
 
+  // documento del paciente
+  idhijo: string | null = null;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    this.idhijo = this.route.snapshot.paramMap.get('id');
+    // Cargar el usuario con el ID obtenido
+    console.log(this.idhijo);
+  }
+
+  // Método para navegar
+  irMonitoreo() {
+    this.router.navigate(['/monitoreo', this.idhijo]); // Enviar el ID
+  }
 }

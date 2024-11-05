@@ -1,1 +1,636 @@
-<p>historia-clinica works!</p>
+<app-header></app-header>
+
+<div class="relative flex items-center justify-center mt-24">
+    <!-- Imagen de fondo -->
+    <div class="inset-0 bg-cover bg-center bg-no-repeat w-[104rem] h-[52rem] ml-[13rem] z-0 flex justify-center"
+        style="background-image: url('../../../../assets/images/fondo_vistas.jpg');">
+
+        <div class="bg-slate-50 w-11/12 h-[44rem] mt-16 rounded-lg flex flex-col items-center justify-start overflow-y-auto">
+
+            <h1 class="text-4xl text-center mb-6 mt-7 font-semibold">Historia Clinica</h1>
+
+            <div class="w-11/12 my-8">
+                <p class="text-left text-base mb-2 mr-8 cursor-pointer">Monitoreo semanal del tratamiento <button class="text-cyan-400 font-medium" (click)="irMonitoreo()">CLIC AQUI</button></p>
+            </div>
+
+
+            
+
+            
+
+
+            
+            <!-- DATOS PARA LA TABLA DE HISTORIA CLINICA, DATOS PRINCIPALES -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg">
+                   
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-2">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Fecha</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Hora</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Nombre Paciente</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 4 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Apellido Paciente</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 5 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Nombre del padre o tutor</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 6 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Apellido del padre o tutor</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 5 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Dirección</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 6 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Teléfono</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+                </div>
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-1 lg:pt-2">Anamnesis</h2>
+
+                <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4">
+                    <p class="mb-2 text-lg">Motivo de la consulta</p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra"></textarea>
+                </div>
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE HISTORIA CLINICA, DATOS DE ANTECEDENTES-MEDICO-PERSONALES -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
+
+                <h2 class="text-4xl text-center font-semibold mt-6 lg:mt-0 lg:mb-3 lg:pt-2">Antecedentes Médico-Personales</h2>
+
+                <!-- div de datos antecedentes medico personales -->                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-2">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Edad de embarazo de la madre</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Fue de alto riesgo?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- div de especificar si fue alto riesgo, caja txtarea larga --> 
+                <div class="flex flex-col items-start p-6 lg:py-1 lg:px-4">
+                    <p class="mb-2 text-lg">Motivo de la consulta</p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra"></textarea>
+                </div>
+
+                <!-- div del resto de datos antecedentes medico personales, 17 cajas de texto--> 
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-2">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Semanas de gestación</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Tipo de parto</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Complicaciones?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Especifique</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Usó incubadora?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Tiempo</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Apgar</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Respiró y lloró al nacer?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Enfermedades durante el embarazo?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Especifique</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Medicamento/droga durante el embarazo?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Especifique</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Presenta alguna enfermedad sistématica?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Especifique</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Alergias?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Especifique</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Se ha sometido a alguna cirugía general u ocular?</p>
+                        <select class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                            <option selected></option>
+                            <option >No</option>
+                            <option >Si</option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE ANTECEDENTES VISUALES, DATOS DE ANTECEDENTES VISUALES -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
+
+                <h2 class="text-4xl text-center font-semibold mt-6 lg:mt-0 lg:mb-3 lg:pt-2">Antecedentes Visuales</h2>
+                   
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-2">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Utiliza correción óptica?</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Edad en la que utilizó lentes por primera vez</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">¿Cuántos cambios de RX?</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 4 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Motivo</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 5 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Material y tratamiento óptico</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 6 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Indicaciones de uso</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 5 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Fecha de último examen</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE AGUDEZA VISUAL, DATOS DE AGUDEZA VISUAL -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
+
+                <h2 class="text-4xl text-center font-semibold mt-6 lg:mt-0 lg:mb-3 lg:pt-2">Agudeza Visual</h2>
+                   
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-2">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">TEST</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Distancia</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2 pr-9 lg:pr-[15%]">
+                        <p class="border-solid border w-full text-lg text-center rounded-t-lg">OD</p>
+                        <div class="grid grid-cols-3 w-full"> 
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">SC VL</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">VP</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">PH</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2 pr-9 lg:pr-[15%]">
+                        <p class="border-solid border w-full text-lg text-center rounded-t-lg">OS</p>
+                        <div class="grid grid-cols-3 w-full"> 
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">SC VL</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">VP</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">PH</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor secundario 6 -->
+                    <div class="p-2">
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden lg:h-11 lg:w-10/12">
+                            <!-- Etiqueta de texto ocupando el 40% del espacio -->
+                            <label for="input" class="p-2 text-center text-base font-semibold w-2/5 border-r truncate" title="Lensometria">Lensometria</label>
+                          
+                            <!-- Campo de entrada ocupando el 60% del espacio -->
+                            <input type="text" class="w-3/5 p-2 text-lg text-center border-0 focus:ring-0"/>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor secundario 6 -->
+                    <div class="p-2">
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden lg:h-11 lg:w-10/12">
+                            <!-- Etiqueta de texto ocupando el 40% del espacio -->
+                            <label for="input" class="p-2 text-center text-base font-semibold w-2/5 border-r truncate" title="Lensometria">Lensometria</label>
+                          
+                            <!-- Campo de entrada ocupando el 60% del espacio -->
+                            <input type="text" class="w-3/5 p-2 text-lg text-center border-0 focus:ring-0"/>
+                        </div>
+                    </div>
+
+
+                    <div class="flex flex-col items-start p-2 pr-9 lg:pr-[15%]">
+                        <div class="grid grid-cols-2 w-full"> 
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">CC VL</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">VP</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="flex flex-col items-start p-2 pr-9 lg:pr-[15%]">
+                        <div class="grid grid-cols-2 w-full"> 
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">CC VL</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">VP</label>
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Queratometría</h2>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-2/3 lg:mx-auto ml-0 ">
+                    <div class="grid grid-cols-2 w-full"> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">OD</label>
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE RETINOSCOPIA, DATOS DE RETINOSCOPIA -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
+
+                <h2 class="text-4xl text-center font-semibold mt-6 lg:mt-0 lg:mb-3 lg:pt-2">Retinoscopía</h2>
+                   
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 lg:p-2">
+                    <!-- Contenedor secundario 1 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Tecnica</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 2 -->
+                    <div class="flex flex-col items-start p-2">
+                        <p class="mb-2 text-lg">Cicloplégico</p>
+                        <input type="text" class="border rounded-lg w-11/12 lg:w-10/12 p-2">
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2 pr-9 lg:pr-[15%]">
+                        <p class="border-solid border w-full text-lg text-center rounded-t-lg">OD</p>
+                        <div class="grid grid-cols-2 w-full"> 
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">Refracción</label>
+                                <label class="border-solid border w-full text-center" type="text">Subjetivo</label>
+                                <label class="border-solid border w-full text-center" type="text">Final</label>
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <input class="border-solid border w-full text-center" type="text">
+                                <input class="border-solid border w-full text-center" type="text">
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor secundario 3 -->
+                    <div class="flex flex-col items-start p-2 pr-9 lg:pr-[15%]">
+                        <p class="border-solid border w-full text-lg text-center rounded-t-lg">OS</p>
+                        <div class="grid grid-cols-2 w-full"> 
+                            <div class="flex flex-col items-start">
+                                <label class="border-solid border w-full text-center" type="text">Refracción</label>
+                                <label class="border-solid border w-full text-center" type="text">Subjetivo</label>
+                                <label class="border-solid border w-full text-center" type="text">Final</label>
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <input class="border-solid border w-full text-center" type="text">
+                                <input class="border-solid border w-full text-center" type="text">
+                                <input class="border-solid border w-full text-center" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE ALINEAMIENTO MOTOR, DATOS DE ALINEAMIENTO MOTOR -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
+
+                <h2 class="text-4xl text-center font-semibold mt-6 lg:mt-0 lg:mb-5 lg:pt-2">Alineamiento Motor</h2>
+
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 pb-6 lg:pb-8 w-full lg:w-3/4 lg:mx-auto ml-0">
+                    <div class="grid grid-cols-3 w-full h-20">
+                        <div class="flex flex-col items-start">
+                            <label class="border border-solid h-full w-full flex items-center justify-center text-center lg:text-lg rounded-tl-lg" type="text">Ángulo KAPPA</label>
+                        </div> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border h-full w-full text-center text-sm lg:text-base  truncate" type="text">HIRSCHBERG</label>
+                            <input class="border-solid border h-full w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border h-full w-full text-center rounded-tr-lg text-sm lg:text-base truncate" type="text">TEST DE BRUCKNER</label>
+                            <input class="border-solid border h-full w-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 pb-6 lg:pb-8 w-full lg:w-3/4 lg:mx-auto ml-0">
+                    <div class="grid grid-cols-3 w-full h-20">
+                        <div class="flex flex-col items-start">
+                            <label class="border border-solid h-full w-full flex items-center justify-center text-center lg:text-lg rounded-tl-lg" type="text">Covet Test</label>
+                        </div> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border h-full w-full text-center " type="text">VL</label>
+                            <input class="border-solid border h-full w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border h-full w-full text-center rounded-tr-lg" type="text">VP</label>
+                            <input class="border-solid border h-full w-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 pb-6 lg:pb-8 w-full lg:w-3/4 lg:mx-auto ml-0">
+                    <div class="grid grid-cols-3 w-full h-20">
+                        <div class="flex flex-col items-start">
+                            <label class="border border-solid h-full w-full flex items-center justify-center text-center lg:text-lg rounded-tl-lg" type="text">Estado Acomodativo  </label>
+                        </div> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border h-full w-full text-center " type="text">FLEX</label>
+                            <input class="border-solid border h-full w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border h-full w-full text-center rounded-tr-lg" type="text">AA</label>
+                            <input class="border-solid border h-full w-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE VERSIONES, DATOS DE VERSIONES -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8 mb-10">
+                <h2 class="text-4xl text-center font-semibold lg:mt-2 lg:mb-3 lg:pt-2">Versiones</h2>
+
+                <div class="flex justify-center items-center my-6">
+                    <img class="w-40 h-40 lg:w-1/2 lg:h-1/2 object-contain" src="../../../../assets/images/grafico-versiones.png" alt="Grafico Versiones" >
+                </div>
+
+                <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4">
+                    <p class="mb-2 text-lg">Observaciones</p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra"></textarea>
+                </div>
+            </div>
+
+            <!-- DATOS PARA LA TABLA DE DUCCIONES, DATOS DE DUCCIONES, MOTALIDAD OCULAR Y EXPLORACION DE EXTERNOS -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8 mb-10">
+
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Ducciones</h2>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-2/3 lg:mx-auto ml-0 ">
+                    <div class="grid grid-cols-3 w-full"> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">HABILIDADES</label>
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">NORMAL</label>
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">PARECÍA</label>
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">PARÁLISIS</label>
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OD</label>
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+
+
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Motalidad Ocular</h2>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-3/4 lg:mx-auto ml-0 ">
+                    <div class="grid grid-cols-4 w-full"> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">PRUEBA</label>
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">SEGUIMIENTO</label>
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">SACÁDICOS</label>
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OD</label>
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">AO</label>  
+                            <input class="border-solid border w-full text-center" type="text">
+                            <input class="border-solid border w-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Exploración de Externos</h2>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-2/3 lg:mx-auto ml-0 ">
+                    <div class="grid grid-cols-2 w-full"> 
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">OD</label>
+                            <textarea class="border-solid border w-full text-center resize-none h-32 lg:h-40" type="text"></textarea>
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
+                            <textarea class="border-solid border w-full text-center resize-none h-32 lg:h-40" type="text"></textarea>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                
+            </div>
+
+        </div>
+    </div>
+</div>

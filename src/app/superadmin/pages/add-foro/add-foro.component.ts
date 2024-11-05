@@ -51,29 +51,33 @@ export class AddForoComponent {
     
     console.log(this.usuario, titulo, contenido, this.id);
     console.log(this.editar);
-    // Verificamos si hay que gurdar o editar con la variable siguiente
-    if(this.editar == false){
-      // Si es false guardara y hara lo siguiente
-      this.superadminservice.guardarRegistroForo(this.usuario, titulo, contenido).subscribe(response => {
-        console.log('Respuesta del servidor:', response);
+    if (titulo == '' || titulo == '') {
+      // Verificamos si hay que gurdar o editar con la variable siguiente
+      if(this.editar == false){
+        // Si es false guardara y hara lo siguiente
+        this.superadminservice.guardarRegistroForo(this.usuario, titulo, contenido).subscribe(response => {
+          console.log('Respuesta del servidor:', response);
 
-        // Emite el evento después de la inserción si fue exitosa
-        this.datosInsertado.emit();
-      }, error => {
-        console.error('Error al enviar los datos:', error);
-      });
-      this.editar = false;
-    } else {
-      // Si es true editara y hara los siguiente
-      this.superadminservice.editarRegistroForo(this.id, titulo, contenido).subscribe(response => {
-        console.log('Respuesta del servidor:', response);
-  
-        // Emite el evento después de la inserción si fue exitosa
-        this.datosInsertado.emit();
-      }, error => {
-        console.error('Error al enviar los datos:', error);
-      });
-      this.editar = false;
+          // Emite el evento después de la inserción si fue exitosa
+          this.datosInsertado.emit();
+        }, error => {
+          console.error('Error al enviar los datos:', error);
+        });
+        this.editar = false;
+      } else {
+        // Si es true editara y hara los siguiente
+        this.superadminservice.editarRegistroForo(this.id, titulo, contenido).subscribe(response => {
+          console.log('Respuesta del servidor:', response);
+    
+          // Emite el evento después de la inserción si fue exitosa
+          this.datosInsertado.emit();
+        }, error => {
+          console.error('Error al enviar los datos:', error);
+        });
+        this.editar = false;
+      }
+    }  else {
+      alert('Ingrese los textos antes de enviar')
     }
       
     // cerrar la venta modal
