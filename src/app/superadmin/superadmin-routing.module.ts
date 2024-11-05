@@ -20,7 +20,7 @@ const routes: Routes =  [
       {path:'paciente', component: PacienteComponent, data: { title: 'Paciente', icon: 'fa-solid fa-id-card', showInMenu: true }},
       {path:'add-admin', component: AddAdminComponent},
       {path:'foro', component: ForoComponent, data: { title: 'Foro', icon: 'fa-solid fa-comments', showInMenu: true }},
-      {path:'perfil', component: PerfilComponent, data: { title: 'Perfil', icon: 'fa-solid fa-user', showInMenu: true }},
+      {path:'perfil', component: PerfilComponent},
     ]
   }
 ]
