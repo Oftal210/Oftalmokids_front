@@ -16,8 +16,6 @@
 
             
 
-            
-
 
             
             <!-- DATOS PARA LA TABLA DE HISTORIA CLINICA, DATOS PRINCIPALES -->
@@ -542,7 +540,7 @@
 
             <!-- DATOS PARA LA TABLA DE VERSIONES, DATOS DE VERSIONES -->
 
-            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8 mb-10">
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
                 <h2 class="text-4xl text-center font-semibold lg:mt-2 lg:mb-3 lg:pt-2">Versiones</h2>
 
                 <div class="flex justify-center items-center my-6">
@@ -551,86 +549,177 @@
 
                 <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4">
                     <p class="mb-2 text-lg">Observaciones</p>
-                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra"></textarea>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra" rows="3"></textarea>
                 </div>
             </div>
 
             <!-- DATOS PARA LA TABLA DE DUCCIONES, DATOS DE DUCCIONES, MOTALIDAD OCULAR Y EXPLORACION DE EXTERNOS -->
 
-            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8 mb-10">
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
 
-                <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Ducciones</h2>
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 mb-4 lg:pt-2">Ducciones</h2>
 
                 <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-2/3 lg:mx-auto ml-0 ">
-                    <div class="grid grid-cols-3 w-full"> 
+                    <div class="grid grid-cols-3 w-full h-32"> 
                         <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">HABILIDADES</label>
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">NORMAL</label>
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">PARECÍA</label>
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">PARÁLISIS</label>
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">HABILIDADES</label>
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">NORMAL</label>
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">PARECÍA</label>
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">PARÁLISIS</label>
                         </div>
                         <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OD</label>
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center" type="text">OD</label>
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
                         </div>
                         <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center" type="text">OS</label>
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
                         </div>
                     </div>
                 </div>
 
+                <!-- DATOS PARA LA TABLA DE MOTALIDAD OCULAR -->
 
                 <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Motalidad Ocular</h2>
 
                 <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-3/4 lg:mx-auto ml-0 ">
                     <div class="grid grid-cols-4 w-full"> 
-                        <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">PRUEBA</label>
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">SEGUIMIENTO</label>
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">SACÁDICOS</label>
+                        <div class="flex flex-col items-start h-28">
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">PRUEBA</label>
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">SEGUIMIENTO</label>
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">SACÁDICOS</label>
                         </div>
-                        <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OD</label>
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
+                        <div class="flex flex-col items-start h-28">
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center" type="text">OD</label>
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
                         </div>
-                        <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
+                        <div class="flex flex-col items-start h-28">
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center" type="text">OS</label>
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
                         </div>
-                        <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">AO</label>  
-                            <input class="border-solid border w-full text-center" type="text">
-                            <input class="border-solid border w-full text-center" type="text">
+                        <div class="flex flex-col items-start h-28">
+                            <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text">AO</label>  
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
                         </div>
                     </div>
                 </div>
+
+                <!-- DATOS PARA LA TABLA DE EXPLORACIÓN DE EXTERNO -->
 
                 <h2 class="text-4xl text-center font-semibold lg:mt-4 lg:mb-2 lg:pt-2">Exploración de Externos</h2>
 
                 <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-2/3 lg:mx-auto ml-0 ">
                     <div class="grid grid-cols-2 w-full"> 
                         <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tl-lg" type="text">OD</label>
+                            <label class="border-solid border w-full text-center rounded-tl-lg text-lg" type="text">OD</label>
                             <textarea class="border-solid border w-full text-center resize-none h-32 lg:h-40" type="text"></textarea>
                         </div>
                         <div class="flex flex-col items-start">
-                            <label class="border-solid border w-full text-center rounded-tr-lg" type="text">OS</label>
+                            <label class="border-solid border w-full text-center rounded-tr-lg text-lg" type="text">OS</label>
                             <textarea class="border-solid border w-full text-center resize-none h-32 lg:h-40" type="text"></textarea>
                         </div>
                         
                     </div>
                 </div>
-
-                
             </div>
+
+            <!-- DATOS PARA LA TABLA DE OFTALMOSCOPIA, DATOS DE OFTALMOSCOPIA -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8">
+
+                <h2 class="text-4xl text-center font-semibold lg:mt-4 mb-4 lg:pt-2">Oftalmoscopía</h2>
+
+                <div class="flex flex-col items-center px-6 pr-9 py-2 lg:py-1 lg:px-4 div-1 w-full lg:w-3/4 lg:mx-auto ml-0 ">
+                    <div class="grid grid-cols-3 w-full"> 
+                        <div class="flex flex-col items-start"> <!-- flex items-center justify-center -->
+                            <!-- <label class="border-solid border w-full h-full text-center circulo" type="text"></label> -->
+                            <div class="border-solid border circulo flex items-center justify-center w-full h-20 lg:h-32">
+                                <div class="circle"></div>
+                            </div>
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <!-- <label class="border-solid border w-full h-full flex items-center justify-center text-center truncate" type="text"></label> -->
+                            <div class="border-solid border circulo flex items-center justify-center w-full h-20 lg:h-32">
+                                <div class="circle oculto"></div>
+                            </div>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" title="medios refwe" type="text">Medios Refingentes</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Reflejo fóvea</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Papila</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Excavación Fisiológica</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Profundidad</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Vasos</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Relación Arteria-Vena</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Mácula</label>
+                            <label class="border-solid border w-full h-full lg:flex items-center justify-center text-center truncate" type="text">Retina Periférica</label>
+                        </div>
+
+                        <div class="flex flex-col items-start">
+                            <!-- <label class="border-solid border w-full h-full text-center circulo" type="text"></label> -->
+                            <div class="border-solid border circulo flex items-center justify-center w-full h-20 lg:h-32">
+                                <div class="circle"></div>
+                            </div>
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                            <input class="border-solid border w-full h-full text-center" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- DATOS PARA LA TABLA DE DIAGNOSTICO X HISTORIA CLINICA, DATOS DE DIAGNOSTICO X HISTORIA CLINICA -->
+
+            <div class="bg-white w-11/12 shadow-lg lg:px-8 lg:py-8 lg:pl-20 pb-4 rounded-lg mt-8 mb-10">
+                <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4 mb-4">
+                    <p class="mb-2 text-lg">Diagnostico<i class="bi bi-arrow-up"></i></p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra" rows="3"></textarea>
+                </div>
+
+                <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4 mb-4">
+                    <p class="mb-2 text-lg">Pronóstico</p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra" rows="3"></textarea>
+                </div>
+
+                <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4 mb-4">
+                    <p class="mb-2 text-lg">Tratamiento</p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra" rows="3"></textarea>
+                </div>
+
+                <div class="flex flex-col items-start px-6 py-2 lg:py-1 lg:px-4 mb-4">
+                    <p class="mb-2 text-lg">Controles </p>
+                    <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra" rows="3"></textarea>
+                </div>
+            </div>
+
+            <button class="text-white bg-sky-400 hover:bg-sky-500 focus:ring-4 font-medium rounded-lg text-lg px-5 py-2.5 me-2 mb-2 focus:outline-none">Guardar</button>
 
         </div>
     </div>
 </div>
+
+<!-- Botón de Ir Arriba -->
+<button class="fixed bottom-10 right-5 bg-sky-400 text-white w-12 h-12 rounded-full shadow-lg hover:bg-sky-500 flex items-center justify-center text-lg"
+    (click)="scrollToTop()">↑</button>
+    

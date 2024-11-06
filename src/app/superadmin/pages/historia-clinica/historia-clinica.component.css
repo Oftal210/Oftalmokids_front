@@ -1,0 +1,21 @@
+.circulo {
+    position: relative;
+}
+
+.circle {
+    width: 50px; /* Tamaño base del círculo */
+    height: 50px;
+    border: 2px solid orange; /* Borde del círculo */
+    border-radius: 50%;
+}
+
+.oculto {
+    border: none;
+}
+
+@media (min-width: 1024px) {
+    .circle {
+        width: 70px; /* Tamaño más grande en pantallas grandes */
+        height: 70px;
+    }
+}

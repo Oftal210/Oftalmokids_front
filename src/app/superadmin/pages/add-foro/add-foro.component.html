@@ -1,32 +1,53 @@
-<div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-    <div class="bg-sky-100 rounded-lg shadow-lg p-6 w-1/2" (keydown.enter)="tomarDatos()">
-      <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold">Nuevo Mensaje del Foro</h2>
-        <button (click)="cerrar()" class="text-gray-500 hover:text-gray-800 text-3xl">
-          &times;
-        </button>
-      </div>
-  
+<div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mt-0">
+
+  <div class="bg-sky-100 rounded-lg shadow-lg ml-48 w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv] overflow-auto md:overflow-hidden"
+    (keydown.enter)="tomarDatos()">
+
+    <div class="flex justify-between items-center">
+
+      <h2 class="text-xl font-semibold">Nuevo Mensaje del Foro</h2>
+
+      <button (click)="cerrar()" class="text-gray-500 hover:text-gray-800 text-3xl">
+        &times;
+      </button>
+
+    </div>
+
+    <form (ngSubmit)="tomarDatos()" [formGroup]="foroForm">
+
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700">Titulo</label>
-        <input 
-          type="text" [(ngModel)]="inputTitulo"
-          class="mt-1 block w-full border border-gray-300 rounded-md p-2" 
-          placeholder="Escriba el titulo para este mensaje..." />
+        <input type="text" formControlName="titulo" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Escriba el titulo para este mensaje..." value="{{ inputTitulo }}"/>
+        <div *ngIf="foroForm.get('titulo')?.hasError('required') && foroForm.get('titulo')?.touched" class="text-red-500 font-medium text-base">
+          Este campo es requerido, escriba algo antes de guardarlo.
+        </div>
+        
       </div>
-  
+
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700">Contenido</label>
-        <textarea 
-          rows="4" [(ngModel)]="inputContenido"
-          class="mt-1 block w-full border border-gray-300 rounded-md p-2 resize-none" 
-          placeholder="Escriba el texto que contendra..."></textarea>
+        <textarea rows="4" formControlName="contenido" class="mt-1 block w-full border border-gray-300 rounded-md p-2 resize-none" placeholder="Escriba el texto que contendra...">{{ inputContenido }}<</textarea>
+        <div *ngIf="foroForm.get('contenido')?.hasError('required') && foroForm.get('contenido')?.touched" class="text-red-500 font-medium text-base">
+          Este campo es requerido, escriba algo antes de guardarlo.
+        </div>
       </div>
-  
+
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-gray-700">Seleccionar Imagen</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*"
+          class="mt-1 block w-full border border-gray-300 rounded-md p-2">
+
+        <div *ngIf="selectedImage" class="mt-4 flex flex-col items-center">
+          <img [src]="selectedImage" alt="Imagen seleccionada" class="border border-gray-300 rounded-md p-2 w-1/2"
+            [style.objectPosition]="position">
+        </div>
+      </div>
+
       <div class="mt-6 flex justify-end">
-        <button (click)="cerrar()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
-        <button (click)="tomarDatos()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Confirmar</button>
+        <button (click)="cerrar()"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Confirmar</button>
       </div>
-    </div>
+    </form>
   </div>
-  
+</div>

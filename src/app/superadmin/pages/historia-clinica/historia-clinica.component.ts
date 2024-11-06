@@ -27,4 +27,8 @@ export class HistoriaClinicaComponent {
   irMonitoreo() {
     this.router.navigate(['/monitoreo', this.idhijo]); // Enviar el ID
   }
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
