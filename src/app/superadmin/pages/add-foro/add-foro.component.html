@@ -17,7 +17,7 @@
 
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700">Titulo</label>
-        <input type="text" formControlName="titulo" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Escriba el titulo para este mensaje..." value="{{ inputTitulo }}"/>
+        <input type="text" formControlName="titulo" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Escriba el titulo para este mensaje..."/>
         <div *ngIf="foroForm.get('titulo')?.hasError('required') && foroForm.get('titulo')?.touched" class="text-red-500 font-medium text-base">
           Este campo es requerido, escriba algo antes de guardarlo.
         </div>
@@ -26,14 +26,14 @@
 
       <div class="mt-4">
         <label class="block text-sm font-medium text-gray-700">Contenido</label>
-        <textarea rows="4" formControlName="contenido" class="mt-1 block w-full border border-gray-300 rounded-md p-2 resize-none" placeholder="Escriba el texto que contendra...">{{ inputContenido }}<</textarea>
+        <textarea rows="4" formControlName="contenido" class="mt-1 block w-full border border-gray-300 rounded-md p-2 resize-none" placeholder="Escriba el texto que contendra..."></textarea>
         <div *ngIf="foroForm.get('contenido')?.hasError('required') && foroForm.get('contenido')?.touched" class="text-red-500 font-medium text-base">
           Este campo es requerido, escriba algo antes de guardarlo.
         </div>
       </div>
 
       <div class="mt-4">
-        <label class="block text-sm font-medium text-gray-700">Seleccionar Imagen</label>
+        <label class="block text-sm font-medium text-gray-700">Imagen</label>
         <input type="file" (change)="onFileSelected($event)" accept="image/*"
           class="mt-1 block w-full border border-gray-300 rounded-md p-2">
 

@@ -16,22 +16,22 @@ interface Tema {
   styleUrls: ['./calificacion.component.css']
 })
 export class CalificacionComponent implements AfterViewInit {
-  
+
   isModalOpen: boolean = false;
   currentIndex: number = -1;
   motivo: string = '';
-  documentoHijo = 3; // Tomamos el id del hijo 
+  documentoHijo = 3;
   yesAnswers: number = 0;
   totalQuestions: number = 6;
   gauge: any;
   finalValue: number = 0;
   temas: Tema[] = [
-    { texto: 'Estas usando las gafas o lentes permanentes', calificado: false, respuesta: '', motivo:''},
-    { texto: 'Estas usando los medicamentos', calificado: false, respuesta: '', motivo:''},
-    { texto: 'Estas limitando el uso de pantallas', calificado: false, respuesta: '', motivo:''},
-    { texto: 'Estas realizando actividad al aire libre', calificado: false, respuesta: '', motivo:''},
-    { texto: 'Estas llevando buena alimentación', calificado: false, respuesta: '', motivo:''},
-    { texto: 'Ya tienes que solicitar cita control?', calificado: false, respuesta: '' , motivo:''}
+    { texto: 'Estas usando las gafas o lentes permanentes', calificado: false, respuesta: '', motivo: '' },
+    { texto: 'Estas usando los medicamentos', calificado: false, respuesta: '', motivo: '' },
+    { texto: 'Estas limitando el uso de pantallas', calificado: false, respuesta: '', motivo: '' },
+    { texto: 'Estas realizando actividad al aire libre', calificado: false, respuesta: '', motivo: '' },
+    { texto: 'Estas llevando buena alimentación', calificado: false, respuesta: '', motivo: '' },
+    { texto: '¿Ya tienes que solicitar cita control?', calificado: false, respuesta: '', motivo: '' }
   ];
 
   constructor(private renderer: Renderer2, private el: ElementRef, private padreService: PadreService) {}
@@ -70,37 +70,26 @@ export class CalificacionComponent implements AfterViewInit {
     };
     const target = this.el.nativeElement.querySelector('#gaugeChart') as HTMLCanvasElement;
     this.gauge = new Gauge(target).setOptions(opts);
-    this.gauge.maxValue = 6; // Valor máximo ajustado a 6
-    this.gauge.setMinValue(0); // Valor mínimo ajustado a 0
+    this.gauge.maxValue = this.totalQuestions;
+    this.gauge.setMinValue(0);
     this.gauge.animationSpeed = 32;
-    this.gauge.set(0); // Inicializa el medidor en 0
+    this.gauge.set(0);
   }
 
   calificarTema(index: number, respuesta: 'like' | 'dislike'): void {
     const tema = this.temas[index];
-    if (tema.calificado && tema.respuesta === respuesta) {
-      // Si ya está calificado con la misma respuesta, no hacer nada
-      return;
-    }
-
-    // Actualizar la cuenta de respuestas "sí"
-    if (tema.respuesta === 'like') {
-      this.yesAnswers--;
-    }
-
-    // Actualizar con la nueva respuesta
-    tema.calificado = true;
-    tema.respuesta = respuesta;
 
     if (respuesta === 'like') {
-      this.yesAnswers++;
-    } else {
+      if (tema.respuesta !== 'like') {
+        this.yesAnswers++;
+      }
+      tema.calificado = true;
+      tema.respuesta = 'like';
+      this.actualizarGauge();
+    } else if (respuesta === 'dislike') {
+      this.currentIndex = index;
       this.abrirModal(index);
     }
-
-    this.finalValue = this.yesAnswers; // Guarda el valor final
-    this.gauge.set(this.finalValue); // Asegurarse de que el valor final esté dentro del rango 0-6 
-    console.log(this.finalValue)
   }
 
   abrirModal(index: number): void {
@@ -111,39 +100,58 @@ export class CalificacionComponent implements AfterViewInit {
 
   cerrarModal(): void {
     this.isModalOpen = false;
+    this.currentIndex = -1;
   }
 
   guardarMotivo(): void {
     if (this.currentIndex !== -1) {
-      this.temas[this.currentIndex].calificado = true;
-      this.temas[this.currentIndex].respuesta = 'dislike';
-      this.temas[this.currentIndex].motivo = this.motivo;
-      this.cerrarModal();
+      const tema = this.temas[this.currentIndex];
+      if (tema.respuesta === 'like') {
+        this.yesAnswers--;
+      }
+      tema.calificado = true;
+      tema.respuesta = 'dislike';
+      tema.motivo = this.motivo;
+      this.actualizarGauge();
     }
+    this.cerrarModal();
+  }
+
+  actualizarGauge(): void {
+    this.finalValue = Math.max(0, Math.min(this.yesAnswers, this.totalQuestions));
+    this.gauge.set(this.finalValue);
   }
 
   tomarDatos() {
-    // Variable para guardar los parametros que vamos a meter en el envio 
-    const hijo          = this.documentoHijo; 
-    const uso_gafas     = this.temas[0].respuesta === 'like' ? true : false;
-    const uso_medic     = this.temas[1].respuesta === 'like' ? true : false; 
-    const limite_panta  = this.temas[2].respuesta === 'like' ? true : false; 
-    const activ_libre   = this.temas[3].respuesta === 'like' ? true : false; 
-    const buen_alimen   = this.temas[4].respuesta === 'like' ? true : false; 
-    const solict_contr  = this.temas[5].respuesta === 'like' ? true : false;
-    const motivo_gafas  = this.temas[0]?.motivo ?? null;
-    const motivo_medic  = this.temas[1]?.motivo ?? null;
-    const motivo_panta  = this.temas[2]?.motivo ?? null;
-    const motivo_activ  = this.temas[3]?.motivo ?? null;
-    const motivo_buen   = this.temas[4]?.motivo ?? null;
-    const motivo_contr  = this.temas[5]?.motivo ?? null;
-    const punt_precon   = this.finalValue;
-  
-    console.log(hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr);
+    const noCalificados = this.temas.some(t => !t.calificado);
+    const faltanMotivos = this.temas.some(t => t.respuesta === 'dislike' && !t.motivo);
 
-    //Enviamos los datos convertidos 
-    this.padreService.enviarPreconsulta(hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, punt_precon, motivo_gafas, motivo_medic,motivo_panta, motivo_activ, motivo_buen, motivo_contr).subscribe(response => {
+    if (noCalificados || faltanMotivos) {
+      alert('Asegúrate de calificar todos los temas y proporcionar un motivo para los "dislike".');
+      return;
+    }
+
+    const hijo = this.documentoHijo;
+    const uso_gafas = this.temas[0].respuesta === 'like';
+    const uso_medic = this.temas[1].respuesta === 'like';
+    const limite_panta = this.temas[2].respuesta === 'like';
+    const activ_libre = this.temas[3].respuesta === 'like';
+    const buen_alimen = this.temas[4].respuesta === 'like';
+    const solict_contr = this.temas[5].respuesta === 'like';
+    const motivo_gafas = this.temas[0].motivo ?? null;
+    const motivo_medic = this.temas[1].motivo ?? null;
+    const motivo_panta = this.temas[2].motivo ?? null;
+    const motivo_activ = this.temas[3].motivo ?? null;
+    const motivo_buen = this.temas[4].motivo ?? null;
+    const motivo_contr = this.temas[5].motivo ?? null;
+    const punt_precon = this.finalValue;
+
+    this.padreService.enviarPreconsulta(
+      hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, 
+      punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr
+    ).subscribe(response => {
       console.log('Respuesta del servidor:', response);
+      alert('los datos se insertaron correctamente');
     }, error => {
       console.error('Error al enviar los datos:', error);
     });

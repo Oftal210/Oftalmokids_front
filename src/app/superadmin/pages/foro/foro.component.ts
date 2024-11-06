@@ -99,7 +99,12 @@ export class ForoComponent {
       this.superadminservice.obtenerRegistrosForo()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        this.foros = data;
+        console.log(data.status);
+        if (!data.status) {
+          this.foros = data;
+        } else {
+          alert('aun no hay foro');
+        }
         resolve();
       });
     })
