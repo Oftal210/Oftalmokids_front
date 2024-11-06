@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { AddForoComponent } from './pages/add-foro/add-foro.component';
 import { SharedModule } from '../shared.module';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+
 
 
 @NgModule({
@@ -38,7 +39,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxPaginationModule
-  ]
+    NgxPaginationModule,
+
+  ],
+  
 })
 export class SuperadminModule { }

@@ -10,18 +10,19 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
 
+
 const routes: Routes =  [
   {
     path:'',
     children:[
-      {path:'dashboard', component: DashboardComponent, data: { title: 'Dashboard', icon: 'fa-solid fa-chart-pie', showInMenu: true }},
-      {path:'equipo', component: EquipoComponent, data: { title: 'Equipo', icon: 'fa-solid fa-users', showInMenu: true }},
+      {path:'dashboard', component: DashboardComponent, data: { title: 'Dashboard', icon: 'LayoutDashboard', color: 'text-blue-700', showInMenu: true }},
+      {path:'equipo', component: EquipoComponent, data: { title: 'Equipo', icon: 'Users', color: 'text-[#ff834d]', showInMenu: true }},
       {path:'historia-clinica', component: HistoriaClinicaComponent},
-      {path:'paciente', component: PacienteComponent, data: { title: 'Paciente', icon: 'fa-solid fa-id-card', showInMenu: true }},
+      {path:'paciente', component: PacienteComponent, data: { title: 'Paciente', icon: 'UserRound', color: 'text-[#2EBBEE]', showInMenu: true }},
       {path:'add-admin', component: AddAdminComponent},
-      {path:'foro', component: ForoComponent, data: { title: 'Foro', icon: 'fa-solid fa-comments', showInMenu: true }},
+      {path:'foro', component: ForoComponent, data: { title: 'Foro', icon: 'MessageCircle', color: 'text-[#FCBD1B]', showInMenu: true }},
       {path:'perfil', component: PerfilComponent},
-    ]
+    ] 
   }
 ]
 
