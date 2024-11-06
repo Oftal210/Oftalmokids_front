@@ -90,6 +90,7 @@ export class AddForoComponent {
           console.error('Error al enviar los datos:', error);
         });
         this.editar = false;
+        this.cerrar();
       } else {
         // Si es true editara y hara los siguiente
         this.superadminservice.editarRegistroForo(this.id, titulo, contenido).subscribe(response => {
