@@ -54,7 +54,7 @@ export class PacienteComponent implements OnInit {
 
     dialogRef.componentInstance.datosInsertado.subscribe(() =>{
       this.cargarRegistroHijos();
-    })
+    });
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando

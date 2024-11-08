@@ -5,17 +5,13 @@
     <div class="inset-0 bg-cover bg-center bg-no-repeat w-[104rem] h-[52rem] ml-[13rem] z-0 flex justify-center"
         style="background-image: url('../../../../assets/images/fondo_vistas.jpg');">
 
-        <div class="bg-slate-50 w-11/12 h-[44rem] mt-16 rounded-lg flex flex-col items-center justify-start overflow-y-auto">
+        <div #contenedorPrincipal class="bg-slate-50 w-11/12 h-[44rem] mt-16 rounded-lg flex flex-col items-center justify-start overflow-y-auto">
 
             <h1 class="text-4xl text-center mb-6 mt-7 font-semibold">Historia Clinica</h1>
 
             <div class="w-11/12 my-8">
                 <p class="text-left text-base mb-2 mr-8 cursor-pointer">Monitoreo semanal del tratamiento <button class="text-cyan-400 font-medium" (click)="irMonitoreo()">CLIC AQUI</button></p>
             </div>
-
-
-            
-
 
             
             <!-- DATOS PARA LA TABLA DE HISTORIA CLINICA, DATOS PRINCIPALES -->
@@ -106,7 +102,7 @@
 
                 <!-- div de especificar si fue alto riesgo, caja txtarea larga --> 
                 <div class="flex flex-col items-start p-6 lg:py-1 lg:px-4">
-                    <p class="mb-2 text-lg">Motivo de la consulta</p>
+                    <p class="mb-2 text-lg">Especifique</p>
                     <textarea type="text" class="border rounded-lg w-11/12 p-2 resize-none ocultar-barra"></textarea>
                 </div>
 
@@ -720,6 +716,6 @@
 </div>
 
 <!-- Botón de Ir Arriba -->
-<button class="fixed bottom-10 right-5 bg-sky-400 text-white w-12 h-12 rounded-full shadow-lg hover:bg-sky-500 flex items-center justify-center text-lg"
-    (click)="scrollToTop()">↑</button>
+<button class="fixed bottom-10 right-5 bg-sky-400 text-white w-11 h-11 rounded-full shadow-lg hover:bg-sky-500 flex items-center justify-center text-3xl"
+    (click)="scrollToTop()"><i class="bi bi-arrow-up-circle" (click)="scrollToTop()"></i></button>
     

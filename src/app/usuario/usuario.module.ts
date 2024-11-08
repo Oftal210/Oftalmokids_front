@@ -10,7 +10,8 @@ import { InicioComponent } from './pages/inicio/inicio.component';
 import { PerfilPadreComponent } from './pages/perfil-padre/perfil-padre.component';
 
 import { SharedModule } from '../shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,9 @@ import { FormsModule } from '@angular/forms';
     RouterModule,
     UsuarioRoutingModule,
     SharedModule,
-    FormsModule 
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule
   ]
 })
 export class UsuarioModule { }

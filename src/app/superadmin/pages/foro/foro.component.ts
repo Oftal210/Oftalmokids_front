@@ -29,8 +29,6 @@ export class ForoComponent {
 
   foros: any[] = [];
 
-  hijos: any[] = [];
-
   private unsubscribe$ = new Subject<void>();
 
   screenSmall = window.innerWidth < 1024;

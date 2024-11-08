@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -28,7 +28,9 @@ export class HistoriaClinicaComponent {
     this.router.navigate(['/monitoreo', this.idhijo]); // Enviar el ID
   }
 
+  @ViewChild('contenedorPrincipal') contenedorPrincipal!: ElementRef;
+
   scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.contenedorPrincipal.nativeElement.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

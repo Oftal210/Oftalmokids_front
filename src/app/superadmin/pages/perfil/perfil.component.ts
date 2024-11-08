@@ -88,8 +88,13 @@ export class PerfilComponent {
 
   // meotdo para buscar los datos del usuario
   cargarDatosPerfil() {
-    if(this.documentoAdministrador == '1234567890'){
-      this.superadminservice.buscarSuperAdministrador(this.documentoAdministrador)
+
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+    }
+
+    if(docAdministrador.documento == '1234567890'){
+      this.superadminservice.buscarSuperAdministrador(docAdministrador.documento)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         const datosobtenidos = {
@@ -104,7 +109,7 @@ export class PerfilComponent {
         this.apellidoPerfil = data.usuario.apellido;
       })
     } else {
-      this.superadminservice.buscarAdministrador(this.documentoAdministrador)
+      this.superadminservice.buscarAdministrador(docAdministrador.documento)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         const datosobtenidos = {
@@ -134,6 +139,11 @@ export class PerfilComponent {
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
   tomarDatos(): void {
+
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+    }
+
     if (!this.perfilForm.invalid) {
       console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
@@ -143,8 +153,8 @@ export class PerfilComponent {
       const telefono  = this.perfilForm.get('telefono')?.value;
       const password  = this.perfilForm.get('password')?.value;
 
-      if(this.documentoAdministrador == '1234567890') {
-        this.superadminservice.modficarSuperAdministrador(this.documentoAdministrador, nombre, apellido, email, telefono, password)
+      if(docAdministrador.documento == '1234567890') {
+        this.superadminservice.modficarSuperAdministrador(docAdministrador.documento, nombre, apellido, email, telefono, password)
         .subscribe(response => {
           console.log('Respuesta del servidor:', response);
           console.log('Respuesta del servidor:', response.status);
@@ -161,7 +171,7 @@ export class PerfilComponent {
           window.location.reload();
         });
       } else {
-        this.superadminservice.modficarAdministrador(this.documentoAdministrador, nombre, apellido, email, telefono, password)
+        this.superadminservice.modficarAdministrador(docAdministrador.documento, nombre, apellido, email, telefono, password)
         .subscribe(response => {
           console.log('Respuesta del servidor:', response);
           console.log('Respuesta del servidor:', response.status);

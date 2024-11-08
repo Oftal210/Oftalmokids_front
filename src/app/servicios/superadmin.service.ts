@@ -12,6 +12,8 @@ export class SuperadminService {
 
   constructor(private http: HttpClient) { }
 
+
+  // METODOS PARA EL DASHBOARD ↓
   // Método para el listado de los hijos
   obtenerNumeroPacientes(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/cantidadhijo`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
@@ -26,21 +28,25 @@ export class SuperadminService {
   obtenerConsultasxMeses(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/diagnosticosxmeses`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
+  // METODOS PARA EL DASHBOARD ↑
 
+  // METODO PARA EL FORO ↓ 
   // Metodo para traer todos los registros de foros en la tabla
   obtenerRegistrosForo(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/foro`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para guardar o insertar registros de foro
-  guardarRegistroForo(usuario: any, subtitulo: any, contenido: any) {
-    return this.http.post<any>(this.apiUrl+'/foro', {usuario: usuario, subtitulo: subtitulo, contenido: contenido});
+  guardarRegistroForo(usuario: any, subtitulo: any, contenido: any, imagen: FormData) {
+    return this.http.post<any>(this.apiUrl+'/foro', imagen, {params: {usuario: usuario, subtitulo: subtitulo, contenido: contenido}});
   }
 
   // Metodo para editar un registro de foro
   editarRegistroForo(id: any, subtitulo: any, contenido: any) {
     return this.http.put<any>(`${this.apiUrl}/foro/${id}`, {subtitulo: subtitulo, contenido: contenido});
   }
+  // METODO PARA EL FORO ↑
+
 
   // Metodo para el listado de los hijos
   obtenerRegistroPaciente(): Observable<any> {

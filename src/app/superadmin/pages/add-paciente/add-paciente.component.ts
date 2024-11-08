@@ -170,7 +170,7 @@ export class AddPacienteComponent {
         edad--; // en caso de que falte se le restara
       }
       // retornamos la edad en el lugar de llamada
-      if (edad <= 17) {
+      if (edad >= 0 && edad <= 17) {
         this.edadPaciente = edad;
       }
     }

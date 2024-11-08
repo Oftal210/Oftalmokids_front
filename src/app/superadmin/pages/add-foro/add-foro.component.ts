@@ -1,12 +1,17 @@
 import { Component, Inject, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ForoComponent } from '../foro/foro.component';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidatorFn,
+} from '@angular/forms';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../../../servicios/superadmin.service';
@@ -14,10 +19,9 @@ import { SuperadminService } from '../../../servicios/superadmin.service';
 @Component({
   selector: 'app-add-foro',
   templateUrl: './add-foro.component.html',
-  styleUrl: './add-foro.component.css'
+  styleUrl: './add-foro.component.css',
 })
 export class AddForoComponent {
-
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
@@ -33,34 +37,33 @@ export class AddForoComponent {
   // variable para guardar el id del foro
   id = 0;
 
-
   // variables para la imagen
   selectedImage: string | ArrayBuffer | null = null;
-  position: string = 'center';
+  selectedFile: File | null = null; 
 
   foroForm = this.fb.group({
     titulo: ['', Validators.required],
     contenido: ['', Validators.required],
-    imagen: ['']
+    imagen: [''],
   });
 
   constructor(
     public _matDialogRef: MatDialogRef<AddForoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private superadminservice: SuperadminService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     const datosobtenidosModal = {
       titulo: data?.titulo || null,
       contenido: data?.contenido || null,
-    }
+    };
     this.foroForm.patchValue(datosobtenidosModal);
     this.editar = data?.editar || false;
     this.id = data?.id || null;
-    console.log(datosobtenidosModal, this.editar, this.id)
+    console.log(datosobtenidosModal, this.editar, this.id);
   }
 
-  // metodo para emite un señal cuando se inserto un dato 
+  // metodo para emite un señal cuando se inserto un dato
   @Output() datosInsertado = new EventEmitter<void>();
 
   // metodo para cerrar la ventana modal
@@ -68,57 +71,107 @@ export class AddForoComponent {
     this._matDialogRef.close();
   }
 
-  // funcion para tomar los datos y enviarlos al API 
+  // funcion para tomar los datos y enviarlos al API
   tomarDatos(): void {
-    if (!this.foroForm.invalid) {
-      console.log('valido, agg datos')
-      // tomamos los datos necesarios de los inputs que necesitamos
-      const titulo = this.foroForm.get('titulo')?.value;
-      const contenido = this.foroForm.get('contenido')?.value;
-      const imagen = this.foroForm.get('imagen')?.value;
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      console.log(docAdministrador.documento);
 
-      console.log('usuario: '+this.documentoAdministrador, 'titulo: '+titulo, 'contenido: '+contenido, 'img: '+imagen, 'id: '+this.id, 'editar?: '+this.editar);
+      if (!this.foroForm.invalid) {
+        console.log('valido, agg datos');
+        // tomamos los datos necesarios de los inputs que necesitamos
+        const titulo = this.foroForm.get('titulo')?.value;
+        const contenido = this.foroForm.get('contenido')?.value;
 
-      if(this.editar == false){
-        // Si es false guardara y hara lo siguiente
-        this.superadminservice.guardarRegistroForo(this.documentoAdministrador, titulo, contenido).subscribe(response => {
-          console.log('Respuesta del servidor:', response);
+        const imagenData = new FormData();
 
-          // Emite el evento después de la inserción si fue exitosa
-          this.datosInsertado.emit();
-        }, error => {
-          console.error('Error al enviar los datos:', error);
+        if(this.selectedFile) {
+          const nombreUnico = `${Date.now()}-${this.selectedFile.name}`;
+          imagenData.append('imagen', this.selectedFile, nombreUnico);
+          console.log(imagenData)
+        } else {
+          imagenData.append('imagen', '');
+        }
+        
+        imagenData.forEach((value, key) => {
+          console.log(`${key}:`, value);
         });
-        this.editar = false;
-        this.cerrar();
+
+        console.log(
+          'usuario: ' + imagenData,
+          'titulo: ' + titulo,
+          'contenido: ' + contenido,
+          'img: ' + imagenData,
+          'id: ' + this.id,
+          'editar?: ' + this.editar
+        );
+
+        if (this.editar == false) {
+          // Si es false guardara y hara lo siguiente
+          this.superadminservice
+            .guardarRegistroForo(docAdministrador.documento, titulo, contenido, imagenData)
+            .subscribe(
+              (response) => {
+                console.log('Respuesta del servidor:', response);
+                if(!response.mensaje){
+                  // Emite el evento después de la inserción si fue exitosa
+                  this.datosInsertado.emit();
+                  this.cerrar();
+                } else{
+                  console.log('fallo en el sistema');
+                };
+              },
+              (error) => {
+                console.error('Error al enviar los datos:', error);
+              }
+            );
+          this.editar = false;
+          
+        } else {
+          // Si es true editara y hara los siguiente
+          this.superadminservice
+            .editarRegistroForo(this.id, titulo, contenido)
+            .subscribe(
+              (response) => {
+                console.log('Respuesta del servidor:', response);
+
+                // Emite el evento después de la inserción si fue exitosa
+                this.datosInsertado.emit();
+              },
+              (error) => {
+                console.error('Error al enviar los datos:', error);
+              }
+            );
+          this.editar = false;
+          this.cerrar();
+        }
       } else {
-        // Si es true editara y hara los siguiente
-        this.superadminservice.editarRegistroForo(this.id, titulo, contenido).subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-    
-          // Emite el evento después de la inserción si fue exitosa
-          this.datosInsertado.emit();
-        }, error => {
-          console.error('Error al enviar los datos:', error);
-        });
-        this.editar = false;
-        this.cerrar();
-      }  
-    } else {
-      alert('Faltan campos por rellenar');
+        alert('Faltan campos por rellenar');
+      }
     }
   }
 
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result !== undefined) {
-          this.selectedImage = e.target.result as string | ArrayBuffer;
-        }
-      };
-      reader.readAsDataURL(file);
+      const fileType = file.type;
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];  // Tipos de imágenes válidas
+  
+      if (validTypes.includes(fileType)) {
+        // Crear una URL para previsualizar la imagen
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.selectedImage = e.target.result;
+        };
+        reader.readAsDataURL(file);  // Esto convierte la imagen en una cadena base64
+        this.selectedFile = file;
+        console.log(this.selectedFile);
+      } else {
+        alert('Por favor selecciona una imagen válida (JPEG, PNG)');
+        this.selectedImage = null;
+        this.selectedFile = null;
+      }
     }
   }
 
@@ -135,5 +188,4 @@ export class AddForoComponent {
   //       break;
   //   }
   // }
-  
 }
