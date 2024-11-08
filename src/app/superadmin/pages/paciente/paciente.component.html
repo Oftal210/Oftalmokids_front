@@ -1,33 +1,44 @@
 <app-header></app-header>
 
-<div class="relative flex items-center justify-center mt-24">
-    <!-- Imagen de fondo -->
-    <div class="inset-0 bg-cover bg-center bg-no-repeat w-[104rem] h-[52rem] ml-[13rem] z-0 flex justify-center"
-        style="background-image: url('../../../../assets/images/fondo_vistas.jpg');">
-        <div class="bg-white w-11/12 h-[44rem] mt-16">
+<div class="flex bg-[#f4fbff] min-h-screen justify-center items-center px-4">
+    <div class="flex flex-col items-center w-full sm:w-3/4 lg:w-2/3 px-4 mt-[-8rem] ml-56">
+        <div class="w-full">
 
-            <div class="flex flex-col sm:flex-row items-center justify-between mt-10 space-y-4 sm:space-y-0">
-                <p class="text-2xl md:text-4xl font-semibold ml-4 md:ml-24"> Listado Pacientes </p>
+            <div class="flex flex-col sm:flex-row justify-between items-center w-full p-4 mb-8">
+                <p class="text-2xl md:text-4xl font-semibold sm:ml-4 md:ml-0 text-center sm:text-left"> Listado
+                    Pacientes </p>
                 <!-- Input de buscar -->
                 <div class="relative w-full md:max-w-xs ml-auto border h-10 rounded-xl"
-                     [ngClass]="{'md:mr-14': !botonVisible, 'mr-0': botonVisible}">
-                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer" (click)="buscarRegistroHijo()">
+                    [ngClass]="{'md:mr-14': !botonVisible, 'mr-0': botonVisible}">
+                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                        (click)="buscarRegistroHijo()">
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
-                    <input type="text" class="w-11/12 h-full pl-4 pr-5 rounded-xl focus:outline-none" [(ngModel)]="inputDatoBusqueda">
+                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none"
+                        [(ngModel)]="inputDatoBusqueda">
                 </div>
+
                 <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"
-                   [ngClass]="{'invisible': !botonVisible, 'cursor-default': !botonVisible}" style="color: #00ACC9;"></i>
-                <button  class="h-10 bg-[#2EBBEE] text-white py-2 px-4 rounded-xl hover:bg-[#32aeda] focus:outline-none mr-8 md:mr-20"
-                (click)="abrirModal()">
+                    [ngClass]="{'invisible': !botonVisible, 'cursor-default': !botonVisible}"
+                    style="color: #00ACC9;">
+                </i>
+
+                <button (click)="abrirModal()"
+                    class="h-10 bg-[#2EBBEE] text-white text-lg font-semibold py-2 px-4 rounded-xl hover:bg-[#15b3ec] focus:outline-none mr-8 md:mr-0 mt-4 sm:mt-0 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-plus mr-2">
+                        <path d="M5 12h14" />
+                        <path d="M12 5v14" />
+                    </svg>
                     Crear
                 </button>
             </div>
 
             <!-- Estilo de la tabla -->
-            <div class="flex justify-center">
-                <table class="w-11/12 text-sm text-center text-gray-700 rounded-lg overflow-hidden mt-24">
-                    <thead class="text-xs uppercase bg-gray-200">
+            <div class="overflow-x-auto rounded-lg bg-white shadow-md mb-4">
+                <table class="w-full text-sm text-center text-gray-700">
+                    <thead class="text-xs uppercase bg-[#E1F3FE] text-[#396CB3]">
                         <tr>
                             <th scope="col" class="px-6 py-3">Tipo de documento</th>
                             <th scope="col" class="px-6 py-3">N° documento</th>
@@ -39,25 +50,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }" class="hover:bg-gray-50">
-                            <td class="uppercase">{{ hijo.tipo_documento }}</td> 
+                        <tr *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }"
+                            class="hover:bg-gray-50">
+                            <td class="uppercase">{{ hijo.tipo_documento }}</td>
                             <td>{{ hijo.documento }}</td>
                             <td class="capitalize">{{ hijo.nombre }}</td>
                             <td>{{ hijo.apellido }}</td>
                             <td>{{ hijo.fecha_nacimiento }}</td>
                             <td>{{ calcularEdadPaciente(hijo.fecha_nacimiento) }}</td>
                             <td class="px-12 py-4">
-                                <i class="fa-solid fa-eye fa-xl cursor-pointer" style="color: #000000;" [routerLink]="'/historia-clinica'"></i>
+                                <i class="fa-solid fa-eye fa-xl cursor-pointer" style="color: #000000;"
+                                    [routerLink]="'/historia-clinica/:id'"></i>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            <!-- Paginación -->
             <div class="flex justify-center mt-4">
-                <pagination-controls 
-                    (pageChange)="p = $event" 
-                    previousLabel="Anterior"
-                    nextLabel="Siguiente">
+                <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente">
                 </pagination-controls>
             </div>
         </div>
