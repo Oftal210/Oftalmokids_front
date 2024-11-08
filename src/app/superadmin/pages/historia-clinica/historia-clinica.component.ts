@@ -8,29 +8,19 @@ import { Router } from '@angular/router';
   styleUrl: './historia-clinica.component.css'
 })
 export class HistoriaClinicaComponent {
+  currentStep: number = 1;
 
-  // documento del paciente
-  idhijo: string | null = null;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit() {
-    this.idhijo = this.route.snapshot.paramMap.get('id');
-    // Cargar el usuario con el ID obtenido
-    console.log(this.idhijo);
+  // Función para ir al siguiente paso
+  nextStep() {
+    if (this.currentStep < 10) {
+      this.currentStep++;
+    }
   }
 
-  // Método para navegar
-  irMonitoreo() {
-    this.router.navigate(['/monitoreo', this.idhijo]); // Enviar el ID
-  }
-
-  @ViewChild('contenedorPrincipal') contenedorPrincipal!: ElementRef;
-
-  scrollToTop(): void {
-    this.contenedorPrincipal.nativeElement.scrollTo({ top: 0, behavior: 'smooth' });
+  // Función para ir al paso anterior
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
   }
 }
