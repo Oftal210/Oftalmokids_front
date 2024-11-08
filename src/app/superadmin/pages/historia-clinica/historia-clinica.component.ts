@@ -8,6 +8,21 @@ import { Router } from '@angular/router';
   styleUrl: './historia-clinica.component.css'
 })
 export class HistoriaClinicaComponent {
+  currentStep: number = 1;
+
+  // Función para ir al siguiente paso
+  nextStep() {
+    if (this.currentStep < 10) {
+      this.currentStep++;
+    }
+  }
+
+  // Función para ir al paso anterior
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
 
   // documento del paciente
   idhijo: string | null = null;

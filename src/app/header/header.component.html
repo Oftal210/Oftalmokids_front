@@ -1,10 +1,25 @@
 <!-- Este archivo contiene el encabezado -->
-<div class="w-full h-auto sm:h-[4rem] fixed border-b border-gray-200 bg-white">
-    <div class="p-2 flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
+<header class="w-full h-20 fixed top-0 left-0 z-40 flex justify-between items-center md:h-20 border-b border-gray-200 bg-white shadow-md">
+    <div class="flex items-center px-4 md:px-8">
+        <img src="../../assets/images/logo_sin_fondo.png" alt="logo" class="h-16 w-auto">
+    </div>
+
+    <div class="flex items-center space-x-6 mr-10">
         <!-- Botón y campana -->
-        <div class="flex items-center space-x-4 md:space-x-10 mt-4 md:mt-3 md:ml-auto md:mr-12">
-            <p>Nombre Usuario</p>
-            <i class="fa-regular fa-bell fa-lg cursor-pointer"></i>
+        <i class="fa-regular fa-bell fa-lg cursor-pointer "></i>
+        <div class="flex items-center space-x-2 cursor-pointer" (click)="toggleDropdown()">
+            <i class="fa-solid fa-circle-user text-2xl"></i>
+        </div>
+
+        <!-- Menú desplegable de perfil y cerrar sesión -->
+        <div *ngIf="showDropdown" class="absolute right-0 mt-40 md:mt-40 mr-4 w-48 bg-white rounded-lg shadow-lg z-50">
+            <p class="text-gray-700 px-4 py-2 border-b font-semibold text-center">nom_user</p>
+            <button [routerLink]="'/perfil'" class="flex items-center px-4 py-2 hover:bg-gray-100 w-full">
+                <i class="fa-solid fa-user text-gray-500 mr-2"></i> Perfil
+            </button>
+            <button class="flex items-center px-4 py-2 hover:bg-gray-100 w-full text-red-600">
+                <i class="fa-solid fa-right-from-bracket text-red-600 mr-2"></i> Cerrar Sesión
+            </button>
         </div>
     </div>
-</div>
+</header>

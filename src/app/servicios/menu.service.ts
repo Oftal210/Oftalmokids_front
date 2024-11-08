@@ -12,7 +12,7 @@ export class MenuService {
   /* Mapeo de roles a sus respectivas rutas */
   private roleRoutes: { [key: string]: Routes } = {
     SuperAdministrador: SuperadminRoutingModule.getRoutes(),
-    UsuarioRoutingModule: UsuarioRoutingModule.getRoutes(),
+    Padre: UsuarioRoutingModule.getRoutes(),
   };
 
   constructor() { }
@@ -24,6 +24,7 @@ export class MenuService {
       name: route.data?.['title'],
       route: `/${route.path}`,
       icon: route.data?.['icon'],
+      color: route.data?.['color'],
     }));
   }
 

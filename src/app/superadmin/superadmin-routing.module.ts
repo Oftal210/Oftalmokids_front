@@ -9,8 +9,6 @@ import { PacienteComponent } from './pages/paciente/paciente.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
-import { MonitoreoSemanalComponent } from './pages/monitoreo-semanal/monitoreo-semanal.component';
-
 
 const routes: Routes =  [
   {
@@ -18,12 +16,11 @@ const routes: Routes =  [
     children:[
       {path:'dashboard', component: DashboardComponent, data: { title: 'Dashboard', icon: 'fa-solid fa-chart-pie', showInMenu: true }},
       {path:'equipo', component: EquipoComponent, data: { title: 'Equipo', icon: 'fa-solid fa-users', showInMenu: true }},
-      {path:'historia-clinica/:id', component: HistoriaClinicaComponent, data: { title: 'Historia Clinica', icon: 'fa-solid fa-user', showInMenu: true }},
+      {path:'historia-clinica', component: HistoriaClinicaComponent},
       {path:'paciente', component: PacienteComponent, data: { title: 'Paciente', icon: 'fa-solid fa-id-card', showInMenu: true }},
       {path:'add-admin', component: AddAdminComponent},
       {path:'foro', component: ForoComponent, data: { title: 'Foro', icon: 'fa-solid fa-comments', showInMenu: true }},
       {path:'perfil', component: PerfilComponent, data: { title: 'Perfil', icon: 'fa-solid fa-user', showInMenu: true }},
-      {path:'monitoreo/:id', component: MonitoreoSemanalComponent, data: { title: 'Monitoreo', icon: 'fa-solid fa-user', showInMenu: true }},
     ]
   }
 ]
