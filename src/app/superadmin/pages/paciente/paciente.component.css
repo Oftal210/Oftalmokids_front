@@ -1,7 +1,16 @@
-.invisible {
-    display: none; /* O usa visibility: hidden; si prefieres mantener el espacio */
-  }
-  
-  .cursor-default {
-    cursor: default; /* Cambiar a cursor normal */
-  }
+.perspective {
+  perspective: 1000px;
+}
+.card-container {
+  transform-style: preserve-3d;
+  transition: transform 0.7s;
+}
+.front-face, .back-face {
+  backface-visibility: hidden;
+}
+.back-face {
+  transform: rotateY(180deg);
+}
+.group:hover .card-container {
+  transform: rotateY(180deg);
+}

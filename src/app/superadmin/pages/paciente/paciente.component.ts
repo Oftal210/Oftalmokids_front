@@ -29,7 +29,7 @@ export class PacienteComponent implements OnInit {
   p: number = 1;
 
   // variable para el numero de registros que se muetran a la vez
-  cantreg: number = 8;
+  cantreg: number = 4;
 
   // boton para verificar la visibilidad del boton
   botonVisible: boolean = false;

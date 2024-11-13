@@ -121,7 +121,7 @@ export class MonitoreoSemanalComponent implements AfterViewInit {
         this.preconsultas = data;
       } else {
         this.preconsultas = [];
-        alert('Este Paciente no tiene Preconsultas Aun.')
+        // alert('Este Paciente no tiene Preconsultas Aun.')
       }
     })
   }
