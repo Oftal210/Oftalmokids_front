@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration} from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,12 +14,14 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { MenuComponent } from './menu/menu.component';
 import { AuthInterceptor } from './interceptores/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { LucideAngularModule, LayoutDashboard, Users, UserRound, MessageCircle, ContactRound, MessageSquareText,  } from 'lucide-angular';
+ 
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SharedModule,
     AuthModule,
     SuperadminModule,
-    UsuarioModule
+    UsuarioModule,
+    ReactiveFormsModule,
+    LucideAngularModule.pick({ LayoutDashboard,Users, UserRound, MessageCircle, ContactRound, MessageSquareText })
   ],
   providers: [
     provideClientHydration(),
@@ -38,6 +42,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       useClass: AuthInterceptor,
       multi: true,},
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -29,17 +29,13 @@ export class ForoComponent {
 
   foros: any[] = [];
 
-  hijos: any[] = [];
-
   private unsubscribe$ = new Subject<void>();
 
   screenSmall = window.innerWidth < 1024;
-  isSmallScreen = window.innerWidth <= 1011;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenSmall = event.target.innerWidth < 1024;
-    this.isSmallScreen = event.target.innerWidth <= 1011;
   }
 
   constructor(private dialog: MatDialog, private superadminservice: SuperadminService, private cdRef: ChangeDetectorRef) {}
@@ -47,7 +43,6 @@ export class ForoComponent {
   ngOnInit() {
     // Ejemplo de datos que pueden venir de la base de datos
     this.cargarRegistrosforo();
-    this.cargarRegistroHijos();
   }
 
   openDialog(): void {
@@ -100,19 +95,15 @@ export class ForoComponent {
       this.superadminservice.obtenerRegistrosForo()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        this.foros = data;
+        console.log(data);
+        if (!data.mensaje) {
+          this.foros = data;
+        } else {
+          alert('no hay datos');
+        }
         resolve();
       });
     })
-  }
-
-  cargarRegistroHijos(): void {
-    this.superadminservice.obtenerRegistroPaciente()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      console.log(data);
-      this.hijos = data;
-    });
   }
 
   // funcion para scrollear hasta el ultimo registros encontrado

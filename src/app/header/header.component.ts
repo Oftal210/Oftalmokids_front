@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  showDropdown = false;
+  
+  // Permite abrir el menú del perfil y cerrar sesión
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
 }

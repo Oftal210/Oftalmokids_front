@@ -28,7 +28,7 @@
                             class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': registerForm.get('documento')?.invalid && registerForm.get('documento')?.touched}">
                         <p *ngIf="registerForm.get('documento')?.invalid && registerForm.get('documento')?.touched"
-                            class="mt-1 text-xs text-red-500">
+                            class="mt-1 text-xs block text-white w-[75%] ml-[8%]">
                             {{ registerForm.get('documento')?.errors?.['lengthError'] || 'Este campo es requerido' }}
                         </p>
                     </div>
@@ -40,7 +40,7 @@
                             class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched}">
                         <p *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
-                            class="mt-1 text-xs text-red-500">
+                            class="mt-1 text-xs text-white">
                             {{ registerForm.get('nombre')?.errors?.['hasNumbers'] || 'Este campo es requerido' }}
                         </p>
                     </div>
@@ -52,7 +52,7 @@
                             class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched}">
                         <p *ngIf="registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched"
-                            class="mt-1 text-xs text-red-500">
+                            class="mt-1 text-xs text-white">
                             {{ registerForm.get('apellido')?.errors?.['hasNumbers'] || 'Este campo es requerido' }}
                         </p>
                     </div>
@@ -64,7 +64,7 @@
                             class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
                         <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-                            class="mt-1 text-xs text-red-500">
+                            class="mt-1 text-xs text-white">
                             Por favor, ingrese un correo electrónico válido
                         </p>
                     </div>
@@ -76,7 +76,7 @@
                             class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched}">
                         <p *ngIf="registerForm.get('telefono')?.invalid && registerForm.get('telefono')?.touched"
-                            class="mt-1 text-xs text-red-500">
+                            class="mt-1 text-xs text-white">
                             {{ registerForm.get('telefono')?.errors?.['lengthError'] || 'Este campo es requerido' }}
                         </p>
                     </div>
@@ -88,7 +88,7 @@
                             class="mx-auto mt-1 block w-[85%] px-3 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': registerForm.get('contrasena')?.invalid && registerForm.get('contrasena')?.touched}">
                         <p *ngIf="registerForm.get('contrasena')?.invalid && registerForm.get('contrasena')?.touched"
-                            class="mt-1 text-xs text-red-500">
+                            class="mt-1 text-xs text-white">
                             {{ registerForm.get('contrasena')?.errors?.['passwordStrength'] || 'Este campo es requerido'}}
                         </p>
                     </div>

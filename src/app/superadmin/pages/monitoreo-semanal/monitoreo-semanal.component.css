@@ -1,3 +1,9 @@
+.ocultar-barra {
+    overflow-y: scroll; /* Permite desplazamiento vertical */
+    scrollbar-width: none; /* Firefox: oculta la barra de desplazamiento */
+    -ms-overflow-style: none; /* IE y Edge: oculta la barra */
+}
+
 /* Para cambiar el color y grosor de la barra de desplazamiento */
 ::-webkit-scrollbar {
     width: 10px; /* Ancho de la barra */

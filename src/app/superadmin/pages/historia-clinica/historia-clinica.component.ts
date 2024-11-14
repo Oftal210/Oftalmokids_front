@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -6,5 +8,19 @@ import { Component } from '@angular/core';
   styleUrl: './historia-clinica.component.css'
 })
 export class HistoriaClinicaComponent {
+  currentStep: number = 1;
 
+  // Función para ir al siguiente paso
+  nextStep() {
+    if (this.currentStep < 10) {
+      this.currentStep++;
+    }
+  }
+
+  // Función para ir al paso anterior
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
 }

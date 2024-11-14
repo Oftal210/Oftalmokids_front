@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -13,9 +13,13 @@ import { AddAdminComponent } from './pages/add-admin/add-admin.component';
 import { ForoComponent } from './pages/foro/foro.component';
 import { AddPacienteComponent } from './pages/add-paciente/add-paciente.component';
 import { AddForoComponent } from './pages/add-foro/add-foro.component';
+import { MonitoreoSemanalComponent } from './pages/monitoreo-semanal/monitoreo-semanal.component';
 
 import { SharedModule } from '../shared.module';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ModalMotivosComponent } from './pages/modal-motivos/modal-motivos.component';
+
 
 
 @NgModule({
@@ -28,14 +32,20 @@ import { FormsModule } from '@angular/forms';
     AddAdminComponent,
     ForoComponent,
     AddPacienteComponent,
-    AddForoComponent
+    AddForoComponent,
+    MonitoreoSemanalComponent,
+    ModalMotivosComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     SuperadminRoutingModule,
     SharedModule,
-    FormsModule
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule,
+
+  ],
+  
 })
 export class SuperadminModule { }

@@ -1,64 +1,120 @@
 <!-- Diseño de modal para registrar Pacientes -->
-<div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg ml-48 w-[70%] md:w-[70%] lg:w-[38%] p-6 max-h-[80vh] overflow-y-auto">
+<div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg shadow-lg w-[70%] md:w-[70%] lg:w-[38%] p-6 max-h-[80vh] overflow-y-auto">
         <h2 class="text-2xl font-bold mb-4 text-center mt-2">Registro</h2>
+        
+            <form (ngSubmit)="tomarDatosPadre()" [formGroup]="padreForm">     
+                <!-------------- Datos del padre -------------->
 
-        <form>
-            <!-------------- Datos del padre -------------->
+                <p class="text-center text-lg text-[#2EBBEE] font-semibold mt-8">Información de padre o tutor</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5 ml-12">
+                    <!-- Id -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
+                        <div class="relative w-full md:w-[95%] lg:w-10/12">
+                            <input type="text" name="documento" formControlName="documento" (input)="onInputChangeNoEspacioPadre($event)" maxlength="10"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <button type="button" (click)="buscarPadre()"
+                                class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-600">
+                                <i class="fa-solid fa-magnifying-glass bg-white"></i>
+                            </button>
+                        </div>
+                        <div *ngIf="padreForm.get('documento')?.hasError('required') && padreForm.get('documento')?.touched"
+                            class="text-red-500 font-medium text-sm">
+                            El documento es requerido.
+                        </div>
+                        <div
+                            *ngIf="padreForm.get('documento')?.hasError('pattern') && padreForm.get('documento')?.touched"
+                            class="text-red-500 font-medium text-sm">
+                            El documento solo numeros, max 10.
+                        </div>
+                    </div>
 
-            <p class="text-center text-lg text-[#2EBBEE] font-semibold mt-8">Información de padre o tutor</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5 ml-12">
-                <!-- Id -->
-                <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
-                    <input type="text" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
+                    <!-- Nombre -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
+                        <input type="text" name="nombre" formControlName="nombre" (input)="onInputChangeEspacioPadre($event)" maxlength="50"
+                            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                        <div *ngIf="padreForm.get('nombre')?.hasError('required') && padreForm.get('nombre')?.touched"
+                            class="text-red-500 font-medium text-sm">
+                            El nombre es requerido.
+                        </div>
+                        <div *ngIf="padreForm.get('nombre')?.hasError('pattern') && padreForm.get('nombre')?.touched" class="text-red-500 font-medium text-sm">
+                            El nombre debe contener solo letras, max 50.
+                        </div>    
+                    </div>
+
+                    <!-- Apellido -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
+                        <input type="text" name="apellido" formControlName="apellido" (input)="onInputChangeEspacioPadre($event)" maxlength="50"
+                            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                        <div *ngIf="padreForm.get('apellido')?.hasError('required') && padreForm.get('apellido')?.touched"
+                            class="text-red-500 font-medium text-sm">
+                            El apellido es requerido.
+                        </div>
+                        <div *ngIf="padreForm.get('apellido')?.hasError('pattern') && padreForm.get('apellido')?.touched" class="text-red-500 font-medium text-sm">
+                            El apellido debe contener solo letras, max 50.
+                        </div>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                        <input type="tel" name="telefono" formControlName="telefono" (input)="onInputChangeNoEspacioPadre($event)" maxlength="10"
+                            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                        <div *ngIf="padreForm.get('telefono')?.hasError('required') && padreForm.get('telefono')?.touched" class="text-red-500 font-medium text-sm">
+                            El telefono es requerido.
+                        </div>
+                        <div *ngIf="padreForm.get('telefono')?.hasError('pattern') && padreForm.get('telefono')?.touched" class="text-red-500 font-medium text-sm">
+                            El telefono solo numeros, max 10.
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" name="email" formControlName="email" (input)="onInputChangeNoEspacioPadre($event)"
+                            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                        <div *ngIf="padreForm.get('email')?.hasError('email') && padreForm.get('email')?.touched" class="text-red-500 font-medium text-sm">
+                            El email debe ser valido.
+                        </div>
+                        <div *ngIf="padreForm.get('email')?.hasError('required') && padreForm.get('email')?.touched" class="text-red-500 font-medium text-sm">
+                            El email es requerido.
+                        </div>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                        <input type="password" name="password" formControlName="password" (input)="onInputChangeNoEspacioPadre($event)"
+                            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                        <div *ngIf="padreForm.get('password')?.hasError('required') && padreForm.get('password')?.touched" class="text-red-500 font-medium text-sm">
+                            El contraseña es requerida.
+                        </div>
+                        <div *ngIf="padreForm.get('password')?.hasError('minlength') && padreForm.get('password')?.touched" class="text-red-500 font-medium text-sm">
+                            Minimo 4 caracteres.
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Nombre -->
-                <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
-                    <input type="text" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
+                <!-- Botones -->
+                <div class="flex justify-end mt-6">
+                    <button (click)="cerrar()" type="button" class="bg-[#E53935] hover:bg-[#e72420] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+                    <button type="submit" class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Guardar</button>
                 </div>
 
-                <!-- Apellido -->
-                <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
-                    <input type="text" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
-                </div>
-
-                <!-- Teléfono -->
-                <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">Teléfono</label>
-                    <input type="tel" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
-                </div>
-
-                <!-- Email -->
-                <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
-                </div>
-
-                <!-- Contraseña -->
-                <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                    <input type="password" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
-                </div>
-            </div>
+            </form>
 
             <div class="border border-sky-200 mt-5"></div>
             <!-------------- Datos del paciente  -------------->
+        <form (ngSubmit)="tomarDatosPaciente()" [formGroup]="pacienteForm">
 
             <div>
                 <p class="text-center text-lg text-[#2EBBEE] font-semibold mt-8">Información del paciente</p>
@@ -67,69 +123,116 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6 ml-12">
                 <!-- Tipo de documento -->
                 <div class="mb-4">
-                    <label for="" class="block text-sm font-medium text-gray-700">Tipo de documento</label>
-                    <select id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
-                        <option></option>
+                    <label for="" class="block text-sm font-medium text-gray-700">Tipo de documento</label> 
+                    <select name="tipodocumento" formControlName="tipodocumento" 
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                        <option selected hidden>Seleccione uno</option> <!-- EXCEPTO AQUI QUE SIEMPRE SE DEJA VACIO EL VALUE -->
+                        <option value="Registro Civil">Registro Civil</option>  <!-- ESTO PARA TODOS LOS OPTIONS -->
+                        <option value="T.I">T.I</option>  <!-- SI EL VALOR SE VA A CAMBIAR HACERLO EN EL VALUE Y EN EL TEXTO QUE SAlE -->
                     </select>
+                    <div *ngIf="pacienteForm.get('tipodocumento')?.hasError('required') && pacienteForm.get('tipodocumento')?.touched"
+                        class="text-red-500 font-medium text-sm">
+                        El tipo de documento es requerido.
+                    </div>
+                    <div
+                        *ngIf="pacienteForm.get('tipodocumento')?.hasError('seleccionInvalida') && pacienteForm.get('tipodocumento')?.touched"
+                        class="text-red-500 font-medium text-sm">
+                        Seleccione uno de los tipos de documento
+                    </div>
                 </div>
 
                 <!-- Id -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
-                    <input type="text" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    <div class="relative w-full md:w-[95%] lg:w-10/12">
+                        <input type="text" name="documento" formControlName="documento" (input)="onInputChangeNoEspacioPaciente($event)" maxlength="10"
+                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
+                        <button type="button" (click)="buscarPaciente()"
+                            class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-600" 
+                        >
+                            <i class="fa-solid fa-magnifying-glass bg-white"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="pacienteForm.get('documento')?.hasError('required') && pacienteForm.get('documento')?.touched"
+                        class="text-red-500 font-medium text-sm">
+                        El documento es requerido.
+                    </div>
+                    <div
+                        *ngIf="pacienteForm.get('documento')?.hasError('pattern') && pacienteForm.get('documento')?.touched"
+                        class="text-red-500 font-medium text-sm">
+                        El documento solo numeros, max 10.
+                    </div>
                 </div>
 
                 <!-- Nombre -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
-                    <input type="text" id="" name=""
+                    <input type="text" name="nombre" formControlName="nombre" (input)="onInputChangeEspacioPaciente($event)" maxlength="50"
                         class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
+                    <div *ngIf="pacienteForm.get('nombre')?.hasError('required') && pacienteForm.get('nombre')?.touched" class="text-red-500 font-medium text-sm">
+                        El nombre es requerido.
+                    </div>
+                    <div *ngIf="pacienteForm.get('nombre')?.hasError('pattern') && pacienteForm.get('nombre')?.touched" class="text-red-500 font-medium text-sm">
+                        El nombre debe contener solo letras, max 50.
+                    </div>
                 </div>
 
                 <!-- Apellido -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
-                    <input type="text" id="" name=""
+                    <input type="text" name="apellido" formControlName="apellido" (input)="onInputChangeEspacioPaciente($event)" maxlength="50"
                         class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
+                    <div *ngIf="pacienteForm.get('apellido')?.hasError('required') && pacienteForm.get('apellido')?.touched" class="text-red-500 font-medium text-sm">
+                        El apellido es requerido.
+                    </div>
+                    <div *ngIf="pacienteForm.get('apellido')?.hasError('pattern') && pacienteForm.get('apellido')?.touched" class="text-red-500 font-medium text-sm">
+                        El apellido debe contener solo letras, max 50.
+                    </div>
                 </div>
 
                 <!-- Fecha de nacimiento -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                    <input type="date" id="" name=""
+                    <input type="date" name="fechanacimiento" formControlName="fechanacimiento" (input)="EdadPaciente($event)"
                         class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
+                    <div *ngIf="pacienteForm.get('fechanacimiento')?.hasError('required') && pacienteForm.get('fechanacimiento')?.touched" class="text-red-500 font-medium text-xs">
+                        La fecha de nacimiento es requerida.
+                    </div>
+                    <div *ngIf="pacienteForm.get('fechanacimiento')?.hasError('fechaInvalida') && pacienteForm.get('fechanacimiento')?.touched" class="text-red-500 font-medium text-xs">
+                        La fecha de nacimiento debe ser igual o inferior a hoy.
+                    </div>
                 </div>
 
                 <!-- Edad -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Edad</label>
-                    <input type="text" id="" name=""
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        required>
+                    <input type="text"  name="edad" value="{{ edadPaciente }}" maxlength="2" formControlName="edad" [readonly]="isReadonly" 
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <!-- Género -->
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Género</label>
-                    <input type="text" id="" name=""
+                    <input type="text" name="genero" formControlName="genero" (input)="onInputChangeNoEspacioPaciente($event)" maxlength="10"
                         class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
+                    <div *ngIf="pacienteForm.get('genero')?.hasError('required') && pacienteForm.get('genero')?.touched" class="text-red-500 font-medium text-sm">
+                        El genero es requerido.
+                    </div>
+                    <div *ngIf="pacienteForm.get('genero')?.hasError('pattern') && pacienteForm.get('genero')?.touched" class="text-red-500 font-medium text-sm">
+                        El genero debe contener solo letras, max 10.
+                    </div>
                 </div>
             </div>
 
             <!-- Botones -->
             <div class="flex justify-end mt-6">
-                <button (click)="cerrar()" type="button"
-                    class="bg-[#80BA27] hover:bg-[#7cb02d] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
-                <button type="submit"
-                    class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Guardar</button>
+                <button (click)="cerrar()" type="button" class="bg-[#E53935] hover:bg-[#e72420] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+                <button type="submit" class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Guardar</button>
             </div>
         </form>
     </div>
