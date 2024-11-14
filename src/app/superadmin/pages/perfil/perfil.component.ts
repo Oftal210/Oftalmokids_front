@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -41,13 +43,25 @@ export class PerfilComponent {
 
   constructor(
     private fb: FormBuilder,
-    private superadminservice: SuperadminService
+    private superadminservice: SuperadminService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol != 1){
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
+
     // llamamos a la funcion para traer los datos
     this.cargarDatosPerfil();
-  }  
+  }
 
   // metodo para verificar que si la contraseña se modificara, sea de 8 minimo
   passwordValidator(): ValidatorFn {

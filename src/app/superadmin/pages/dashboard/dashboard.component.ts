@@ -3,6 +3,7 @@ import * as echarts from 'echarts';
 import { SuperadminService } from '../../../servicios/superadmin.service';
 import { Subject } from 'rxjs'; // Importar Subject
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,16 +21,32 @@ export class DashboardComponent {
   // variable para guardar  los datos de los meses
   meses: any[] = [];
 
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
   // variable para manejar el grafico
   private chart: any;
   
   // variable para manejar la carga de la conuslta
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private superadminservice: SuperadminService) {}
+  constructor(
+    private superadminservice: SuperadminService,
+    private router: Router
+  ) {}
 
   // funciones que se inician al cargar el documento 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol != 1){
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
+
     this.cargarNumeroPadres();  // llama la funcion de los padres
     this.cargarNumeroHijos();   // llama la funcion de los hijos
     this.cargarMeses();         // llama la funcion de los hijos
@@ -79,7 +96,11 @@ export class DashboardComponent {
     this.superadminservice.obtenerNumeroPacientes()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        this.hijos = data;
+        if (!data.mensaje) {
+          this.hijos = data;
+        } else {
+          alert('no hay pacientes');
+        }
       });
   }
 

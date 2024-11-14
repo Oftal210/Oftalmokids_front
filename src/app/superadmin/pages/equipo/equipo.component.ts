@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -25,6 +26,9 @@ export class EquipoComponent {
   // variable para tomar el dato del buscar
   inputDatoBusqueda!: string;
 
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
   // variable para saber la pagina actual
   p: number = 1;
 
@@ -38,10 +42,21 @@ export class EquipoComponent {
 
   constructor(
     private _matDialog: MatDialog,
-    private superadminservice: SuperadminService
+    private superadminservice: SuperadminService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol != 1){
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
+
     // llamamos a la funcion para traer los datos
     this.cargarRegistrosUsuarios();
   }
@@ -68,7 +83,6 @@ export class EquipoComponent {
     this.superadminservice.obtenerRegistroUsuario()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data);
       this.usuarios = [];
       this.usuarios = data;
     })
