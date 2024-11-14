@@ -18,6 +18,7 @@ import { MonitoreoSemanalComponent } from './pages/monitoreo-semanal/monitoreo-s
 import { SharedModule } from '../shared.module';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ModalMotivosComponent } from './pages/modal-motivos/modal-motivos.component';
 
 
 
@@ -32,7 +33,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ForoComponent,
     AddPacienteComponent,
     AddForoComponent,
-    MonitoreoSemanalComponent
+    MonitoreoSemanalComponent,
+    ModalMotivosComponent
   ],
   imports: [
     CommonModule,

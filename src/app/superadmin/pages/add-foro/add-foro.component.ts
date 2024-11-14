@@ -175,6 +175,20 @@ export class AddForoComponent {
     }
   }
 
+  // Maneja el arrastre de un archivo
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); // Evita el comportamiento por defecto
+  }
+
+  // Maneja el soltar el archivo en el área
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); // Evita el comportamiento por defecto
+    const file = event.dataTransfer?.files[0]; // Obtiene el archivo arrastrado
+    if (file) {
+      this.onFileSelected({ target: { files: [file] } }); // Llama al método para manejar la selección
+    }
+  }
+
   // moveImage(direction: string): void {
   //   switch (direction) {
   //     case 'left':

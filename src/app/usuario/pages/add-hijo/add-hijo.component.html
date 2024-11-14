@@ -13,7 +13,7 @@
                         class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         <option selected hidden>Seleccione uno</option> <!-- EXCEPTO AQUI QUE SIEMPRE SE DEJA VACIO EL VALUE -->
                         <option value="Registro Civil">Registro Civil</option>  <!-- ESTO PARA TODOS LOS OPTIONS -->
-                        <option value="T.I.">T.I.</option>  <!-- SI EL VALOR SE VA A CAMBIAR HACERLO EN EL VALUE Y EN EL TEXTO QUE SAlE -->
+                        <option value="T.I">T.I</option>  <!-- SI EL VALOR SE VA A CAMBIAR HACERLO EN EL VALUE Y EN EL TEXTO QUE SAlE -->
                     </select>
                     <div *ngIf="pacienteForm.get('tipodocumento')?.hasError('required') && pacienteForm.get('tipodocumento')?.touched"
                         class="text-red-500 font-medium text-sm">

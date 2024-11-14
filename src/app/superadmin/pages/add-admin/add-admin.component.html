@@ -1,5 +1,5 @@
 <!-- Diseño de modal para registrar SuperAdmin -->
-<div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 mt-0">
+<div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
   <div
     class="bg-white rounded-lg shadow-lg ml-48 w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv] overflow-auto md:overflow-hidden">
     <h2 class="text-2xl font-bold mb-4 text-center mt-6">Registro</h2>
@@ -9,9 +9,9 @@
 
         <!-- Id -->
         <div class="mb-4">
-          <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
+          <label for="" class="block text-sm font-medium ">N° documento</label>
           <input type="text" name="documento" formControlName="documento" maxlength="10" (input)="onInputChangeNoEspacio($event)"
-            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-[#5cc7ee] rounded-md shadow-sm focus:outline-none focus:ring-blue-500"
             required>
           <div *ngIf="administradorForm.get('documento')?.hasError('required') && administradorForm.get('documento')?.touched"
             class="text-red-500 font-medium text-sm">
@@ -26,9 +26,9 @@
 
         <!-- Nombre -->
         <div class="mb-4">
-          <label for="" class="block text-sm font-medium text-gray-700">Nombre</label>
+          <label for="" class="block text-sm font-medium ">Nombre</label>
           <input type="text" name="nombre" formControlName="nombre" maxlength="50" (input)="onInputChangeEspacio($event)"
-            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-[#5cc7ee] rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required>
           <div *ngIf="administradorForm.get('nombre')?.hasError('required') && administradorForm.get('nombre')?.touched"
             class="text-red-500 font-medium text-sm">
@@ -42,9 +42,9 @@
 
         <!-- Apellido -->
         <div class="mb-4">
-          <label for="" class="block text-sm font-medium text-gray-700">Apellido</label>
+          <label for="" class="block text-sm font-medium ">Apellido</label>
           <input type="text" name="apellido" formControlName="apellido" maxlength="50" (input)="onInputChangeEspacio($event)"
-            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-[#5cc7ee] rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required>
           <div *ngIf="administradorForm.get('apellido')?.hasError('required') && administradorForm.get('apellido')?.touched"
             class="text-red-500 font-medium text-sm">
@@ -58,9 +58,9 @@
 
         <!-- Teléfono -->
         <div class="mb-4">
-          <label for="" class="block text-sm font-medium text-gray-700">Teléfono</label>
+          <label for="" class="block text-sm font-medium ">Teléfono</label>
           <input type="text" name="telefono" formControlName="telefono" maxlength="10" (input)="onInputChangeNoEspacio($event)"
-            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-[#5cc7ee] rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required>
           <div
             *ngIf="administradorForm.get('telefono')?.hasError('required') && administradorForm.get('telefono')?.touched" class="text-red-500 font-medium text-sm">
@@ -74,9 +74,9 @@
 
         <!-- Email -->
         <div class="mb-4">
-          <label for="" class="block text-sm font-medium text-gray-700">Email</label>
+          <label for="" class="block text-sm font-medium ">Email</label>
           <input type="email" name="email" formControlName="email" (input)="onInputChangeNoEspacio($event)"
-            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-[#5cc7ee] rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required>
           <div *ngIf="administradorForm.get('email')?.hasError('email') && administradorForm.get('email')?.touched" 
             class="text-red-500 font-medium text-sm">
@@ -90,9 +90,9 @@
 
         <!-- Contraseña -->
         <div class="mb-4">
-          <label for="" class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <label for="" class="block text-sm font-medium ">Contraseña</label>
           <input type="password" name="password" formControlName="password" (input)="onInputChangeNoEspacio($event)"
-            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-[#5cc7ee] rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required>
           <div *ngIf="administradorForm.get('password')?.hasError('required') && administradorForm.get('password')?.touched" 
             class="text-red-500 font-medium text-sm">
@@ -108,9 +108,9 @@
       <!-- Botones -->
       <div class="flex justify-end mt-6">
         <button (click)="cerrar()" type="button"
-          class="bg-[#80BA27] hover:bg-[#7cb02d] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+          class="bg-[#EF7A38] hover:bg-[#ef691e] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
         <button type="submit"
-          class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Guardar</button>
+          class="bg-[#15b3ec] hover:bg-[#00a0d9] text-white font-bold py-2 px-4 rounded">Guardar</button>
       </div>
     </form>
   </div>

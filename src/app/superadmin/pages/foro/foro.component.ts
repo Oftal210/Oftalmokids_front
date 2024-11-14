@@ -32,12 +32,10 @@ export class ForoComponent {
   private unsubscribe$ = new Subject<void>();
 
   screenSmall = window.innerWidth < 1024;
-  isSmallScreen = window.innerWidth <= 1011;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenSmall = event.target.innerWidth < 1024;
-    this.isSmallScreen = event.target.innerWidth <= 1011;
   }
 
   constructor(private dialog: MatDialog, private superadminservice: SuperadminService, private cdRef: ChangeDetectorRef) {}
