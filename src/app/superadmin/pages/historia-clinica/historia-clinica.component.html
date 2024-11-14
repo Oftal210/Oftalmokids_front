@@ -1,85 +1,86 @@
 <app-header></app-header>
-
+<div class="overlay" id="overlay"></div>
 <div class="relative flex items-center justify-center bg-gray-100 min-h-screen">
     <div class="flex flex-col items-center p-4">
         <!-- Título y barra de progreso -->
         <div class="w-full mb-4 mt-6">
             <h2 class="text-3xl font-bold text-center">Historia Clínica</h2>
             <div class="flex justify-center mt-6 gap-2">
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(1)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 1, 'bg-gray-300': currentStep < 1 }"></div>
-                <div class="w-1/4 h-1 mx-2 rounded-full"
+                <div class="w-1/4 h-1 mx-2 rounded-full cursor-pointer" (click)="accederSeciones(2)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 2, 'bg-gray-300': currentStep < 2 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(3)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 3, 'bg-gray-300': currentStep < 3 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(4)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 4, 'bg-gray-300': currentStep < 4 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(5)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 5, 'bg-gray-300': currentStep < 5 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(6)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 6, 'bg-gray-300': currentStep < 6 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(7)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 7, 'bg-gray-300': currentStep < 7 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(8)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 8, 'bg-gray-300': currentStep < 8 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(9)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 9, 'bg-gray-300': currentStep < 9 }"></div>
-                <div class="w-1/4 h-1 rounded-full"
+                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(10)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 10, 'bg-gray-300': currentStep < 10 }"></div>
             </div>
         </div>
 
         <!-- Contenedor del formulario -->
         <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl mt-4">
-            <form>
+            <form [formGroup]="formularioForm" (ngSubmit)="guardarHistoriaClinica()">
                 <!-------- Formulario 1 -------->
-                <ng-container *ngIf="currentStep === 1">
+                <ng-container *ngIf="currentStep === 1" formGroupName="historiaForm">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10">
                         <div class="flex flex-col text-sm mb-1">
                             <label for="fecha" class="block font-medium mb-1">Fecha</label>
-                            <input type="date" id="fecha"
+                            <input type="date" id="fecha" formControlName="fecha"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="hora" class="block font-medium text-base mb-1">Hora</label>
-                            <input type="time" id="hora"
+                            <input type="time" id="hora" formControlName="hora"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Nombre Paciente</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="hijoNombre"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Apellido Paciente</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="hijoApellido"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Nombre del padre o tutor</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="padreNombre"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Apellido del padre o tutor</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="padreApellido"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm">
                             <label for="" class="block font-medium text-base mb-1">Dirección</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="direccion"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm">
                             <label for="" class="block font-medium text-base mb-1">Teléfono</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="telefono"
+                                [ngClass]="{'border-red-500 focus:border-[#EF4444]': isInvalid('historiaForm', 'telefono'), 'border-gray-300': !isInvalid('historiaForm', 'telefono')}"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
@@ -88,220 +89,234 @@
                     <h2 class="text-xl font-bold text-center mt-6">Anamnesis</h2>
                     <div class="flex flex-col text-sm">
                         <label for="" class="block font-medium text-base mb-1">Motivo de la consulta</label>
-                        <textarea type="text" id=""
-                            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]">
-                        </textarea>
+                        <textarea type="text" id="" formControlName="motivoConsulta"
+                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                     </div>
                 </ng-container>
 
                 <!-------- Formulario 2 Antecedentes Médico-personales -------->
-                <ng-container *ngIf="currentStep === 2">
+                <ng-container *ngIf="currentStep === 2" formGroupName="antePersoForm">
                     <h2 class="text-xl font-bold text-center">Antecedentes Médico-personales</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 mt-4">
+                    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 mt-4">
+                        
+                    </div> -->
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Edad embarazo de la madre</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="edad_embarazo_madre"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Fue de alto riesgo?</label>
-                            <select id=""
+                            <select id="" formControlName="fue_alto_riesgo"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
-                    </div>
 
-                    <div class="flex flex-col text-xs mt-4">
-                        <label for="" class="block font-medium text-base mb-1">Especifique</label>
-                        <input type="text" id=""
-                            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Semanas de gestación</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="semanas_gestacion"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Tipo de parto</label>
-                            <select id=""
+                            <select id="" formControlName="tipo_parto"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Césarea</option>
-                                <option value="2">Natural</option>
+                                <option value="Césarea">Césarea</option>
+                                <option value="Natural">Natural</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Complicaciones</label>
-                            <select id=""
+                            <select id="" formControlName="complicaciones_parto"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Especifique</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="especifique_complicaciones"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Usó incubadora?</label>
-                            <select id=""
+                            <select id="" formControlName="uso_incubadora"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Tiempo</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="tiempo_incubadora"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Apgar</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="puntaje_apgar"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Respiró y lloró al nacer?</label>
-                            <select id=""
+                            <select id="" formControlName="respiro_lloro_alnacer"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Enfermedades durante el
                                 embarazo</label>
-                            <select id=""
+                            <select id="" formControlName="emfermedad_en_embarazo"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Especifique</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="especifque_enfermedad_emb"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Medicamento durante el
                                 embarazo?</label>
-                            <select id=""
+                            <select id="" formControlName="medicamente_en_embarazo"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Especifique</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="especifique_medicamento"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
+                        </div>
+
+                        <div class="flex flex-col text-xs">
+                            <label for="" class="block font-medium text-base mb-1">¿Enfermedades sistemicas?</label>
+                            <select id="" formControlName="emfermedad_sistemica"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-col text-xs">
+                            <label for="" class="block font-medium text-base mb-1">Especifique</label>
+                            <input type="text" id="" formControlName="especifique_enfer_sistemica"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Alergias</label>
-                            <select id=""
+                            <select id="" formControlName="alergia"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Especifique</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="especifique_alergia"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Ha tenido cirugía general u
                                 ocular?</label>
-                            <select id=""
+                            <select id="" formControlName="cirugia_general_ocular"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Si</option>
-                                <option value="2">No</option>
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
                     </div>
                 </ng-container>
 
                 <!-------- Formulario 3: Antecedentes Visuales -------->
-                <ng-container *ngIf="currentStep === 3">
+                <ng-container *ngIf="currentStep === 3" formGroupName="anteVisualForm">
                     <h2 class="text-xl font-bold text-center">Antecedentes visuales</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 mt-4">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Utiliza correción óptica?</label>
-                            <input type="text" id=""
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
+                            <select id="" formControlName="correcion_optica"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
+                            </select>
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Edad a la que utilizó lentes por
                                 primera vez</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="edad_lente_primera_vez"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Cuántos cambios de RX?</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="cuantos_cambio_rx"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Motivo</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="motivo_cambio_rx"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Material y tratamiento óptico</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="material_tratamiento_optico"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Indicaciones de uso</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="indicaciones_uso"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Fecha de último examen</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="fecha_ultimo_examen"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
                     </div>
                 </ng-container>
 
                 <!-------- Formulario 4: Agudeza visual -------->
-                <ng-container *ngIf="currentStep === 4">
+                <ng-container *ngIf="currentStep === 4" formGroupName="agudezaForm">
                     <h2 class="text-xl font-bold text-center">Agudeza visual</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 mt-4">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Test</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="test"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Distancia</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="distancia"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
@@ -322,13 +337,13 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_sc_vl"/>
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_vp"/>
                                     </td>
                                     <td class="p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" />
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_ph"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -351,13 +366,13 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_sc_vl"/>
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_vp"/>
                                     </td>
                                     <td class="p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" />
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_ph"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -369,7 +384,7 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Lensometria</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="lensome_od" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -381,7 +396,7 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Lensometria</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="lensome_os" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -398,10 +413,10 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_cc_vl" />
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_vp_lenso" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -418,10 +433,10 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_cc_vl" >
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_vp_lenso">
                                     </td>
                                 </tr>
                             </tbody>
@@ -439,10 +454,10 @@
                             <!-- Fila con inputs -->
                             <tr>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="queratome_od">
                                 </td>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="queratome_os">
                                 </td>
                             </tr>
                         </tbody>
@@ -451,18 +466,18 @@
                 </ng-container>
 
                 <!-------- Formulario 5: Retinoscopía -------->
-                <ng-container *ngIf="currentStep === 5">
+                <ng-container *ngIf="currentStep === 5" formGroupName="retinoscopiaForm">
                     <h2 class="text-xl font-bold text-center">Retinoscopía</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 mt-4">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Técnica</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="retino_tecnica"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Cicloplégico</label>
-                            <input type="text" id=""
+                            <input type="text" id="" formControlName="retino_ciclople"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
@@ -477,19 +492,19 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Refracción</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_refrac_od">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Subjetivo</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_subjet_od">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Final</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_final_od">
                                     </td>
                                 </tr>
                             </tbody>
@@ -506,19 +521,19 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Refracción</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_refrac_os">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Subjetivo</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_subjet_os">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Final</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_final_os">
                                     </td>
                                 </tr>
                             </tbody>
@@ -528,7 +543,7 @@
                 </ng-container>
 
                 <!-------- Formualrio 6: Alineamiento motor -------->
-                <ng-container *ngIf="currentStep === 6">
+                <ng-container *ngIf="currentStep === 6" formGroupName="alineamientoForm">
                     <h2 class="text-xl font-bold text-center">Alineamiento motor</h2>
                     <!-- Tabla 1 -->
                     <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
@@ -540,10 +555,10 @@
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="hirschberg">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="bruckner">
                                 </td>
                             </tr>
                         </tbody>
@@ -559,10 +574,10 @@
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="covet_test_vl">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="covet_test_vp">
                                 </td>
                             </tr>
                         </tbody>
@@ -578,10 +593,10 @@
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="esta_acomo_flex">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="esta_acomo_aa">
                                 </td>
                             </tr>
                         </tbody>
@@ -589,19 +604,18 @@
                 </ng-container>
 
                 <!-------- Formulario 7: Versiones -------->
-                <ng-container *ngIf="currentStep === 7">
+                <ng-container *ngIf="currentStep === 7" formGroupName="versionesForm">
                     <h2 class="text-xl font-bold text-center">Versiones</h2>
                     <img src="../../../../assets/images/versiones.png" class="mt-4" alt="versiones">
                     <div class="flex flex-col text-xs mt-8">
                         <label for="" class="block font-medium text-base mb-1">Observaciones</label>
-                        <textarea type="text" id=""
-                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]">
-                        </textarea>
+                        <textarea type="text" id="" formControlName="observacion_versiones"
+                            class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                     </div>
                 </ng-container>
 
                 <!-------- Formulario 8: Ducciones, Motilidad ocular, exploracion de segmento anterior -------->
-                <ng-container *ngIf="currentStep === 8">
+                <ng-container *ngIf="currentStep === 8" formGroupName="duccMotaliExploForm">
                     <h2 class="text-xl font-bold text-center">Ducciones</h2>
                     <!-- Tabla 1 -->
                     <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
@@ -614,28 +628,28 @@
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">NORMAL</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_normal_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_normal_os">
                                 </td>
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">PARECÍA</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_parecia_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_parecia_os">
                                 </td>
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">PARÁLISIS</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_paralisis_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_paralisis_os">
                                 </td>
                             </tr>
                         </tbody>
@@ -654,25 +668,25 @@
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">SEGUIMIENTO</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_seguimiento_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_seguimiento_os">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_seguimiento_ao">
                                 </td>
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">SACÁDICOS</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_sacadicos_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_sacadicos_os">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_sacadicos_ao">
                                 </td>
                             </tr>
                         </tbody>
@@ -688,10 +702,10 @@
                             </tr>
                             <tr>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="explo_exter_od">
                                 </td>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="explo_exter_os">
                                 </td>
                             </tr>
                         </tbody>
@@ -699,7 +713,7 @@
                 </ng-container>
 
                 <!-------- Formulario 9: Oftalmoscopía -------->
-                <ng-container *ngIf="currentStep === 9">
+                <ng-container *ngIf="currentStep === 9" formGroupName="oftalmoscipiaForma">
                     <h2 class="text-xl font-bold text-center">Oftalmoscopía</h2>
                     <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
                         <tbody>
@@ -722,83 +736,83 @@
                             </tr>
                             <tr>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="medi_refrin_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Medios refringentes</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="medi_refrin_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="refle_fovea_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Reflejo fóvea</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="refle_fovea_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="papila_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Papila</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="papila_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="excav_fisio_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Excavación fisiológica</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="excav_fisio_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="profundidad_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Profundidad</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="profundidad_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="vasos_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Vasos</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="vasos_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="rela_arte_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Relación arteria-vena</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="rela_arte_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="macula_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Mácula</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="macula_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="reti_perif_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Retina periférica</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="reti_perif_os">
                                 </td>
                             </tr>
                         </tbody>
@@ -806,33 +820,66 @@
                 </ng-container>
 
                 <!-------- Formulario 10: Diagnostico, pronóstico, tratamiento, controles -------->
-                <ng-container *ngIf="currentStep === 10">
+                <ng-container *ngIf="currentStep === 10" formGroupName="diagnostico">
+
+                    <div *ngIf="accionModulo" class="flex flex-col text-sm mb-4">
+                        <div *ngIf="rolUsuarioActual == 1" class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 max-w-4xl mx-auto">
+                            <div class="flex flex-col text-xs">
+                                <label for="" class="block font-medium text-base mb-1">Seleccione uno para visualizarlo</label>
+                                <select name="" #selectDiagnosticos
+                                    class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
+                                    (change)="cambioDatoSelectFecha($event)">
+                                    <option disabled selected value="">Seleccione uno</option>
+                                    <option *ngFor="let diag of diagnosticoHechos" [value]="diag.id"> {{diag.fecha | uppercase}}</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-center flex-col text-xs">
+                                <button *ngIf="currentStep === 10 && accionModulo && rolUsuarioActual == 1" type="button" (click)="limpiarCajasDiagnostico()"
+                                    class="flex items-center justify-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec] text-base">
+                                    Agregar <br> Diagnostico
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="rolUsuarioActual == 2" class="flex flex-col text-xs">
+                            <label for="" class="block font-medium text-base mb-1">Seleccione uno para visualizarlo</label>
+                            <select name="" #selectDiagnosticos
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
+                                (change)="cambioDatoSelectFecha($event)">
+                                <option disabled selected value="">Seleccione uno</option>
+                                <option *ngFor="let diag of diagnosticoHechos" [value]="diag.id"> {{diag.fecha | uppercase}}</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 max-w-4xl mx-auto">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Diagnóstico</label>
-                            <select id=""
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="1">Traer de la base de datos</option>
+                            <select id="" formControlName="diagnostico"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]">
+                                <option *ngFor="let diag of diagnosticos" [value]="diag.id"> {{diag.codigo | uppercase}} {{diag.descripcion}}</option>
                             </select>
                         </div>
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Pronóstico</label>
-                            <textarea type="text" id=""
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]">
-                            </textarea>
+                            <textarea type="text" id="" formControlName="pronostico_diagnostico"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                         </div>
                         <div class="flex flex-col text-xs mt-4">
                             <label for="" class="block font-medium text-base mb-1">Tratamiento</label>
-                            <textarea type="text" id=""
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]">
-                            </textarea>
+                            <textarea type="text" id="" formControlName="tratamiento_diagnostico"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                         </div>
                         <div class="flex flex-col text-xs mt-4">
                             <label for="" class="block font-medium text-base mb-1">Controles</label>
-                            <textarea type="text" id=""
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]">
-                            </textarea>
+                            <textarea type="text" id="" formControlName="control_diagnostico"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                         </div>
+                    </div>
+
+                    <div *ngIf="ocultarMotivoConsulta" class="flex flex-col text-sm mt-4">
+                        <label for="" class="block font-medium text-base mb-1">Motivo de la consulta</label>
+                        <textarea type="text" id="" #motivoConsulta
+                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                     </div>
                 </ng-container>
 
@@ -863,9 +910,14 @@
                     </button>
 
                     <!-- Botón Guardar -->
-                    <button *ngIf="currentStep === 10" type="button"
+                    <button *ngIf="currentStep === 10 && !accionModulo" type="submit"
                         class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
                         Guardar
+                    </button>
+
+                    <button *ngIf="currentStep === 10 && accionModulo && rolUsuarioActual == 1" (click)="agregarDiagnosticoNuevo()" type="button"
+                        class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
+                        Guardar <br> Diagnostico
                     </button>
                 </div>
 

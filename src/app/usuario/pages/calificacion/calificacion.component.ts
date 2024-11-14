@@ -1,4 +1,8 @@
 import { Component, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
+// Servicio para comunicarse con el API
 import { PadreService } from '../../../servicios/padre.service';
 
 declare var Gauge: any;
@@ -17,10 +21,13 @@ interface Tema {
 })
 export class CalificacionComponent implements AfterViewInit {
 
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
   isModalOpen: boolean = false;
   currentIndex: number = -1;
   motivo: string = '';
-  documentoHijo = 1; // Tomamos el id del hijo 
+  documentoHijo!: string ; // Tomamos el id del hijo 
   yesAnswers: number = 0;
   totalQuestions: number = 6;
   gauge: any;
@@ -34,7 +41,13 @@ export class CalificacionComponent implements AfterViewInit {
     { texto: '¿Ya tienes que solicitar cita control?', calificado: false, respuesta: '', motivo: '' }
   ];
 
-  constructor(private renderer: Renderer2, private el: ElementRef, private padreService: PadreService) {}
+  constructor(
+    private renderer: Renderer2, 
+    private el: ElementRef, 
+    private padreService: PadreService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngAfterViewInit(): void {
     const script = this.renderer.createElement('script');
@@ -48,12 +61,12 @@ export class CalificacionComponent implements AfterViewInit {
   initializeGauge(): void {
     const opts = {
       angle: 0.0,
-      lineWidth: 0.2,
+      lineWidth: 0.3,
       radiusScale: 1.0,
-      pointer: {
-        length: 0.6,
-        strokeWidth: 0.04,
-        color: '#000000'
+      pointer: { 
+        length: 0.5,
+        strokeWidth: 0.05,
+        color: '#ffa580'
       },
       limitMax: false,
       limitMin: false,
@@ -74,6 +87,25 @@ export class CalificacionComponent implements AfterViewInit {
     this.gauge.setMinValue(0);
     this.gauge.animationSpeed = 32;
     this.gauge.set(0);
+  }
+
+  ngOnInit() {
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+
+      // convertimos la variable a tipo JSON
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+
+      // verificamos quien puede entrar al modulo
+      if(docAdministrador.id_rol != 2){
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
+
+    // tomamos de la URL el documento del hijo
+    this.documentoHijo = this.route.snapshot.paramMap.get('id') || '';
   }
 
   calificarTema(index: number, respuesta: 'like' | 'dislike'): void {
@@ -151,7 +183,11 @@ export class CalificacionComponent implements AfterViewInit {
       punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr
     ).subscribe(response => {
       console.log('Respuesta del servidor:', response);
-      alert('los datos se insertaron correctamente');
+      if (response.status != 200 ){
+        alert('error al guardar la preconsulta');
+      } else {
+        alert('los datos se insertaron correctamente');
+      }
     }, error => {
       console.error('Error al enviar los datos:', error);
     });

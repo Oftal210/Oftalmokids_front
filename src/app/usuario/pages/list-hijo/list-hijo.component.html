@@ -36,6 +36,7 @@
                             <th scope="col" class="px-6 py-3">Fecha de nacimiento</th>
                             <th scope="col" class="px-6 py-3">Edad</th>
                             <th scope="col" class="px-6 py-3">Ver</th>
+                            <th scope="col" class="px-6 py-3">Calificar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +48,10 @@
                             <td>{{ hijo.fecha_nacimiento }}</td>
                             <td>{{ calcularEdadPaciente(hijo.fecha_nacimiento) }}</td>
                             <td class="px-12 py-4">
-                                <i class="fa-solid fa-eye fa-xl cursor-pointer" style="color: #000000;" [routerLink]="['/historia-clinica', hijo.documento]"></i>
+                                <i class="fa-solid fa-eye fa-xl cursor-pointer" style="color: #000000;" [routerLink]="['/historia-clinica', hijo.documento, 'add']"></i>
+                            </td>
+                            <td class="px-12 py-4">
+                                <i class="fa-solid fa-list-check cursor-pointer" style="color: #000000;" [routerLink]="['/calificacion', hijo.documento]"></i>
                             </td>
                         </tr>
                     </tbody>

@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { jwtDecode } from "jwt-decode";
+import { Router } from '@angular/router';
 
 import { User } from '../Modelos/user.model';
 import { AuthService } from '../servicios/auth.service';
 import { MenuService } from '../servicios/menu.service';
+import { decode } from 'punycode';
 
 @Component({
   selector: 'app-menu',
@@ -21,9 +24,14 @@ export class MenuComponent {
   isAuthenticated: boolean = true;
   logueado = false;
 
+  // variable para tomar el token de usuario
+  tokenAdministrador = sessionStorage.getItem('token'); 
+
   constructor(
     private authservices: AuthService,
-    private menuService: MenuService) { }
+    private menuService: MenuService,
+    private router: Router
+  ) {}
 
   /* Inicializa el componente y valida el token de usuario */
   ngOnInit() {
@@ -44,6 +52,12 @@ export class MenuComponent {
       console.warn('currentRolName es null o vacío.');
       this.menuItems = []; // Manejar el caso
     }
+
+    // funcion para validar cada 60 segundos 
+    this.checkTokenExpiration(); 
+    setInterval(() => { 
+      this.checkTokenExpiration();
+    }, 60000); // tiempo en milisegunos 1000 ml = 1 s
   }
 
   /* Determina el rol del usuario basado en su id_rol */
@@ -69,8 +83,26 @@ export class MenuComponent {
         console.log(this.currentRolName);
         this.currentRolId = this.user?.id_rol?.toString() || '';
       }
+    } else {
+      this.router.navigate(['/login']);
+      sessionStorage.removeItem('token'); 
     }
   }
 
-
+  checkTokenExpiration() { 
+    if (this.tokenAdministrador && this.isTokenExpired(this.tokenAdministrador)) { 
+      console.log('El token ha expirado'); 
+      sessionStorage.removeItem('token'); 
+      window.location.href = '/login'; // Redirige al login 
+    } else { 
+      console.log('El token sigue siendo válido'); 
+    } 
+  } 
+    
+  isTokenExpired(token: string): boolean {
+    const decoded = jwtDecode<any>(token);
+    console.log(decoded)
+    const currentTime = Date.now() / 1000;  // tiempo en segundos 
+    return decoded.exp < currentTime;       // exp es el tiempo de expiración del token 
+  }
 }
