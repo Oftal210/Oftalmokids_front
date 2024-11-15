@@ -1,4 +1,5 @@
 import { Component, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Metodos y funciones con ventanas modales
 import { MatDialog } from '@angular/material/dialog';
@@ -27,24 +28,58 @@ export class ForoComponent {
   // variable para tomar el id del contenedor principal con scroll
   @ViewChild('contenedorPrincipal') contenedorPrincipal!: ElementRef;
 
+  // variable para guardar los registros de los foros
   foros: any[] = [];
+
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
+  // variable para tomar el rol de usuario
+  rolUsuarioActual!: number;
 
   private unsubscribe$ = new Subject<void>();
 
+  // responsive de la imagen de la derecha 
   screenSmall = window.innerWidth < 1024;
 
+  // responsive de la imagen de la derecha
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenSmall = event.target.innerWidth < 1024;
   }
 
-  constructor(private dialog: MatDialog, private superadminservice: SuperadminService, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private dialog: MatDialog, 
+    private superadminservice: SuperadminService, 
+    private cdRef: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+
+      // convertimos la variable a tipo JSON
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+
+      // tomamos el id_rol y lo guardamos aparte
+      this.rolUsuarioActual = docAdministrador.id_rol; 
+
+      // verificamos quien puede entrar al modulo
+      if(docAdministrador.id_rol != 1 && docAdministrador.id_rol != 2){
+        //this.router.navigate(['/login']);
+        console.log('saca del sistema normal');
+      }
+    } else {
+      console.log('saca del sistema, no hay json');
+      //this.router.navigate(['/login']);
+    }
+
     // Ejemplo de datos que pueden venir de la base de datos
     this.cargarRegistrosforo();
   }
 
+  // abriamos la ventana modal
   openDialog(): void {
     // Variable para abrir la ventana modal
     const dialogRef = this.dialog.open(AddForoComponent);
@@ -64,24 +99,6 @@ export class ForoComponent {
     })
   }
 
-  editarForoModal(foro: any): void {
-    // Variable para abrir la ventana modal y enviarle los datos del 
-    const dialogRef = this.dialog.open(AddForoComponent, {
-      data: {
-        titulo: foro.subtitulo_foro,
-        contenido: foro.contenido_foro,
-        id: foro.id,
-        editar: true
-      }
-    });
-
-    dialogRef.componentInstance.datosInsertado.subscribe(() =>{
-
-      // llamamos a la funcion que trae los registros de foro
-      this.cargarRegistrosforo();
-    })
-  }
-
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -95,7 +112,6 @@ export class ForoComponent {
       this.superadminservice.obtenerRegistrosForo()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        console.log(data);
         if (!data.mensaje) {
           this.foros = data;
         } else {
@@ -104,6 +120,44 @@ export class ForoComponent {
         resolve();
       });
     })
+  }
+
+
+  // funcion para editar el foro
+  editarForoModal(foro: any): void {
+    // Variable para abrir la ventana modal y enviarle los datos del 
+    const dialogRef = this.dialog.open(AddForoComponent, {
+      data: {
+        titulo: foro.subtitulo_foro,
+        contenido: foro.contenido_foro,
+        id: foro.id,
+        editar: true
+      }
+    });
+
+    // al insertar correctamente, se avisa por este medio para realizar una actualizacion de los datos
+    dialogRef.componentInstance.datosInsertado.subscribe(() =>{
+
+      // llamamos a la funcion que trae los registros de foro
+      this.cargarRegistrosforo();
+    })
+  }
+
+  // funcion para eliminar un foro
+  eliminarRegistroForo (id: any) {
+    console.log(id);
+    this.superadminservice.eliminiarRegistroForo(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        console.log(data)
+        if(data.status == 200){
+          this.cargarRegistrosforo();
+          alert('Se elimino con exito');
+        } else {
+          this.cargarRegistrosforo();
+          alert('No se pudo eliminar');
+        }
+      });
   }
 
   // funcion para scrollear hasta el ultimo registros encontrado

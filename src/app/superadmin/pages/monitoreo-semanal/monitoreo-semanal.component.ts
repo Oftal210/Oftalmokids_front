@@ -1,5 +1,6 @@
 import { Component, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -23,7 +24,10 @@ export class MonitoreoSemanalComponent implements AfterViewInit {
   promedioPrecon: number = 0;
 
   visibilidad: boolean[] = [];
-
+  
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  
   // documento del paciente
   idhijo: string | null = null;
 
@@ -36,9 +40,20 @@ export class MonitoreoSemanalComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private el: ElementRef,
     private renderer: Renderer2,
+    private router: Router
   ) {}
 
   ngAfterViewInit(): void {
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol != 1){
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
+
     this.idhijo = this.route.snapshot.paramMap.get('id');
     // Cargar el usuario con el ID obtenido
     console.log(this.idhijo);

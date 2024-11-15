@@ -14,7 +14,7 @@ const routes: Routes =  [
     children:[
       {path:'foro-padre', component: InicioComponent, data: { title: 'Foro', icon: 'MessageSquareText', color: 'text-[#ff834d]', showInMenu: true } },
       {path:'hijo', component: ListHijoComponent, data: { title: 'Hijo', icon: 'ContactRound', color: 'text-[#2EBBEE]', showInMenu: true } },
-      {path:'calificacion', component: CalificacionComponent},
+      {path:'calificacion/:id', component: CalificacionComponent},
       {path:'perfil-padre', component: PerfilPadreComponent},
     ]
   }

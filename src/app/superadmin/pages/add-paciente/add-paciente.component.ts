@@ -41,9 +41,9 @@ export class AddPacienteComponent {
     documento: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
     nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
     apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-    telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]] ,
+    telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]]
+    password: ['', [Validators.required, Validators.minLength(4)]]
   });
 
  

@@ -19,6 +19,7 @@ const routes: Routes =  [
       {path:'dashboard', component: DashboardComponent, data: { title: 'Dashboard', icon: 'LayoutDashboard', color: 'text-blue-700', showInMenu: true }},
       {path:'equipo', component: EquipoComponent, data: { title: 'Equipo', icon: 'Users', color: 'text-[#ff834d]', showInMenu: true }},
       {path:'historia-clinica/:id', component: HistoriaClinicaComponent, data: { title: 'Historia Clinica', showInMenu: false }},
+      {path:'historia-clinica/:id/:flag', component: HistoriaClinicaComponent, data: { title: 'Historia Clinica', showInMenu: false }},
       {path:'paciente', component: PacienteComponent, data: { title: 'Paciente', icon: 'UserRound', color: 'text-[#2EBBEE]', showInMenu: true }},
       {path:'add-admin', component: AddAdminComponent},
       {path:'foro', component: ForoComponent, data: { title: 'Foro', icon: 'MessageCircle', color: 'text-[#FCBD1B]', showInMenu: true }},

@@ -3,7 +3,26 @@ import * as echarts from 'echarts';
 import { SuperadminService } from '../../../servicios/superadmin.service';
 import { Subject } from 'rxjs'; // Importar Subject
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
+
+interface ConsultData {
+  period: string;
+  consultations: number;
+  newPatients: number;
+}
+
+interface Appointment {
+  name: string;
+  type: string;
+  time: string;
+  date: string;
+}
+
+interface Condition {
+  name: string;
+  patients: number;
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -11,102 +30,39 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class DashboardComponent {
 
-  // variable para guardar los hijos de la consulta
-  hijos = 0;
+  consultData: ConsultData[] = [
+    { period: 'Ene-Feb', consultations: 15, newPatients: 5 },
+    { period: 'Mar-Abr', consultations: 20, newPatients: 8 },
+    { period: 'May-Jun', consultations: 25, newPatients: 10 },
+    { period: 'Jul-Ago', consultations: 30, newPatients: 12 },
+    { period: 'Sep-Oct', consultations: 28, newPatients: 7 },
+    { period: 'Nov-Dic', consultations: 35, newPatients: 15 }
+  ];
 
-  // variable para guardar los padres de la consulta
-  padres = 0;
+  appointments: Appointment[] = [
+    { name: 'Ana Garcia', type: 'Control mensual', time: '15:30', date: 'Nov 8, 2024' },
+    { name: 'Ana Garcia', type: 'Control mensual', time: '15:30', date: 'Nov 8, 2024' },
+    { name: 'Ana Garcia', type: 'Control mensual', time: '15:30', date: 'Nov 8, 2024' }
+  ];
 
-  // variable para guardar  los datos de los meses
-  meses: any[] = [];
+  conditions: Condition[] = [
+    { name: 'Miopia', patients: 8 },
+    { name: 'Astigmatismo', patients: 6 },
+    { name: 'Hipermetropia', patients: 4 }
+  ];
 
-  // variable para manejar el grafico
-  private chart: any;
-  
-  // variable para manejar la carga de la conuslta
-  private unsubscribe$ = new Subject<void>();
+  stats = {
+    parentsRegistered: { value: 24, increase: '20%' },
+    childrenRegistered: { value: 18, increase: '15%' },
+    consultationsThisMonth: { value: 45, increase: '25%' },
+    upcomingAppointments: { value: 12, period: 'Próximos 7 días' }
+  };
 
-  constructor(private superadminservice: SuperadminService) {}
-
-  // funciones que se inician al cargar el documento 
-  ngOnInit(): void { 
-    this.cargarNumeroPadres();  // llama la funcion de los padres
-    this.cargarNumeroHijos();   // llama la funcion de los hijos
-    this.cargarMeses();         // llama la funcion de los hijos
-  }
-
-  // funcion para cargar y hacer el grafico
-  initChart(): void {
+  constructor(
     
-    const chartDom = document.getElementById('main')!;
-    //const myChart = echarts.init(chartDom);
-    this.chart = echarts.init(chartDom);
+  ) {}
 
-    // Asumiendo que `this.meses` ya tiene los datos
-    const meses = this.meses;
+  
+      
 
-    // Extraemos las claves (meses) y los valores
-    const labels = Object.keys(meses);  // ["enero_febrero", "marzo_abril", ...]
-    const dataValues = Object.values(meses);  // [1, 1, 1, 1, 1, 1]
-
-    const option = {
-      xAxis: {
-        type: 'category',
-        data: labels,
-      },
-      yAxis: {
-        type: 'value'
-      },
-      series: [
-        {
-          data: dataValues,
-          type: 'bar'
-        }
-      ]
-    };
-
-    //option && myChart.setOption(option);
-    this.chart.setOption(option);
-  }
-
-  // funcion para finalizar la consulta y evitar que la pagina se quede cargando
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-  // Funcion para buscar cuantos registros hay que hijos
-  cargarNumeroHijos(): void {
-    this.superadminservice.obtenerNumeroPacientes()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.hijos = data;
-      });
-  }
-
-  // Funcion para buscar el numero de padres y mostrarlo
-  cargarNumeroPadres(): void {
-    this.superadminservice.obtenerPadres()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe( data => {
-        this.padres = data;
-    })
-  }
-
-  // Funcion para buscar el numero de padres y mostrarlo
-  cargarMeses(): void {
-    this.superadminservice.obtenerConsultasxMeses()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe( data => {
-        this.meses = data;
-        this.initChart();
-    })
-  }
-
-  // funcion que escucha cada que se modifica el tamaño de la pantalla, resposive
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any): void {
-    if (this.chart) {
-      this.chart.resize(); // Ajustar el gráfico cuando se redimensiona la ventana
-    }
-  }
 }

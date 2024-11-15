@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -22,6 +23,9 @@ export class PacienteComponent implements OnInit {
   // variable para guardar los registros de los hijos
   hijos: any[] = [];
 
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
   // variable para tomar el dato del buscar
   inputDatoBusqueda!: string;
 
@@ -38,10 +42,21 @@ export class PacienteComponent implements OnInit {
   
   constructor(
     private _matDialog: MatDialog,
-    private superadminservice: SuperadminService
+    private superadminservice: SuperadminService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol != 1){
+        this.router.navigate(['/login']);
+      }
+    } else {
+      this.router.navigate(['/login']);
+    }
+
     // llamamos a la funcion para traer los datos
     this.cargarRegistroHijos();
   }
