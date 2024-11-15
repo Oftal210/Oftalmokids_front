@@ -40,7 +40,7 @@
                 <div class="group perspective w-full h-80"
                     *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }">
                     <div
-                        class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container lg:w-[72%]">
+                        class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
                         <!-- Cara frontal -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center backface-hidden p-5 front-face bg-no-repeat"
                             style="background-image: url('../../../../assets/images/pacientes/fondo_niño.png');">
@@ -55,7 +55,8 @@
                             style="background-image: url('../../../../assets/images/pacientes/fondo_atras.png');">
                             <p class="text-lg font-semibold">Edad: {{calcularEdadPaciente(hijo.fecha_nacimiento)}}</p>
                             <!-- Icono de la historica clínica -->
-                            <button [routerLink]="'/historia-clinica/:id'" class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                            <button [routerLink]="'/historia-clinica/:id'"
+                                class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Historia clínica:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -70,7 +71,8 @@
                                 </svg>
                             </button>
                             <!-- Icono para ver el seguimiento semanal -->
-                            <button [routerLink]="'/monitoreo/:id'" class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                            <button [routerLink]="'/monitoreo/:id'"
+                                class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Seguimiento:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

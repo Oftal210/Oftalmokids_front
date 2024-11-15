@@ -39,7 +39,7 @@
                 <div class="group perspective w-full h-80"
                     *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }">
                     <div
-                        class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container lg:w-[72%]">
+                        class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
                         <!-- Cara frontal -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center backface-hidden p-5 front-face bg-no-repeat"
                             style="background-image: url('../../../../assets/images/pacientes/fondo_niño.png');">
@@ -68,6 +68,7 @@
                                     <path d="M8 16h.01" />
                                 </svg>
                             </button>
+
                             <!-- Icono para ver el seguimiento semanal -->
                             <button [routerLink]="'/calificacion'" class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Seguimiento:
@@ -79,6 +80,20 @@
                                     <path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
                                     <path d="M3 10h18" />
                                     <path d="m16 20 2 2 4-4" />
+                                </svg>
+                            </button>
+
+                            <!-- Icono para editar la información del hijo -->
+                            <button (click)="abrirModal()"
+                                class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                                Editar:
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-user-round-pen">
+                                    <path d="M2 21a8 8 0 0 1 10.821-7.487" />
+                                    <path
+                                        d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" />
+                                    <circle cx="10" cy="8" r="5" />
                                 </svg>
                             </button>
                         </div>
