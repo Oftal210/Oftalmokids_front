@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // Servicio para comunicarse con el API
 import { PadreService } from '../../../servicios/padre.service';
+import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
   selector: 'app-perfil-padre',
@@ -26,6 +27,7 @@ export class PerfilPadreComponent {
   // variable para tomar el documento de usuario
   documentoPadre = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
+  user:any;
   private unsubscribe$ = new Subject<void>();
   
   // metodo para validar el formulario
@@ -40,12 +42,15 @@ export class PerfilPadreComponent {
 
   constructor(
     private fb: FormBuilder,
-    private padreService: PadreService
+    private padreService: PadreService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.user =this.authService.getUser();
+    
     // llamamos a la funcion para traer los datos
-    this.cargarDatosPerfil();
+    
   }  
 
   // metodo para verificar que si la contraseña se modificara, sea de 8 minimo
@@ -85,78 +90,41 @@ export class PerfilPadreComponent {
     this.unsubscribe$.complete();
   }
 
-  // meotdo para buscar los datos del usuario
-  cargarDatosPerfil() {
-
-    if (this.documentoPadre) {
-      var docAdministrador = JSON.parse(this.documentoPadre);
-    } else {
-      alert('no se encontro un id valido');
-      return;
-    }
-
-    this.padreService.buscarPadre(docAdministrador.documento)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        const datosobtenidos = {
-          documento: data.usuario.documento,
-          nombre: data.usuario.nombre,
-          apellido: data.usuario.apellido,
-          telefono: data.usuario.telefono,
-          email: data.usuario.email,
-        }
-        this.perfilForm.patchValue(datosobtenidos);
-        this.nombrePerfil = data.usuario.nombre;
-        this.apellidoPerfil = data.usuario.apellido;
-      })
-
-    // le damos tiempo a que cargue las cajas con los datos
-    setTimeout(() => {
-      // Marcar los campos como tocados para que se muestren los mensajes de error
-      Object.keys(this.perfilForm.controls).forEach(key => {
-        this.perfilForm.get(key)?.markAsTouched();
-      });
-      // realizamos una validacion a los datos en las cajas 
-      this.perfilForm.updateValueAndValidity();
-    }, 500);
-    
-  }
-
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
-  tomarDatos(): void {
+  // tomarDatos(): void {
 
-    if (this.documentoPadre) {
-      var docAdministrador = JSON.parse(this.documentoPadre);
-    }
+  //   if (this.documentoPadre) {
+  //     var docAdministrador = JSON.parse(this.documentoPadre);
+  //   }
 
-    if (!this.perfilForm.invalid) {
-      console.log('agregen datos')
-      // tomamos los datos necesarios de los inputs que necesitamos
-      const nombre    = this.perfilForm.get('nombre')?.value;
-      const apellido  = this.perfilForm.get('apellido')?.value;
-      const email     = this.perfilForm.get('email')?.value;
-      const telefono  = this.perfilForm.get('telefono')?.value;
-      const password  = this.perfilForm.get('password')?.value;
+  //   if (!this.perfilForm.invalid) {
+  //     console.log('agregen datos')
+  //     // tomamos los datos necesarios de los inputs que necesitamos
+  //     const nombre    = this.perfilForm.get('nombre')?.value;
+  //     const apellido  = this.perfilForm.get('apellido')?.value;
+  //     const email     = this.perfilForm.get('email')?.value;
+  //     const telefono  = this.perfilForm.get('telefono')?.value;
+  //     const password  = this.perfilForm.get('password')?.value;
 
-      this.padreService.modficarPadre(docAdministrador.documento, nombre, apellido, email, telefono, password)
-        .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
-          if (response.status != 400) {
-            // Emite el evento después de la inserción si fue exitosa
-            alert('datos actualizados')
-            setTimeout(() => {
-              this.cargarDatosPerfil();
-            }, 1000);
-          }
-        }, error => {
-          console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');
-          window.location.reload();
-      });
+  //     this.padreService.modficarPadre(docAdministrador.documento, nombre, apellido, email, telefono, password)
+  //       .subscribe(response => {
+  //         console.log('Respuesta del servidor:', response);
+  //         console.log('Respuesta del servidor:', response.status);
+  //         if (response.status != 400) {
+  //           // Emite el evento después de la inserción si fue exitosa
+  //           alert('datos actualizados')
+  //           setTimeout(() => {
+  //             this.cargarDatosPerfil();
+  //           }, 1000);
+  //         }
+  //       }, error => {
+  //         console.error('Error al enviar los datos:', error);
+  //         alert('Error en el sistema vuelva a intentarlo');
+  //         window.location.reload();
+  //     });
   
-    } else {
-      console.log('faltan datos')
-    }
-  }
+  //   } else {
+  //     console.log('faltan datos')
+  //   }
+  // }
 }
