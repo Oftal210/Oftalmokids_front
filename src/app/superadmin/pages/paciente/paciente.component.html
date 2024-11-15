@@ -37,7 +37,7 @@
             <!-- Contenedor de Tarjetas -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <!-- Tarjeta de Paciente -->
-                <div class="group perspective w-full h-80"
+                <div class="group perspective min-w-[200px] max-w-[240px] w-full h-80"
                     *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }">
                     <div
                         class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
@@ -54,29 +54,26 @@
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center justify-center backface-hidden p-5 back-face rotate-y-180"
                             style="background-image: url('../../../../assets/images/pacientes/fondo_atras.png');">
                             <p class="text-lg font-semibold">Edad: {{calcularEdadPaciente(hijo.fecha_nacimiento)}}</p>
-                            <!-- Icono de la historica clínica -->
                             <button [routerLink]="'/historia-clinica/:id'"
                                 class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Historia clínica:
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-clipboard-list">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-clipboard-list">
                                     <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-                                    <path
-                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
                                     <path d="M12 11h4" />
                                     <path d="M12 16h4" />
                                     <path d="M8 11h.01" />
                                     <path d="M8 16h.01" />
                                 </svg>
                             </button>
-                            <!-- Icono para ver el seguimiento semanal -->
                             <button [routerLink]="'/monitoreo/:id'"
                                 class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Seguimiento:
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-calendar-check-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-calendar-check-2">
                                     <path d="M8 2v4" />
                                     <path d="M16 2v4" />
                                     <path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
@@ -88,6 +85,7 @@
                     </div>
                 </div>
             </div>
+            
 
             <!-- Paginación -->
             <div class="flex justify-center mt-16">

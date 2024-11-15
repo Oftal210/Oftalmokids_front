@@ -36,7 +36,7 @@
             <!-- Contenedor de Tarjetas -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <!-- Tarjeta de Paciente -->
-                <div class="group perspective w-full h-80"
+                <div class="group perspective min-w-[200px] max-w-[240px] w-full h-80"
                     *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }">
                     <div
                         class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
