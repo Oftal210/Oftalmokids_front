@@ -59,8 +59,9 @@ export class DashboardComponent implements OnDestroy {
     upcomingAppointments: { value: 12, period: 'Próximos 7 días' }
   };
 
-  padres: number = 0;
+  padres:number = 0;
   hijos: number = 0;
+  consultasMes:number = 0;
 
   private padresSubscription!: Subscription;
   constructor(
@@ -68,6 +69,11 @@ export class DashboardComponent implements OnDestroy {
 
   ) { }
 
+  ngOnInit(){
+    this.obtenerPadresRegistrados(),
+    this.obtenerHijosRegistrados(),
+    this.obtenerDiagnosticosporMes()
+  }
 
   ngOnDestroy() {
     if (this.padresSubscription) {
@@ -78,18 +84,30 @@ export class DashboardComponent implements OnDestroy {
 
   obtenerPadresRegistrados() {
     this.padresSubscription = this.superadminService.obtenerPadres()
-      .subscribe(data => {
-        this.padres = data;
+      .subscribe((data) => {
+        this.padres = data.count;
       },
-        err => {
-          console.log(err);
+       ( err) => {
+          console.log('Error en la respuesta del servidor:',err);
         });
   }
 
   obtenerHijosRegistrados() {
-    this.padresSubscription = this.superadminService.obtenerRegistroPaciente().subscribe(
+    this.padresSubscription = this.superadminService.obtenerNumeroPacientes().subscribe(
       data => {
         this.hijos = data;
+      },
+      error=>{
+        console.log(error);
+      }
+    )
+  }
+
+  obtenerDiagnosticosporMes(){
+    this.padresSubscription = this.superadminService.obtenerConsultasxMeses().subscribe(
+      data=>{
+        this.consultasMes = data.conteoDiagnosticos;
+        console.log(this.consultasMes);
       },
       error=>{
         console.log(error);
