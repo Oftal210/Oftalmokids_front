@@ -10,40 +10,52 @@ import { takeUntil } from 'rxjs/operators';
 import { SuperadminService } from '../../../servicios/superadmin.service';
 import { NoopAnimationPlayer } from '@angular/animations';
 
-declare var Gauge: any;
 
 @Component({
   selector: 'app-monitoreo-semanal',
   templateUrl: './monitoreo-semanal.component.html',
   styleUrl: './monitoreo-semanal.component.css'
 })
-export class MonitoreoSemanalComponent implements AfterViewInit {
+export class MonitoreoSemanalComponent {
 
   // variable para guardar los registros de los usuarios
   preconsultas: any[] = [];
-  promedioPrecon: number = 0;
+  preconsultasFiltradas: any[] = [];
 
-  visibilidad: boolean[] = [];
-  
+  // variable para guardar datos del hijo
+  hijo = {
+    nombre:    'N/A',
+    apellido:  'N/A',
+    documento: 'N/A',
+  }
+
+  preguntasConsulta = {
+    lentes:       '¿Esta usando las gafas o lentes permanentes?',
+    medicamento:  '¿Esta usando los medicamentos?',
+    pantalla:     '¿Esta limitando el uso de pantallas?',
+    aireLibre:    '¿Esta realizando actividad al aire libre?',
+    alimentacion: '¿Esta llevando buena alimentación?',
+    citaControl:  '¿Ya tienes que solicitar cita control?',
+  }
+
+  // variable para guardar la fecha de la ultima consulta
+  ultimaConsulta: string = 'N/A';
+
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
   
-  // documento del paciente
-  idhijo: string | null = null;
-
-  gauge: any;
+  // documento del paciente tomado de la URL
+  documentohijo: string | null = null;
 
   private unsubscribe$ = new Subject<void>();
 
   constructor(
     private superadminservice: SuperadminService,
     private route: ActivatedRoute,
-    private el: ElementRef,
-    private renderer: Renderer2,
     private router: Router
   ) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     // verificamos el rol para sacarlo al login
     if (this.documentoAdministrador) {
       var docAdministrador = JSON.parse(this.documentoAdministrador);
@@ -54,70 +66,13 @@ export class MonitoreoSemanalComponent implements AfterViewInit {
       this.router.navigate(['/login']);
     }
 
-    this.idhijo = this.route.snapshot.paramMap.get('id');
-    // Cargar el usuario con el ID obtenido
-    console.log(this.idhijo);
+    // tomamos un documento de la URL para usarlo despues
+    this.documentohijo = this.route.snapshot.paramMap.get('id');
+    
     // llamamos a la funcion para traer los datos
+    this.cargarRegistroPaciente();
     this.cargarRegistrosPreconsulta();
     this.cargarPromedioPreconsulta();
-    const script = this.renderer.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/gaugeJS/dist/gauge.min.js';
-    script.onload = () => {
-      this.initializeGauge();
-    };
-    this.renderer.appendChild(document.body, script);
-    this.visibilidad = Array(this.preconsultas.length).fill(false);
-  }
-
-  // Método para alternar la visibilidad de un índice específico
-  toggleVisibility(index: number): void {
-    this.visibilidad[index] = !this.visibilidad[index];
-  }
-
-  // Método que verifica si un índice específico es visible
-  isVisible(index: number): boolean {
-    return !!this.visibilidad[index];
-  }
-
-  initializeGauge(): void {
-    const opts = {
-      angle: 0.0,
-      lineWidth: 0.2,
-      radiusScale: 1.0,
-      pointer: {
-        length: 0.6,
-        strokeWidth: 0.04,
-        color: '#000000'
-      },
-      limitMax: false,
-      limitMin: false,
-      colorStart: '#6FADCF',
-      colorStop: '#8FC0DA',
-      strokeColor: '#E0E0E0',
-      generateGradient: true,
-      highDpiSupport: true,
-      staticZones: [
-        { strokeStyle: "#F03E3E", min: 0, max: 2 },
-        { strokeStyle: "#FFDD00", min: 2, max: 4 },
-        { strokeStyle: "#30B32D", min: 4, max: 6 }
-      ]
-    };
-    const target = this.el.nativeElement.querySelector('#gaugeChart') as HTMLCanvasElement;
-    this.gauge = new Gauge(target).setOptions(opts);
-    this.gauge.maxValue = 6; // Valor máximo ajustado a 6
-    this.gauge.setMinValue(0); // Valor mínimo ajustado a 0
-    this.gauge.animationSpeed = 32;
-
-    console.log(this.promedioPrecon)
-
-    if (this.promedioPrecon != null) {
-      console.log('tiene algo');
-      this.gauge.set(this.promedioPrecon);
-    } else {
-      console.log('vacio o nulo');
-    }
-
-    //this.gauge.set( this.promedioPrecon ); // Inicializa el medidor en 0
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
@@ -126,47 +81,55 @@ export class MonitoreoSemanalComponent implements AfterViewInit {
     this.unsubscribe$.complete();
   }
 
-  // funcion para traer los registros de preconsultas de este mes
-  cargarRegistrosPreconsulta(): void {
-    this.superadminservice.buscarPreconsultasHijo(this.idhijo)
+  // funcion para traer los datos del hijo
+  cargarRegistroPaciente(): void {
+    this.superadminservice.buscarPaciente(this.documentohijo)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data);
-      if (!data.status){
-        this.preconsultas = data;
+      if(data.hijo){
+        this.hijo = {
+          nombre:     data.hijo.nombre,
+          apellido:   data.hijo.apellido,
+          documento:  data.hijo.documento
+        }
       } else {
-        this.preconsultas = [];
-        // alert('Este Paciente no tiene Preconsultas Aun.')
+        alert(data.mensaje);
       }
     })
   }
 
-  // funcion para procesar si la preconsulta tiene mensaje adicional
-  procesarResultadoPrecon(boleano: number, texto: string): string {
-    // declaramos la variable
-    let mensaje = '';
+  // funcion para traer los registros de preconsultas de este mes
+  cargarRegistrosPreconsulta(): void {
+    this.superadminservice.buscarPreconsultasHijo(this.documentohijo)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      if (data.status != 200){
+        // rellenamos la variable con los datos traidos
+        this.preconsultas = data;
 
-    // validamos si es 1 o 0
-    if (boleano == 1) {
-      mensaje = 'Si';     
-    } else {
-      mensaje = 'No'  // si es 0 hacemos
-      if (texto != null){             // verificamos si no es null
-        mensaje += ', ' + texto;      // añadimos una ',' y el texto  
+        // buscamos la fecha mas reciente de la ultima preconsulta
+        const objetoMasReciente = this.preconsultas.reduce((a, b) => new Date(a.fecha_preconsulta) > new Date(b.fecha_preconsulta) ? a : b);
+        // tomamos el dato y lo agregamos para mostrarlo
+        this.ultimaConsulta = objetoMasReciente.fecha_preconsulta.split(' ')[0];
+      } else {
+        // mensaje con el fallo que se encontro
+        alert(data.mensaje);
+        // vaciamos la variable de preconsulta
+        this.preconsultas = [];
       }
-    }
-    
-    return mensaje;
+    })
   }
 
   // funcion para traer el promedio del puntaje de las preconsultas de este mes
   cargarPromedioPreconsulta(): void {
-    this.superadminservice.buscarPromedioPreconsultasHijo(this.idhijo)
+    this.superadminservice.buscarPromedioPreconsultasHijo(this.documentohijo)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
+      if (data.status != 200){
+        console.log('hay un')
+      }
       console.log(data);
-      this.promedioPrecon = data;
-      this.initializeGauge();
+      //this.promedioPrecon = data;
     })
   }
   

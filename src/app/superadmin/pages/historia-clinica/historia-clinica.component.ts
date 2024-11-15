@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
   styleUrl: './historia-clinica.component.css'
 })
 export class HistoriaClinicaComponent {
-  currentStep: number = 10;
+  currentStep: number = 1;
 
   formularioForm: FormGroup;
 
@@ -87,7 +87,7 @@ export class HistoriaClinicaComponent {
         hijoApellido: [''],
         padreNombre: [''],
         padreApellido: [''],
-        direccion: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        direccion: [''],
         telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         motivoConsulta: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
       }),
@@ -383,7 +383,8 @@ export class HistoriaClinicaComponent {
           console.log(this.idHijo);
           const datosParaHijo = {
             hijoNombre: data.hijo.nombre,
-            hijoApellido: data.hijo.apellido
+            hijoApellido: data.hijo.apellido,
+            direccion: data.hijo.direccion
           };
           this.formularioForm.get('historiaForm')?.patchValue(datosParaHijo);
           resolve(); // Resolución de la promesa después de completar la tarea
@@ -1145,7 +1146,6 @@ export class HistoriaClinicaComponent {
           this.formularioForm.get('historiaForm')?.patchValue({
             fecha: data.fecha,
             hora: data.hora,
-            direccion: data.direccion
           });
           this.formularioForm.get('antePersoForm')?.patchValue({
             edad_embarazo_madre:            data.edad_embarazo,

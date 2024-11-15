@@ -910,7 +910,7 @@
                     </button>
 
                     <!-- Botón Guardar -->
-                    <button *ngIf="currentStep === 10 && !accionModulo" type="submit"
+                    <button *ngIf="currentStep === 10 && !accionModulo && rolUsuarioActual == 1" type="submit"
                         class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
                         Guardar
                     </button>
