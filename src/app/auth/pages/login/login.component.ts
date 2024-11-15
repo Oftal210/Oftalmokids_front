@@ -85,6 +85,8 @@ login(): void {
     this.loginService.login(documento, contrasena).subscribe(
         (rs: any) => {
             this.reply = rs;
+            const { id, nombre, apellido, email, telefono, documento } = rs.user.user;
+            const simplifiedUser = { id, nombre, apellido, email, telefono, documento };
             console.log('API response:', rs);
             if (this.reply) {
                 // this.reply.user.id_rol = Number(this.reply.user.id_rol);
@@ -92,6 +94,7 @@ login(): void {
                 sessionStorage.setItem('token', rs.token);
                 sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
                 sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
+                sessionStorage.setItem('currentUser', JSON.stringify(simplifiedUser))
                 this.token = this.reply.access_token;
                 if (this.reply.user) {
                     sessionStorage.setItem('documento', this.reply.user.documento);

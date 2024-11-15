@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../servicios/superadmin.service';
+import { AuthService } from '../servicios/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +12,17 @@ import { SuperadminService } from '../servicios/superadmin.service';
 })
 export class HeaderComponent {
   showDropdown = false;
+  user:any
 
   constructor(
     private router: Router,
-    private superadminservice: SuperadminService
+    private superadminservice: SuperadminService,
+    private authService:AuthService
   ) {}
+
+  ngOnInit(){
+    this.user = this.authService.getUser();
+  }
   
   // Permite abrir el menú del perfil y cerrar sesión
   toggleDropdown() {
