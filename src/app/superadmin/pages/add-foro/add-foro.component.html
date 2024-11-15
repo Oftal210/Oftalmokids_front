@@ -1,6 +1,6 @@
 <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
 
-	<div class="bg-white rounded-lg ml-48 w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv] overflow-auto md:overflow-hidden"
+	<div class="bg-white rounded-lg w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv] overflow-y-auto"
 		(keydown.enter)="tomarDatos()">
 
 		<h2 class="text-2xl font-bold text-[#396CB3]">Crear Nuevo Tema</h2>
@@ -40,21 +40,20 @@
 					(click)="$event.stopPropagation()">
 					<p class="text-gray-500">Haga clic para subir o arrastre y suelte la imagen</p>
 					<input type="file" accept="image/*" #fileInput (change)="onFileSelected($event)" class="hidden" />
-				</div>
-
-				<!-- Mostrar la imagen seleccionada -->
-				<div *ngIf="selectedImage" class="mt-4 flex flex-col items-center">
-					<img [src]="selectedImage" alt="Imagen seleccionada"
-						class="p-2 w-1/2">
+					<!-- Mostrar la imagen seleccionada -->
+					<div *ngIf="selectedImage" class="mt-4 flex flex-col items-center">
+						<img [src]="selectedImage" alt="Imagen seleccionada"
+							class="p-2 w-1/2">
+					</div>
 				</div>
 			</div>
 
 			<div class="mt-6 flex justify-end">
 				<button (click)="cerrar()" type="button"
-					class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2">Cancelar
+					class="bg-[#EF7A38] hover:bg-[#ef691e] text-white font-bold py-2 px-4 rounded mr-2">Cancelar
 				</button>
 				<button type="submit"
-					class="bg-[#2EBBEE] text-white px-4 py-2 rounded-md font-bold hover:bg-[#15b3ec]">Confirmar</button>
+					class="bg-[#15b3ec] text-white px-4 py-2 rounded-md font-bold hover:bg-[#00a0d9]">Confirmar</button>
 			</div>
 		</form>
 	</div>

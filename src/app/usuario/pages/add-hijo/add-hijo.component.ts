@@ -37,6 +37,10 @@ export class AddHijoComponent {
 
   // variable para guardar el valor para el atributo readonly
   isReadonly = true;
+
+  // variables para la imagen
+  selectedImage: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null; 
  
   // metodo para validar el formulario de paciente
   pacienteForm = this.fb.group({
@@ -305,6 +309,45 @@ export class AddHijoComponent {
       }
     } else {
       console.log('El formulario es válido');
+    }
+  }
+
+  // Se utiliza para subir la imagen
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    
+    if (file) {
+      const fileType = file.type;
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];  // Tipos de imágenes válidas
+  
+      if (validTypes.includes(fileType)) {
+        // Crear una URL para previsualizar la imagen
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.selectedImage = e.target.result;
+        };
+        reader.readAsDataURL(file);  // Esto convierte la imagen en una cadena base64
+        this.selectedFile = file;
+        console.log(this.selectedFile);
+      } else {
+        alert('Por favor selecciona una imagen válida (JPEG, PNG)');
+        this.selectedImage = null;
+        this.selectedFile = null;
+      }
+    }
+  }
+
+  // Maneja el arrastre de un archivo
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); // Evita el comportamiento por defecto
+  }
+
+  // Maneja el soltar el archivo en el área
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); // Evita el comportamiento por defecto
+    const file = event.dataTransfer?.files[0]; // Obtiene el archivo arrastrado
+    if (file) {
+      this.onFileSelected({ target: { files: [file] } }); // Llama al método para manejar la selección
     }
   }
 
