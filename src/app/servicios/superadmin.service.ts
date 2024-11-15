@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ReceiptRussianRubleIcon } from 'lucide-angular';
 import { Observable } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { environment } from '../../environment/env';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 export class SuperadminService {
 
   // ruta del api
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

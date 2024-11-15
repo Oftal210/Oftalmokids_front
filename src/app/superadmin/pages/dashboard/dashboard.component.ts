@@ -1,9 +1,10 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import * as echarts from 'echarts';
 import { SuperadminService } from '../../../servicios/superadmin.service';
-import { Subject } from 'rxjs'; // Importar Subject
+import { Subject, Subscription } from 'rxjs'; // Importar Subject
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { error } from 'console';
 
 
 interface ConsultData {
@@ -28,7 +29,7 @@ interface Condition {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
 
   consultData: ConsultData[] = [
     { period: 'Ene-Feb', consultations: 15, newPatients: 5 },
@@ -58,11 +59,44 @@ export class DashboardComponent {
     upcomingAppointments: { value: 12, period: 'Próximos 7 días' }
   };
 
-  constructor(
-    
-  ) {}
+  padres: number = 0;
+  hijos: number = 0;
 
-  
-      
+  private padresSubscription!: Subscription;
+  constructor(
+    private superadminService: SuperadminService,
+
+  ) { }
+
+
+  ngOnDestroy() {
+    if (this.padresSubscription) {
+      this.padresSubscription.unsubscribe();
+    }
+  }
+
+
+  obtenerPadresRegistrados() {
+    this.padresSubscription = this.superadminService.obtenerPadres()
+      .subscribe(data => {
+        this.padres = data;
+      },
+        err => {
+          console.log(err);
+        });
+  }
+
+  obtenerHijosRegistrados() {
+    this.padresSubscription = this.superadminService.obtenerRegistroPaciente().subscribe(
+      data => {
+        this.hijos = data;
+      },
+      error=>{
+        console.log(error);
+      }
+    )
+  }
+
+
 
 }
