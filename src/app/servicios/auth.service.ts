@@ -40,7 +40,12 @@ export class AuthService {
 
   // Método para obtener el token almacenado en localStorage
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
+  }
+
+  getUser(){
+    const identityJSON = sessionStorage.getItem('currentUser');
+    return identityJSON ? JSON.parse(identityJSON) : null;
   }
 
 }
