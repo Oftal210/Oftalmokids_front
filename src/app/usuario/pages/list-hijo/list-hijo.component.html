@@ -43,7 +43,8 @@
                         <!-- Cara frontal -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center backface-hidden p-5 front-face bg-no-repeat"
                             style="background-image: url('../../../../assets/images/pacientes/fondo_niño.png');">
-                            <img src="../../../../assets/images/pollito.png" alt="" class="w-24 h-24 rounded-full mt-6">
+                            <img [src]="hijo.foto && hijo.foto !== '' ? 'http://127.0.0.1:8000/storage/' + hijo.foto : '../../../../assets/images/pollito.png'"
+                                alt="Foto de {{ hijo.nombre }}" class="w-24 h-24 rounded-full mt-6">
                             <p class="text-lg font-bold mt-6 text-center">{{ hijo.nombre }}</p>
                             <p class="text-lg font-bold mt-[-8px] text-center">{{ hijo.apellido }}</p>
                             <p class="text-gray-600 mt-4">{{ hijo.tipo_documento }}: {{ hijo.documento }}</p>
@@ -54,7 +55,7 @@
                             style="background-image: url('../../../../assets/images/pacientes/fondo_atras.png');">
                             <p class="text-lg font-semibold">Edad: {{calcularEdadPaciente(hijo.fecha_nacimiento)}}</p>
                             <!-- Icono de la historica clínica -->
-                            <button [routerLink]="'/historia-clinica/:id'" class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                            <button [routerLink]="['/historia-clinica/', hijo.documento]" class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Historia clínica:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -70,7 +71,7 @@
                             </button>
 
                             <!-- Icono para ver el seguimiento semanal -->
-                            <button [routerLink]="'/calificacion'" class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                            <button [routerLink]="['/calificacion', hijo.documento]" class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Seguimiento:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -84,7 +85,7 @@
                             </button>
 
                             <!-- Icono para editar la información del hijo -->
-                            <button (click)="abrirModal()"
+                            <button (click)="editarHijoModal(hijo)"
                                 class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Editar:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

@@ -123,5 +123,30 @@ export class ListHijoComponent {
     this.cargarRegistroHijos();
   }
 
+  // funcion para editar el foro
+  editarHijoModal(hijo: any): void {
+    console.log(hijo)
+    // Variable para abrir la ventana modal y enviarle los datos del 
+    const dialogRef = this._matDialog.open(AddHijoComponent, {
+      data: {
+        id: hijo.id,
+        tipodocumento: hijo.tipo_documento,
+        documento: hijo.documento,
+        nombre: hijo.nombre,
+        apellido: hijo.apellido,
+        fechanacimiento: hijo.fecha_nacimiento,
+        edad: hijo.edad, 
+        genero: hijo.genero,
+        direccion: hijo.direccion,
+        editar: true,
+      }
+    });
+
+    // al insertar correctamente, se avisa por este medio para realizar una actualizacion de los datos
+    // dialogRef.componentInstance.datosInsertado.subscribe(() =>{
+
+    // })
+  }
+
 
 }

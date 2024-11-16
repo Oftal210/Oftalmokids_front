@@ -1,14 +1,20 @@
 import { Component, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+// componente de la modal
+import { ModalMotivosComponent } from '../modal-motivos/modal-motivos.component';
+
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../../../servicios/superadmin.service';
 import { NoopAnimationPlayer } from '@angular/animations';
+import { DateAdapter } from '@angular/material/core';
+import { MousePointerBanIcon } from 'lucide-angular';
 
 
 @Component({
@@ -22,13 +28,13 @@ export class MonitoreoSemanalComponent {
   preconsultas: any[] = [];
   preconsultasFiltradas: any[] = [];
 
-  // variable para guardar datos del hijo
+  // variable para guardar datos del hijo y de las consultas
   hijo = {
     nombre:    'N/A',
     apellido:  'N/A',
     documento: 'N/A',
+    foto:      '../../../../assets/images/pollito.png',
   }
-
   preguntasConsulta = {
     lentes:       '¿Esta usando las gafas o lentes permanentes?',
     medicamento:  '¿Esta usando los medicamentos?',
@@ -41,6 +47,9 @@ export class MonitoreoSemanalComponent {
   // variable para guardar la fecha de la ultima consulta
   ultimaConsulta: string = 'N/A';
 
+  // variable para guardar el dato para el porcentaje de la barra
+  barraProgreso: number = 0;
+
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
   
@@ -50,6 +59,7 @@ export class MonitoreoSemanalComponent {
   private unsubscribe$ = new Subject<void>();
 
   constructor(
+    private _matDialog: MatDialog,
     private superadminservice: SuperadminService,
     private route: ActivatedRoute,
     private router: Router
@@ -86,12 +96,17 @@ export class MonitoreoSemanalComponent {
     this.superadminservice.buscarPaciente(this.documentohijo)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
+      console.log(data)
       if(data.hijo){
         this.hijo = {
           nombre:     data.hijo.nombre,
           apellido:   data.hijo.apellido,
-          documento:  data.hijo.documento
+          documento:  data.hijo.documento,
+          foto: data.hijo.foto && data.hijo.foto !== '' 
+          ? 'http://127.0.0.1:8000/storage/' + data.hijo.foto 
+          : this.hijo.foto
         }
+        console.log(this.hijo.foto);
       } else {
         alert(data.mensaje);
       }
@@ -100,22 +115,35 @@ export class MonitoreoSemanalComponent {
 
   // funcion para traer los registros de preconsultas de este mes
   cargarRegistrosPreconsulta(): void {
-    this.superadminservice.buscarPreconsultasHijo(this.documentohijo)
+    this.superadminservice.buscarPreconsultaReciente(this.documentohijo)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if (data.status != 200){
-        // rellenamos la variable con los datos traidos
-        this.preconsultas = data;
-
-        // buscamos la fecha mas reciente de la ultima preconsulta
-        const objetoMasReciente = this.preconsultas.reduce((a, b) => new Date(a.fecha_preconsulta) > new Date(b.fecha_preconsulta) ? a : b);
-        // tomamos el dato y lo agregamos para mostrarlo
-        this.ultimaConsulta = objetoMasReciente.fecha_preconsulta.split(' ')[0];
-      } else {
         // mensaje con el fallo que se encontro
         alert(data.mensaje);
         // vaciamos la variable de preconsulta
         this.preconsultas = [];
+      } else {
+
+        // tomamos el registro mas reciente que nos retorna
+        this.preconsultas = [data.consultas];
+
+        // tomamos el dato y lo agregamos para mostrarlo
+        this.ultimaConsulta = data.consultas.fecha_preconsulta.split(' ')[0];
+      }
+    })
+  }
+
+  cargarRegistrosFechas(fechaInicio: any, fechaFin: any): void {
+    this.superadminservice.buscarPreconsultasHijoFechas(this.documentohijo, fechaInicio, fechaFin)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      console.log(data)
+      if (data.status != 200){
+        alert(data.mensaje);
+        this.cargarRegistrosPreconsulta();
+      } else {
+        this.preconsultas = data.consultas;
       }
     })
   }
@@ -126,12 +154,31 @@ export class MonitoreoSemanalComponent {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if (data.status != 200){
-        console.log('hay un')
+        alert(data.mensaje)
+      } else {
+        this.barraProgreso = data.promedio*100/6;
       }
-      console.log(data);
-      //this.promedioPrecon = data;
     })
   }
-  
+
+  // funcion para enviarle datos a la modal
+  abrirModal (motivo: string, filtro: boolean) {
+    const dialogRef = this._matDialog.open(ModalMotivosComponent, {
+      enterAnimationDuration: '0ms',
+      exitAnimationDuration: '0ms',
+      data: {
+        motivo,
+        filtro
+      }
+    });
+
+    dialogRef.afterClosed().subscribe( result => {
+      if (result.fechaInicio != '' || result.fechaFin != ''){
+        this.cargarRegistrosFechas(result.fechaInicio, result.fechaFin);
+      } else {
+        alert('no selecciono fechas para filtrar');
+      }
+    });
+  }
 
 }

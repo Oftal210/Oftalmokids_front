@@ -1,10 +1,36 @@
 <div  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ml-48">
     <div class="bg-white p-5 rounded-lg shadow-lg w-96">
-        <h2 class="text-xl font-bold mb-4">Razón de la respuesta</h2>
-        <textarea rows="4" class="w-full p-2 border rounded"></textarea>
-        <div class="flex justify-end space-x-2 mt-4">
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
-        </div>
+        <h2 class="text-xl font-bold mb-4"> {{ tituloModal }} </h2>
+
+        <ng-container *ngIf="!activarCalendario">
+            <textarea rows="4" class="w-full p-2 border rounded">{{ motivoTexto }}</textarea>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cerrarModal()">Cancelar</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="activarCalendario">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+                <div class="mb-4">
+                    <label for="" class="block text-sm font-medium text-gray-700">Fecha inicio</label>
+                    <input type="date" [(ngModel)]="fechaU"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="" class="block text-sm font-medium text-gray-700">Fecha Fin</label>
+                    <input type="date" [(ngModel)]="fechaD"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div> 
+            </div>
+            <div class="flex justify-center space-x-2 mt-4">
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cerrarModal()">Cancelar</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="enviarFechasFiltro()">Filtrar</button>
+            </div>
+            
+        </ng-container>
+
     </div>
 </div>
+
