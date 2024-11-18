@@ -111,18 +111,22 @@ export class PacienteComponent implements OnInit {
   }
 
   // funcion para buscar el hijo en e input de busqueda 
-  buscarRegistroHijo(): void {
-    
-    this.superadminservice.buscarPaciente(this.inputDatoBusqueda)
-    .pipe(takeUntil(this.unsubscribe$))
+  buscarRegistroHijo(event: any): void {
+
+    this.inputDatoBusqueda = this.inputDatoBusqueda.replace(/[^0-9]/g, '');
+
+    this.superadminservice.buscarPacienteParecido(this.inputDatoBusqueda)
     .subscribe(data => {
+      console.log(data);
       if(data.status != 404){
-        this.hijos = [data.hijo];
+        this.hijos = data.hijo;
         this.p = 1;
         this.botonVisible = true;
       } else {
-        alert('No existe el paciente buscado');
-        this.cargarRegistroHijos();
+        console.log('wtf')
+        //alert('No existe el paciente buscado');
+        //this.cargarRegistroHijos();
+        this.hijos = [];
         this.botonVisible = false;
       }
     })

@@ -67,6 +67,12 @@ export class SuperadminService {
     return this.http.get<any>(`${this.apiUrl}/hijo/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
+
+  // Metodo para buscar el pacientes segun documento parecido
+  buscarPacienteParecido(hijo: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/pacientescoincidan/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
   // Metodo para buscar el padre del paciente solicitado 
   buscarPadre(padre: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/usuario/${padre}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API

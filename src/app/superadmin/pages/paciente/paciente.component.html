@@ -10,12 +10,11 @@
                 <!-- Input de buscar -->
                 <div class="relative w-full md:max-w-xs ml-auto border h-10 rounded-xl"
                     [ngClass]="{'md:mr-14': !botonVisible, 'mr-0': botonVisible}">
-                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        (click)="buscarRegistroHijo()">
+                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
-                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none"
-                        [(ngModel)]="inputDatoBusqueda">
+                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none" pattern="^[0-9]*$"
+                        [(ngModel)]="inputDatoBusqueda" (input)="buscarRegistroHijo($event)"/>
                 </div>
 
                 <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"

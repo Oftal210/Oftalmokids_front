@@ -44,7 +44,8 @@ export class AddHijoComponent {
 
   // variables para la imagen
   selectedImage: string | ArrayBuffer | null = null;
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;
+  imagenBase64: string = '';
  
   // metodo para validar el formulario de paciente
   pacienteForm = this.fb.group({
@@ -275,8 +276,27 @@ export class AddHijoComponent {
 
       if(this.editarHijo){
 
+        // FotoHijo.append("nombre", this.pacienteForm.get('nombre')?.value || '');
+        // FotoHijo.append('apellido', this.pacienteForm.get('apellido')?.value || '');
+        // FotoHijo.append('tipo_documento', this.pacienteForm.get('tipodocumento')?.value || '');
+        // FotoHijo.append('direccion', String(this.pacienteForm.get('direccion')?.value));
+
+        // FotoHijo.forEach((value, key) => {
+        //   console.log(`${key}:`, value);
+        // });
+
+        const datos = {
+          nombre: this.pacienteForm.get('nombre')?.value,
+          apellido: this.pacienteForm.get('apellido')?.value,
+          tipo_documento: this.pacienteForm.get('tipodocumento')?.value,
+          direccion: this.pacienteForm.get('direccion')?.value,
+          foto: this.imagenBase64 // Aquí va la imagen convertida a Base64
+        };
+
+        console.log(datos);
+        
         // realizamos la edicion de los datos
-        this.padreservice.modificarRegistroHijo(this.idPaciente, nombre, apellido, tipodocumento, direccion, FotoHijo)
+        this.padreservice.modificarRegistroHijo(this.idPaciente, datos)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => {
           console.log('Respuesta del servidor:', response);
@@ -345,6 +365,17 @@ export class AddHijoComponent {
     this.verificarEstadoPaciente();
   }
 
+
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file); // Convierte el archivo a Base64
+        reader.onloadend = () => resolve(reader.result as string); // Resuelve con el Base64
+        reader.onerror = reject;
+    });
+}
+
+
   verificarEstadoPaciente() {
     // Verifica si el formulario es inválido
     if (this.pacienteForm.invalid) {
@@ -366,7 +397,7 @@ export class AddHijoComponent {
   }
 
   // Se utiliza para subir la imagen
-  onFileSelected(event: any): void {
+  async onFileSelected(event: any) {
     const file = event.target.files[0];
     
     if (file) {
@@ -388,6 +419,9 @@ export class AddHijoComponent {
         this.selectedFile = null;
       }
     }
+
+    const base64Image = await this.convertToBase64(file);
+    this.imagenBase64 = base64Image;
   }
 
   // Maneja el arrastre de un archivo
