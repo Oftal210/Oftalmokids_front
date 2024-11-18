@@ -34,23 +34,29 @@ export class AddHijoComponent {
   existePaciente: boolean = false;
   edadPaciente!: number;
   documentoPaciente!: string;
+  idPaciente: number = 0;
 
   // variable para guardar el valor para el atributo readonly
   isReadonly = true;
 
+  // variable para verificar si es edicion o guardado
+  editarHijo: boolean = false;
+
   // variables para la imagen
   selectedImage: string | ArrayBuffer | null = null;
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;
+  imagenBase64: string = '';
  
   // metodo para validar el formulario de paciente
   pacienteForm = this.fb.group({
-    tipodocumento: ['', [Validators.required, this.validarSelect()]],
-    documento: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
-    nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-    apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-    fechanacimiento: ['', [Validators.required, this.validarFecha()]],
-    edad: [''],
-    genero: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]]
+    tipodocumento:    ['', [Validators.required, this.validarSelect()]],
+    documento:        ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
+    nombre:           ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+    apellido:         ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+    fechanacimiento:  ['', [Validators.required, this.validarFecha()]],
+    edad:             [''],
+    genero:           ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+    direccion:        ['', Validators.required],
   });
 
   private unsubscribe$ = new Subject<void>();
@@ -63,7 +69,17 @@ export class AddHijoComponent {
     private padreservice: PadreService,
     public _matDialogRef: MatDialogRef<AddHijoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+  ) {
+    
+    if(data){
+      this.pacienteForm.patchValue(data);
+      if(data.editar){
+        this.editarHijo = true;
+        this.idPaciente = data.id
+        console.log(this.idPaciente)
+      }
+    }
+  }
 
   ngOnInit() {
     // llamamos a la funcion para traer los datos
@@ -228,6 +244,21 @@ export class AddHijoComponent {
   }
 
   async tomarDatosPaciente(){
+
+    const FotoHijo = new FormData();
+
+    if(this.selectedFile) {
+      const nombreUnico = `${Date.now()}-${this.selectedFile.name}`;
+      FotoHijo.append('foto', this.selectedFile, nombreUnico); // IMPORTANTISIMO QUE ESTO TENGA EL MISMO VALOR QUE ESTE MENSAJE EN EL BACK
+      console.log(FotoHijo)
+    } else {
+      FotoHijo.append('foto', ''); // AQUI TAMBIEN
+    }
+    
+    FotoHijo.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+
     // si el formulario no es invalido hacemos
     if(!this.pacienteForm.invalid) {
       console.log('agregen datos')
@@ -238,49 +269,91 @@ export class AddHijoComponent {
       const apellido        = this.pacienteForm.get('apellido')?.value;
       const fechanacimiento = this.pacienteForm.get('fechanacimiento')?.value;
       const genero          = this.pacienteForm.get('genero')?.value;
+      const direccion       = this.pacienteForm.get('direccion')?.value;
 
       // cambiamos la variable para que no salgan las alertas ahora
       this.verificacioDato = true;
 
-      if(this.documentoPadre){
-        var docPadre = JSON.parse(this.documentoPadre);
+      if(this.editarHijo){
 
-        // realizamos una peticion y esperamos hasta que se complete
-        await this.buscarPaciente();
+        // FotoHijo.append("nombre", this.pacienteForm.get('nombre')?.value || '');
+        // FotoHijo.append('apellido', this.pacienteForm.get('apellido')?.value || '');
+        // FotoHijo.append('tipo_documento', this.pacienteForm.get('tipodocumento')?.value || '');
+        // FotoHijo.append('direccion', String(this.pacienteForm.get('direccion')?.value));
 
-        // cambiamos la variable para que no salgan las alertas ahora
-        this.verificacioDato = false;
+        // FotoHijo.forEach((value, key) => {
+        //   console.log(`${key}:`, value);
+        // });
 
-        if(!this.existePaciente) {
-          // realizamos la insercion de los datos
-          this.padreservice.guardarRegistroHijo(documento, this.idPadre, nombre, apellido, tipodocumento, fechanacimiento, this.edadPaciente, genero)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(response => {
-            console.log('Respuesta del servidor:', response);
-            console.log('Respuesta del servidor:', response.status);
-            // Emite el evento después de la inserción si fue exitosa
-            if (response.status != 400) {
-              // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
-              this.datosInsertado.emit();
-              alert('el Hijo fue Guardado Correctamente');
-              this.pacienteForm.reset();
-              this.cerrar();
-            }
-          }, error => {
-            console.error('Error al enviar los datos:', error);
-            alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
-          });
+        const datos = {
+          nombre: this.pacienteForm.get('nombre')?.value,
+          apellido: this.pacienteForm.get('apellido')?.value,
+          tipo_documento: this.pacienteForm.get('tipodocumento')?.value,
+          direccion: this.pacienteForm.get('direccion')?.value,
+          foto: this.imagenBase64 // Aquí va la imagen convertida a Base64
+        };
+
+        console.log(datos);
+        
+        // realizamos la edicion de los datos
+        this.padreservice.modificarRegistroHijo(this.idPaciente, datos)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(response => {
+          console.log('Respuesta del servidor:', response);
+          console.log('Respuesta del servidor:', response.status);
+          // Emite el evento después de la inserción si fue exitosa
+          if (response.status == 200) {
+            // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
+            this.datosInsertado.emit();
+            alert('el Hijo fue Actualizado Correctamente');
+            this.cerrar();
+          }
+        }, error => {
+          console.error('Error al enviar los datos:', error);
+          alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
+        });
+        return;
+      } else{
+
+        if(this.documentoPadre){
+          
+          // realizamos una peticion y esperamos hasta que se complete
+          await this.buscarPaciente();
+
+          // cambiamos la variable para que no salgan las alertas ahora
+          this.verificacioDato = false;
+
+          if(!this.existePaciente) {
+            // realizamos la insercion de los datos
+            this.padreservice.guardarRegistroHijo(documento, this.idPadre, nombre, apellido, tipodocumento, fechanacimiento, this.edadPaciente, genero, direccion, FotoHijo)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(response => {
+              console.log('Respuesta del servidor:', response);
+              console.log('Respuesta del servidor:', response.status);
+              // Emite el evento después de la inserción si fue exitosa
+              if (response.status != 400) {
+                // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
+                this.datosInsertado.emit();
+                alert('el Hijo fue Guardado Correctamente');
+                this.pacienteForm.reset();
+                this.cerrar();
+              }
+            }, error => {
+              console.error('Error al enviar los datos:', error);
+              alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
+            });
+          } else {
+            // cambiamos la variable para que no salgan las alertas ahora
+            this.verificacioDato = false;
+            // mostramos alertar de fallo
+            alert('El Paciente ya Esta Registrado');
+          }
         } else {
           // cambiamos la variable para que no salgan las alertas ahora
           this.verificacioDato = false;
           // mostramos alertar de fallo
-          alert('El Paciente o Correo ya Estan Registrados');
+          alert('no tiene un documento valido para agregar')
         }
-      } else {
-        // cambiamos la variable para que no salgan las alertas ahora
-        this.verificacioDato = false;
-        // mostramos alertar de fallo
-        alert('no tiene un documento valido para agregar')
       }
     } else {
       console.log('datos fallidos')
@@ -291,6 +364,17 @@ export class AddHijoComponent {
     this.verificacioDato = false;
     this.verificarEstadoPaciente();
   }
+
+
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file); // Convierte el archivo a Base64
+        reader.onloadend = () => resolve(reader.result as string); // Resuelve con el Base64
+        reader.onerror = reject;
+    });
+}
+
 
   verificarEstadoPaciente() {
     // Verifica si el formulario es inválido
@@ -313,7 +397,7 @@ export class AddHijoComponent {
   }
 
   // Se utiliza para subir la imagen
-  onFileSelected(event: any): void {
+  async onFileSelected(event: any) {
     const file = event.target.files[0];
     
     if (file) {
@@ -335,6 +419,9 @@ export class AddHijoComponent {
         this.selectedFile = null;
       }
     }
+
+    const base64Image = await this.convertToBase64(file);
+    this.imagenBase64 = base64Image;
   }
 
   // Maneja el arrastre de un archivo

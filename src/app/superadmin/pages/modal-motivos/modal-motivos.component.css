@@ -1,0 +1,6 @@
+.mat-datepicker-content { 
+    z-index: 1000; /* Ajustar si es necesario */ 
+} 
+.mat-calendar { 
+    position: relative !important; /* Ajustar si es necesario */ 
+}

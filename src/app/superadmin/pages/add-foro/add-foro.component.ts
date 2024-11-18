@@ -156,6 +156,7 @@ export class AddForoComponent {
     
     if (file) {
       const fileType = file.type;
+      const fileSizeLimit = 2 * 1024 * 1024; // 2 MB en bytes
       const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];  // Tipos de imágenes válidas
   
       if (validTypes.includes(fileType)) {
@@ -171,6 +172,13 @@ export class AddForoComponent {
         alert('Por favor selecciona una imagen válida (JPEG, PNG)');
         this.selectedImage = null;
         this.selectedFile = null;
+      }
+
+      if (file.size > fileSizeLimit) {
+        alert('El archivo excede el tamaño máximo permitido de 2 MB.');
+        this.selectedImage = null;
+        this.selectedFile = null;
+        return;
       }
     }
   }

@@ -10,12 +10,11 @@
                 <!-- Input de buscar -->
                 <div class="relative w-full md:max-w-xs ml-auto border h-10 rounded-xl"
                     [ngClass]="{'md:mr-14': !botonVisible, 'mr-0': botonVisible}">
-                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        (click)="buscarRegistroHijo()">
+                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
-                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none"
-                        [(ngModel)]="inputDatoBusqueda">
+                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none" pattern="^[0-9]*$"
+                        [(ngModel)]="inputDatoBusqueda" (input)="buscarRegistroHijo($event)"/>
                 </div>
 
                 <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"
@@ -44,7 +43,8 @@
                         <!-- Cara frontal -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center backface-hidden p-5 front-face bg-no-repeat"
                             style="background-image: url('../../../../assets/images/pacientes/fondo_niño.webp');">
-                            <img src="../../../../assets/images/pollito.png" alt="" class="w-24 h-24 rounded-full mt-6">
+                            <img [src]="hijo.foto && hijo.foto !== '' ? 'http://127.0.0.1:8000/storage/' + hijo.foto : '../../../../assets/images/pollito.png'"
+                                alt="Foto de {{ hijo.nombre }}" class="w-24 h-24 rounded-full mt-6">
                             <p class="text-lg font-bold mt-6 text-center">{{ hijo.nombre }}</p>
                             <p class="text-lg font-bold mt-[-8px] text-center">{{ hijo.apellido }}</p>
                             <p class="text-gray-600 mt-4">{{ hijo.tipo_documento }}: {{ hijo.documento }}</p>
@@ -54,8 +54,8 @@
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center justify-center backface-hidden p-5 back-face rotate-y-180"
                             style="background-image: url('../../../../assets/images/pacientes/fondo_atras.webp');">
                             <p class="text-lg font-semibold">Edad: {{calcularEdadPaciente(hijo.fecha_nacimiento)}}</p>
-                            <button [routerLink]="'/historia-clinica/:id'"
-                                class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                            <!-- Icono de la historica clínica -->
+                            <button [routerLink]="['/historia-clinica', hijo.documento]" class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Historia clínica:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -68,8 +68,8 @@
                                     <path d="M8 16h.01" />
                                 </svg>
                             </button>
-                            <button [routerLink]="'/monitoreo/:id'"
-                                class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
+                            <!-- Icono para ver el seguimiento semanal -->
+                            <button [routerLink]="['/monitoreo', hijo.documento]" class="mt-2 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">
                                 Seguimiento:
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

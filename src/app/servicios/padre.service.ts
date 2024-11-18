@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -38,8 +38,16 @@ export class PadreService {
   }
 
   // Metodo para guardar o insertar un hijo
-  guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any) {
-    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, foto:'ruta-foto', edad:edad, genero:genero});
+  guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any, direccion: any, foto: FormData) {
+    return this.http.post<any>(this.apiUrl+'/hijo', foto, {params: { documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, edad:edad, genero:genero, direccion: direccion}});
   }
-
+  
+  // Metodo para guardar o insertar un hijo
+  modificarRegistroHijo(hijo: any, dato: any) {
+    return this.http.put<any>(`${this.apiUrl}/hijo/${hijo}`, dato, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    });
+  }
 }

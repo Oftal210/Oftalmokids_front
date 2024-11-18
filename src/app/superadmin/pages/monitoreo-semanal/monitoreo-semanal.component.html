@@ -9,11 +9,11 @@
                 <!-- Foto del paciente -->
                 <div
                     class="w-24 h-24 rounded-full border border-[#ff834d] flex items-center justify-center text-2xl font-semibold text-orange-500">
-                    <img src="../../../../assets/images/pollito.png" alt="" class="w-20 h-20 rounded-full">
+                    <img [src]="hijo.foto" alt="" class="w-20 h-20 rounded-full">
                 </div>
                 <div class="ml-4">
-                    <h2 class="text-xl font-bold text-blue-900">Nombre Y apellido</h2>
-                    <h2 class="text-lg font-semibold text-blue-800">Num_Documento</h2>
+                    <h2 class="text-xl font-bold text-blue-900"> {{ hijo.nombre }} {{ hijo.apellido}} </h2>
+                    <h2 class="text-lg font-semibold text-blue-800"> {{ hijo.documento }} </h2>
                     <!-- <span class="text-sm text-orange-500">Miopía leve</span> -->
                     <div class="flex gap-x-2 items-center text-[#ff834d]">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -23,7 +23,7 @@
                                 d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
                         </svg>
                         <p class="text-sm text-gray-600 mt-2">
-                            Último seguimiento realizado: 13/11/2024
+                            Último seguimiento realizado: {{ ultimaConsulta }}
                         </p>
                     </div>
                 </div>
@@ -33,9 +33,9 @@
             <div class="mt-4">
                 <h3 class="text-base font-semibold text-gray-700">Progreso del tratamiento</h3>
                 <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 ">
-                    <div class="bg-[#FCBD1B] h-2.5 rounded-full" style="width: 75%;"></div>
+                    <div class="bg-[#FCBD1B] h-2.5 rounded-full" [style.width]=" barraProgreso+'%'"></div>
                 </div>
-                <span class="text-sm text-gray-700">75%</span>
+                <span class="text-sm text-gray-700"> {{ barraProgreso | number: '1.0-0' }}% </span>
             </div>
 
             <!-- Seguimiento Semanal -->
@@ -53,7 +53,7 @@
                     <h3 class="text-base font-semibold">Seguimiento Semanal</h3>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-calendar-days ml-auto cursor-pointer">
+                        class="lucide lucide-calendar-days ml-auto cursor-pointer" (click)="abrirModal('', true)">
                         <path d="M8 2v4" />
                         <path d="M16 2v4" />
                         <rect width="18" height="18" x="3" y="4" rx="2" />
@@ -68,37 +68,74 @@
                 </div>
 
                 <!-- Semana 1 -->
-                <div class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-semibold text-blue-900">30 Oct - 5 Nov</span>
-                        <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1">
-                            Ver motivo
-                        </button>
-                    </div>
-                    <p class="text-sm text-gray-700 w-10/12">Aqui van las preguntas</p>
-                </div>
+                <ng-container *ngFor="let preco of preconsultas">
 
-                <!-- Semana 2 -->
-                <div class="bg-[#f4fbff] p-4 rounded-lg mb-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-semibold text-blue-900">23 Oct - 29 Oct</span>
-                        <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1">
-                            Ver motivo
-                        </button>
+                    <!-- Lentes -->
+                    <div *ngIf="preco.uso_gafa_lentes == 0" id="preco.id" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motivo_uso_gafas, false)">
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.lentes }} </p>
                     </div>
-                    <p class="text-sm text-gray-700 w-10/12">Aqui van las preguntas</p>
-                </div>
 
-                <!-- Semana 3 -->
-                <div class="bg-[#f4fbff] p-4 rounded-lg mb-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-semibold text-blue-900">16 Oct - 22 Oct</span>
-                        <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1">
-                            Ver motivo
-                        </button>
+                    <!-- Medicamento -->
+                    <div *ngIf="preco.uso_medicamento == 0" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motivo_uso_medicam, false)">
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.medicamento }} </p>
                     </div>
-                    <p class="text-sm text-gray-700 w-10/12">Aqui van las preguntas</p>
-                </div>
+
+                    <!-- Pantalla -->
+                    <div *ngIf="preco.limit_pantalla == 0" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motiv_limit_pantalla, false)">
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.pantalla }} </p>
+                    </div>
+
+                    <!-- Aire Libre -->
+                    <div *ngIf="preco.activid_air_libre == 0" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motiv_acti_libre, false)">
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.aireLibre }} </p>
+                    </div>
+
+                    <!-- Alimentacion -->
+                    <div *ngIf="preco.buena_aliment == 0" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motiv_bue_alimen, false)"> 
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.alimentacion }} </p>
+                    </div>
+
+                    <!-- Cita Control -->
+                    <div *ngIf="preco.solicitar_control == 0" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motiv_soli_control, false)">
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.citaControl }} </p>
+                    </div>
+                </ng-container>
             </div>
 
             <!-- Botones de acción -->

@@ -82,6 +82,11 @@ export class SuperadminService {
     return this.http.get<any>(`${this.apiUrl}hijo/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
+  // Metodo para buscar el pacientes segun documento parecido
+  buscarPacienteParecido(hijo: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/pacientescoincidan/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
   // Metodo para buscar el padre del paciente solicitado 
   buscarPadre(padre: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}usuario/${padre}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
@@ -504,14 +509,19 @@ export class SuperadminService {
 
   // METODO PARA PRECONSULTAS ↓
   // Metodo para buscar los registros de preconsultas de un hijo especifico
-  buscarPreconsultasHijo(hijo: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}preconsdelhijo/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+  buscarPreconsultasHijoFechas(hijo: any, fechaInicio: any, fechaFin: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/preconsultafechas/${hijo}`, {fechaInicio: fechaInicio, fechaFin: fechaFin}); // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para buscar los registros de preconsultas de un hijo especifico
   buscarPromedioPreconsultasHijo(hijo: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}promediomespreconsulta/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}/promediomespreconsulta/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
+
+  // Metodo para buscar los registros de preconsultas mas reciente del paciente
+  buscarPreconsultaReciente(hijo: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/preconsultareciente/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }  
   // METODO PARA PRECONSULTAS ↑
 
   
