@@ -43,7 +43,7 @@
                         class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
                         <!-- Cara frontal -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center backface-hidden p-5 front-face bg-no-repeat"
-                            style="background-image: url('../../../../assets/images/pacientes/fondo_niño.png');">
+                            style="background-image: url('../../../../assets/images/pacientes/fondo_niño.webp');">
                             <img src="../../../../assets/images/pollito.png" alt="" class="w-24 h-24 rounded-full mt-6">
                             <p class="text-lg font-bold mt-6 text-center">{{ hijo.nombre }}</p>
                             <p class="text-lg font-bold mt-[-8px] text-center">{{ hijo.apellido }}</p>
@@ -52,7 +52,7 @@
                         </div>
                         <!-- Cara trasera -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center justify-center backface-hidden p-5 back-face rotate-y-180"
-                            style="background-image: url('../../../../assets/images/pacientes/fondo_atras.png');">
+                            style="background-image: url('../../../../assets/images/pacientes/fondo_atras.webp');">
                             <p class="text-lg font-semibold">Edad: {{calcularEdadPaciente(hijo.fecha_nacimiento)}}</p>
                             <button [routerLink]="'/historia-clinica/:id'"
                                 class="mt-4 hover:bg-[#E1F3FE] flex items-center gap-x-2 py-2 px-2 hover:rounded-lg">

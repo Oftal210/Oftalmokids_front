@@ -1,34 +1,34 @@
 <app-header></app-header>
-<div class="flex justify-center items-center h-screen">
-    <div class="flex flex-col items-center justify-center w-full max-w-xl mx-auto mt-28">
-        <div class="absolute inset-x-0 top-[80px] flex justify-center">
-            <img src="../../../../assets/images/pollito.png" alt="Circular Image" class="w-32 h-32 rounded-full" />
-        </div>
-        <div class="w-full p-18">
+
+<div class="flex bg-[#f4fbff] min-h-screen justify-center items-center px-4">
+    <div class="flex flex-col items-center w-full sm:w-3/4 lg:w-1/2 px-4 ml-56 mt-16">
+        <div class="rounded-lg shadow-lg p-6 w-full bg-no-repeat" 
+        style="background-image: url('../../../../assets/images/perfil/fondo_perfil.webp');">
             <h2 class="text-2xl font-bold mb-4 text-center">Información Personal</h2>
+
             <form [formGroup]="perfilForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="p-2 lg:p-3 rounded shadow">
+                <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Documento </h3>
                     <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.documento"   readonly
                         required>
                 </div>
-                <div class="p-2 lg:p-3 rounded shadow">
+                <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Nombre</h3>
                     <input type="text" class="mt-2 p-2 border rounded w-full" [value]="user?.nombre" required>
                 </div>
-                <div class="p-2 lg:p-3 rounded shadow">
+                <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Apellido</h3>
                     <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.apellido"  required>
                 </div>
-                <div class="p-2 lg:p-3 rounded shadow">
+                <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Email</h3>
                     <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.email"  required>
                 </div>
-                <div class="p-2 lg:p-3 rounded shadow">
+                <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Telefono</h3>
                     <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.telefono"  required>
                 </div>
-                <div class="p-2 lg:p-3 rounded shadow">
+                <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Contraseña</h3>
                     <input type="password" class="mt-2 p-2 border rounded w-full" placeholder="••••••••">
                 </div>
@@ -38,5 +38,4 @@
             </div>
         </div>
     </div>
-
 </div>
