@@ -3,7 +3,8 @@
 	<div class="bg-white rounded-lg w-[70%] md:w-[70%] lg:w-[35%] p-6 max-h-[76vh] h-[50hv] overflow-y-auto"
 		(keydown.enter)="tomarDatos()">
 
-		<h2 class="text-2xl font-bold text-[#396CB3]">Crear Nuevo Tema</h2>
+		<h2 *ngIf="!editar" class="text-2xl font-bold text-[#396CB3]">{{ rolUsuarioActual === 2 ? 'Visualizar el Tema' : 'Crear Nuevo Tema' }}</h2>
+		<h2 *ngIf="editar" class="text-2xl font-bold text-[#396CB3]">Editar Tema Seleccionado</h2>
 
 		<form (ngSubmit)="tomarDatos()" [formGroup]="foroForm">
 
@@ -30,6 +31,19 @@
 				</div>
 			</div>
 
+			<!-- Contenedor responsive para la imagen -->
+			<div *ngIf="rutaImagenForo && rutaImagenForo !== '' && !imageError" class="mt-4 flex justify-center items-center">
+				<div class="relative w-full h-64 max-h-64 bg-gray-200 rounded-md overflow-hidden">
+				<img [src]="'http://127.0.0.1:8000/storage/' + rutaImagenForo" alt="{{ nombreImagenError }}" (error)="onImageError()"  
+					class="absolute top-0 left-0 w-full h-full object-contain">
+				</div>
+			</div>
+
+			<!-- Mensaje de alerta si la imagen no fue encontrada -->
+			<div *ngIf="imageError" class="mt-4 text-red-500 font-medium text-sm">
+				La imagen no pudo ser cargar.
+			</div>
+
 			<!-- Estilos para subir la imagen -->
 			<div class="mt-4">
 				<label class="block text-base font-medium">Imagen</label>
@@ -50,9 +64,9 @@
 
 			<div class="mt-6 flex justify-end">
 				<button (click)="cerrar()" type="button"
-					class="bg-[#EF7A38] hover:bg-[#ef691e] text-white font-bold py-2 px-4 rounded mr-2">Cancelar
+					class="bg-[#EF7A38] hover:bg-[#ef691e] text-white font-bold py-2 px-4 rounded mr-2">{{ rolUsuarioActual === 2 ? 'Cerrar' : 'Cancelar' }}
 				</button>
-				<button type="submit"
+				<button *ngIf="rolUsuarioActual == 1" type="submit"
 					class="bg-[#15b3ec] text-white px-4 py-2 rounded-md font-bold hover:bg-[#00a0d9]">Confirmar</button>
 			</div>
 		</form>

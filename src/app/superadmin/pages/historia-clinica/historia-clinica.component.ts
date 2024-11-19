@@ -95,7 +95,9 @@ export class HistoriaClinicaComponent {
       // Hoja 2
       antePersoForm: this.fb.group({
         edad_embarazo_madre: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
-        fue_alto_riesgo: ['', [Validators.required, this.validarSelect()]],
+
+        fue_alto_riesgo: ['', Validators.required],
+
         especifique_riesgo: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
         semanas_gestacion: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
         tipo_parto: ['', [Validators.required, this.validarSelect()]],
@@ -229,7 +231,16 @@ export class HistoriaClinicaComponent {
         control_diagnostico: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
       })
 
-    })
+    });
+
+    // Validaciones para los formularios con select
+    // Escuchar cambios en el select 'fue_alto_riesgo'
+    // this.formularioForm.get('antePersoForm.fue_alto_riesgo')?.valueChanges.subscribe((valor) => {
+      
+    //   //console.log(valor);
+    // });
+
+
   }
 
   // FUNCIONES PARA VALIDAR LOS INPUT's ↓
@@ -272,9 +283,9 @@ export class HistoriaClinicaComponent {
     this.accionModulo = this.route.snapshot.paramMap.get('flag') || '';
     
     // metodo para esperar hasta que se termine de realizar al completo
-    this.buscarDocumentoPadre().then(() => {
+    this.cargarDocumentoHijo().then(() => {
 
-      // Esta función se ejecutará después de que buscarDocumentoPadre se complete 
+      // Esta función se ejecutará después de que cargarDocumentoHijo se complete 
       this.obtenerDatosDelPadre();
       
       // verificamos si se va a agregar todo o solo el diagnostico
@@ -370,7 +381,7 @@ export class HistoriaClinicaComponent {
   }
 
   // funcion para traer el dato del padre
-  buscarDocumentoPadre (): Promise<void> {
+  cargarDocumentoHijo (): Promise<void> {
     return new Promise((resolve, reject) => {
       this.superadminservice.buscarPaciente(this.documentoHijo)
       .pipe(takeUntil(this.unsubscribe$))
@@ -384,8 +395,9 @@ export class HistoriaClinicaComponent {
           const datosParaHijo = {
             hijoNombre: data.hijo.nombre,
             hijoApellido: data.hijo.apellido,
-            direccion: data.hijo.direccion
+            direccion: data.hijo.direccion,
           };
+          console.log(datosParaHijo.direccion);
           this.formularioForm.get('historiaForm')?.patchValue(datosParaHijo);
           resolve(); // Resolución de la promesa después de completar la tarea
         } else {
@@ -523,7 +535,7 @@ export class HistoriaClinicaComponent {
       console.log('Formulario no válido'); 
       alert('Datos invalidos')
     }
-    //this.verificarEstadoPadre();
+    this.verificarEstadoPadre();
   }
 
   // FUNCIONES DE AGREGACION DE HISTORIA CLINICA ↓

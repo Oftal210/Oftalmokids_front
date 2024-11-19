@@ -45,13 +45,18 @@ export class SuperadminService {
   }
 
   // Metodo para editar un registro de foro
-  editarRegistroForo(id: any, subtitulo: any, contenido: any) {
-    return this.http.put<any>(`${this.apiUrl}/foro/${id}`, {subtitulo: subtitulo, contenido: contenido});
+  editarRegistroForo(id: any, subtitulo: any, contenido: any, imagen: FormData) {
+    return this.http.post<any>(`${this.apiUrl}/foro/${id}`, imagen, {params: {subtitulo: subtitulo, contenido: contenido}});
   }
 
   // Metodo para editar un registro de foro
   eliminiarRegistroForo(id: any) {
     return this.http.delete<any>(`${this.apiUrl}/foro/${id}`);
+  }
+
+  // Metodo para calificar dando like a un registro de foro
+  guardarLikeForo(foro: any, usuario: any) {
+    return this.http.post<any>(this.apiUrl+'/forolike', {foro: foro, usuario: usuario});
   }
   // METODO PARA EL FORO ↑
 
@@ -80,7 +85,7 @@ export class SuperadminService {
 
   // Metodo para guardar o insertar un hijo
   guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any) {
-    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, foto:'ruta-foto', edad:edad, genero:genero});
+    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, edad:edad, genero:genero});
   }
   // METODO PARA PACIENTE ↑
 

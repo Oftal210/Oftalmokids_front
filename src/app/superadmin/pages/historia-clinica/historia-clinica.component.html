@@ -37,49 +37,49 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10">
                         <div class="flex flex-col text-sm mb-1">
                             <label for="fecha" class="block font-medium mb-1">Fecha</label>
-                            <input type="date" id="fecha" formControlName="fecha"
+                            <input type="date" id="fecha" formControlName="fecha" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="hora" class="block font-medium text-base mb-1">Hora</label>
-                            <input type="time" id="hora" formControlName="hora"
+                            <input type="time" id="hora" formControlName="hora" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Nombre Paciente</label>
-                            <input type="text" id="" formControlName="hijoNombre"
+                            <input type="text" id="" formControlName="hijoNombre" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Apellido Paciente</label>
-                            <input type="text" id="" formControlName="hijoApellido"
+                            <input type="text" id="" formControlName="hijoApellido" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Nombre del padre o tutor</label>
-                            <input type="text" id="" formControlName="padreNombre"
+                            <input type="text" id="" formControlName="padreNombre" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm mb-1">
                             <label for="" class="block font-medium text-base mb-1">Apellido del padre o tutor</label>
-                            <input type="text" id="" formControlName="padreApellido"
+                            <input type="text" id="" formControlName="padreApellido" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm">
                             <label for="" class="block font-medium text-base mb-1">Dirección</label>
-                            <input type="text" id="" formControlName="direccion"
+                            <input type="text" id="" formControlName="direccion" readonly
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-sm">
                             <label for="" class="block font-medium text-base mb-1">Teléfono</label>
-                            <input type="text" id="" formControlName="telefono"
+                            <input type="text" id="" formControlName="telefono" readonly
                                 [ngClass]="{'border-red-500 focus:border-[#EF4444]': isInvalid('historiaForm', 'telefono'), 'border-gray-300': !isInvalid('historiaForm', 'telefono')}"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
@@ -110,6 +110,15 @@
                         </div>
 
                         <div class="flex flex-col text-xs">
+                            <label for="" class="block font-medium text-base mb-1">Tipo de parto</label>
+                            <select id="" formControlName="tipo_parto"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
+                                <option value="Césarea">Césarea</option>
+                                <option value="Natural">Natural</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">¿Fue de alto riesgo?</label>
                             <select id="" formControlName="fue_alto_riesgo"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
@@ -119,19 +128,18 @@
                         </div>
 
                         <div class="flex flex-col text-xs">
+                            <label for="" class="block font-medium text-base mb-1">Especifique</label>
+                            <input type="text" id="" formControlName="especifique_riesgo"
+                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
+                        </div>
+
+                        <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Semanas de gestación</label>
                             <input type="text" id="" formControlName="semanas_gestacion"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
-                        <div class="flex flex-col text-xs">
-                            <label for="" class="block font-medium text-base mb-1">Tipo de parto</label>
-                            <select id="" formControlName="tipo_parto"
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] uppercase">
-                                <option value="Césarea">Césarea</option>
-                                <option value="Natural">Natural</option>
-                            </select>
-                        </div>
+                        
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Complicaciones</label>
@@ -825,7 +833,7 @@
                     <div *ngIf="accionModulo" class="flex flex-col text-sm mb-4">
                         <div *ngIf="rolUsuarioActual == 1" class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 max-w-4xl mx-auto">
                             <div class="flex flex-col text-xs">
-                                <label for="" class="block font-medium text-base mb-1">Seleccione uno para visualizarlo</label>
+                                <label for="" class="block font-medium text-base mb-1">Fechas de Diagnosticos Anteriores</label>
                                 <select name="" #selectDiagnosticos
                                     class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
                                     (change)="cambioDatoSelectFecha($event)">
@@ -841,7 +849,7 @@
                             </div>
                         </div>
                         <div *ngIf="rolUsuarioActual == 2" class="flex flex-col text-xs">
-                            <label for="" class="block font-medium text-base mb-1">Seleccione uno para visualizarlo</label>
+                            <label for="" class="block font-medium text-base mb-1">Fechas de Diagnosticos Anteriores</label>
                             <select name="" #selectDiagnosticos
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
                                 (change)="cambioDatoSelectFecha($event)">

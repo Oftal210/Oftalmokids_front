@@ -14,7 +14,7 @@
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
                     <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none"
-                        [(ngModel)]="inputDatoBusqueda">
+                        [(ngModel)]="inputBusqueda" (input)="filtraHijosTitulo()">
                 </div>
 
                 <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"
@@ -37,7 +37,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <!-- Tarjeta de Paciente -->
                 <div class="group perspective w-full h-80"
-                    *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }">
+                    *ngFor="let hijo of hijosFiltro | paginate: { itemsPerPage: cantreg, currentPage: p }">
                     <div
                         class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
                         <!-- Cara frontal -->

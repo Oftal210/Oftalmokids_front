@@ -23,9 +23,6 @@ export class EquipoComponent {
   // variable para guardar los registros de los usuarios
   usuarios: any[] = [];
 
-  // variable para tomar el dato del buscar
-  inputDatoBusqueda!: string;
-
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
@@ -35,8 +32,9 @@ export class EquipoComponent {
   // variable para el numero de registros que se muetran a la vez
   cantreg: number = 4;
 
-  // boton para verificar la visibilidad del boton
-  botonVisible: boolean = false;
+  // variables para buscar y guardar filtros de foro
+  inputBusqueda: string = '';
+  adminsFiltro: any[] = [];
 
   private unsubscribe$ = new Subject<void>();
 
@@ -61,12 +59,14 @@ export class EquipoComponent {
     this.cargarRegistrosUsuarios();
   }
 
+  // funcion para abrir la modal
   abrirModal(): void {
     const dialogRef =this._matDialog.open(AddAdminComponent, {
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '0ms'
     });
 
+    // en caso de que se haya añadido algo aqui se recibira un mensaje
     dialogRef.componentInstance.datosInsertado.subscribe(() =>{
       this.cargarRegistrosUsuarios();
     })
@@ -83,33 +83,18 @@ export class EquipoComponent {
     this.superadminservice.obtenerRegistroUsuario()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      this.usuarios = [];
-      this.usuarios = data;
-    })
-  }
-
-  // funcion para buscar el hijo en e input de busqueda 
-  buscarRegistroUsuario(): void {
-    this.superadminservice.buscarAdministrador(this.inputDatoBusqueda)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      if(data.status != 404){
-        this.usuarios = [data.usuario];
-        this.p = 1;
-        this.botonVisible = true;
+      console.log(data)
+      if (data.status == 200){
+        this.usuarios = data.usuarios;
       } else {
-        alert('No existe el paciente buscado');
-        this.cargarRegistrosUsuarios();
-        this.botonVisible = false;
+        this.usuarios = [];
+        alert(data.mensaje)
       }
-    })
+      this.adminsFiltro = [...this.usuarios];
+    });
   }
 
-  ocultarBotonBusqueda(): void {
-    this.botonVisible = false;
-    this.cargarRegistrosUsuarios();
-  }
-
+  // funcion para desactivar a un administrador
   desactivarAdministrador(estado: string, docum: string): void{
 
     // variable del mensaje
@@ -149,4 +134,25 @@ export class EquipoComponent {
     
   }
 
+  // funcion para realizar filtro en los datos de los administradores
+  filtraAdminsTitulo(): void {
+    // tomamos el valor que haya en el input de busqueda
+    const dato = this.inputBusqueda.toLowerCase();
+    // realizamos el filtro y lo guardamos de la siguiente forma
+    this.adminsFiltro = this.usuarios.filter(admin => {
+      // Convertimos el estado activo/inactivo en texto
+      const estado = admin.activo == 1 ? 'activados' : 'inactivo';
+      console.log(estado);
+      // Comprobamos si coincide con el dato buscado
+      return (
+        admin.nombre.toLowerCase().includes(dato) ||
+        admin.apellido.toLowerCase().includes(dato) ||
+        admin.telefono.toLowerCase().includes(dato) ||
+        admin.email.toLowerCase().includes(dato) ||
+        admin.documento.toLowerCase().includes(dato) ||
+        estado.includes(dato) // Coincidencia con estado como texto
+      );
+    })
+    console.log(this.adminsFiltro);
+  }
 }

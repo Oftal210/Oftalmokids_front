@@ -26,17 +26,15 @@ export class PacienteComponent implements OnInit {
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
-  // variable para tomar el dato del buscar
-  inputDatoBusqueda!: string;
-
   // variable para saber la pagina actual
   p: number = 1;
 
   // variable para el numero de registros que se muetran a la vez
   cantreg: number = 4;
 
-  // boton para verificar la visibilidad del boton
-  botonVisible: boolean = false;
+  // variables para buscar y guardar filtros de foro
+  inputBusqueda: string = '';
+  pacientesFiltro: any[] = [];
 
   private unsubscribe$ = new Subject<void>();
   
@@ -83,7 +81,17 @@ export class PacienteComponent implements OnInit {
     this.superadminservice.obtenerRegistroPaciente()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      this.hijos = data;
+      // validamos que no venga un mensaje con el error
+      console.log(data)
+      if(data.status == 200) {
+        this.hijos = data.hijo;
+      } else {
+        this.hijos = [];
+        alert(data.mensaje);
+      }
+      // clonamos los datos dentro de la siguiente variable
+      this.pacientesFiltro = [...this.hijos];
+      
     })
   }
 
@@ -110,31 +118,19 @@ export class PacienteComponent implements OnInit {
     return edad;
   }
 
-  // funcion para buscar el hijo en e input de busqueda 
-  buscarRegistroHijo(event: any): void {
-
-    this.inputDatoBusqueda = this.inputDatoBusqueda.replace(/[^0-9]/g, '');
-
-    this.superadminservice.buscarPacienteParecido(this.inputDatoBusqueda)
-    .subscribe(data => {
-      console.log(data);
-      if(data.status != 404){
-        this.hijos = data.hijo;
-        this.p = 1;
-        this.botonVisible = true;
-      } else {
-        console.log('wtf')
-        //alert('No existe el paciente buscado');
-        //this.cargarRegistroHijos();
-        this.hijos = [];
-        this.botonVisible = false;
-      }
-    })
-  }
-
-  ocultarBotonBusqueda(): void{
-    this.botonVisible = false;
-    this.cargarRegistroHijos();
+  // funcion para realizar filtro en los datos de los pacientes
+  filtraPacientesTitulo(): void {
+    // tomamos el valor que haya en el input de busqueda
+    const dato = this.inputBusqueda.toLowerCase();
+    // realizamos el filtro y lo guardamos de la siguiente forma
+    this.pacientesFiltro = this.hijos.filter(
+      paciente =>
+        paciente.nombre.toLowerCase().includes(dato) ||         // buscamos por nombre, apellido, documento
+        paciente.apellido.toLowerCase().includes(dato) ||       // fecha de nacimiento y tipo de documento
+        paciente.tipo_documento.toLowerCase().includes(dato) ||
+        paciente.documento.toLowerCase().includes(dato) ||
+        paciente.fecha_nacimiento.toLowerCase().includes(dato)
+    );
   }
 
 }

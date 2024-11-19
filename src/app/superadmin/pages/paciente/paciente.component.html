@@ -5,21 +5,15 @@
         <div class="w-full">
 
             <div class="flex flex-col sm:flex-row justify-between items-center w-full p-4 mb-14 mt-10">
-                <p class="text-2xl md:text-4xl font-semibold sm:ml-4 md:ml-0 text-center sm:text-left"> Listado
-                    Pacientes </p>
+                <p class="text-2xl md:text-4xl font-semibold sm:ml-4 md:ml-0 text-center sm:text-left"> Listado Pacientes </p>
                 <!-- Input de buscar -->
-                <div class="relative w-full md:max-w-xs ml-auto border h-10 rounded-xl"
-                    [ngClass]="{'md:mr-14': !botonVisible, 'mr-0': botonVisible}">
+                <div class="relative w-full md:max-w-xs ml-auto border h-10 rounded-xl md:mr-14 mr-0">
                     <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
-                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none" pattern="^[0-9]*$"
-                        [(ngModel)]="inputDatoBusqueda" (input)="buscarRegistroHijo($event)"/>
+                    <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none"
+                        [(ngModel)]="inputBusqueda" (input)="filtraPacientesTitulo()"/>
                 </div>
-
-                <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"
-                    [ngClass]="{'invisible': !botonVisible, 'cursor-default': !botonVisible}" style="color: #00ACC9;">
-                </i>
 
                 <button (click)="abrirModal()"
                     class="h-10 bg-[#2EBBEE] text-white text-lg font-semibold py-2 px-4 rounded-xl hover:bg-[#15b3ec] focus:outline-none mr-8 md:mr-0 mt-4 sm:mt-0 flex items-center">
@@ -37,7 +31,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 <!-- Tarjeta de Paciente -->
                 <div class="group perspective w-full h-80"
-                    *ngFor="let hijo of hijos | paginate: { itemsPerPage: cantreg, currentPage: p }">
+                    *ngFor="let hijo of pacientesFiltro | paginate: { itemsPerPage: cantreg, currentPage: p }">
                     <div
                         class="relative w-full h-full transition-transform duration-700 transform-style-3d group-hover:rotate-y-180 card-container">
                         <!-- Cara frontal -->

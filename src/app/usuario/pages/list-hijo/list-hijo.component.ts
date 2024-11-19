@@ -34,6 +34,10 @@ export class ListHijoComponent {
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
+  // variables para buscar y guardar filtros de hijo
+  inputBusqueda: string = '';
+  hijosFiltro: any[] = [];
+
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -72,8 +76,14 @@ export class ListHijoComponent {
     this.padreservice.obtenerHijosPadre(docAdministrador.documento)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      this.hijos = data;
-      console.log(data);
+      if(data.status != 400 ) {
+        this.hijos = data;
+        console.log(data);
+      } else{
+        alert(data.mensaje)
+        this.hijos = [];
+      }
+      this.hijosFiltro = [...this.hijos];
     })
   }
 
@@ -141,12 +151,20 @@ export class ListHijoComponent {
         editar: true,
       }
     });
-
-    // al insertar correctamente, se avisa por este medio para realizar una actualizacion de los datos
-    // dialogRef.componentInstance.datosInsertado.subscribe(() =>{
-
-    // })
   }
 
-
+  // funcion para realizar filtro en los datos de los hijos
+  filtraHijosTitulo(): void {
+    // tomamos el valor que haya en el input de busqueda
+    const dato = this.inputBusqueda.toLowerCase();
+    // realizamos el filtro y lo guardamos de la siguiente forma
+    this.hijosFiltro = this.hijos.filter(
+      hijo =>
+        hijo.nombre.toLowerCase().includes(dato) ||         // buscamos por nombre, apellido, documento
+        hijo.apellido.toLowerCase().includes(dato) ||       // fecha de nacimiento y tipo de documento
+        hijo.tipo_documento.toLowerCase().includes(dato) ||
+        hijo.documento.toLowerCase().includes(dato) ||
+        hijo.fecha_nacimiento.toLowerCase().includes(dato)
+    );
+  }
 }

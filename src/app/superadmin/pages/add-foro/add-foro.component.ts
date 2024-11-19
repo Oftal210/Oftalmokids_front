@@ -8,6 +8,7 @@ import {
   AbstractControl,
   ValidatorFn,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -39,7 +40,17 @@ export class AddForoComponent {
 
   // variables para la imagen
   selectedImage: string | ArrayBuffer | null = null;
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;
+  rutaImagenForo: string = '';
+  imageError: boolean = false; // Estado del error
+
+
+  // nombre para la imagen en caso de que no salga
+  nombreImagenError: string = '';
+
+
+  // variable para tomar el rol de usuario
+  rolUsuarioActual!: number;
 
   foroForm = this.fb.group({
     titulo: ['', Validators.required],
@@ -51,16 +62,46 @@ export class AddForoComponent {
     public _matDialogRef: MatDialogRef<AddForoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private superadminservice: SuperadminService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router, 
   ) {
+    // de la funcion de editar tomamos los datos y los almacenamos
     const datosobtenidosModal = {
       titulo: data?.titulo || null,
       contenido: data?.contenido || null,
+      imagen: data?.ruta_imagen || null,
     };
+    // con los datos almancenados los colocamos en su lugar correspondiente
     this.foroForm.patchValue(datosobtenidosModal);
-    this.editar = data?.editar || false;
+
+    // validamos el rol de usuario
+    if (this.documentoAdministrador) {
+
+      // convertimos la variable a tipo JSON
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+
+      // tomamos el id_rol y lo guardamos aparte
+      this.rolUsuarioActual = docAdministrador.id_rol; 
+    } else {
+      console.log('saca del sistema, no hay json');
+      this.router.navigate(['/login']);
+    }
+
+    // tomamos la ruta de la imagen de los datos almacenamdos
+    this.rutaImagenForo = datosobtenidosModal.imagen;
+    // tomamos el titulo para colocarlo en la imagen 
+    this.nombreImagenError = datosobtenidosModal.titulo;
+
+    // validamos el rol para verificar la edicion
+    if(this.rolUsuarioActual == 1){
+      this.editar = data?.editar || false;
+    } else {
+      this.editar = false;
+    }
+    
+    // tomamos el id del foro para usarlo mas adelante
     this.id = data?.id || null;
-    console.log(datosobtenidosModal, this.editar, this.id);
+    console.log(datosobtenidosModal, this.editar, this.id, this.rutaImagenForo);
   }
 
   // metodo para emite un señal cuando se inserto un dato
@@ -130,7 +171,7 @@ export class AddForoComponent {
         } else {
           // Si es true editara y hara los siguiente
           this.superadminservice
-            .editarRegistroForo(this.id, titulo, contenido)
+            .editarRegistroForo(this.id, titulo, contenido, imagenData)
             .subscribe(
               (response) => {
                 console.log('Respuesta del servidor:', response);
@@ -195,6 +236,11 @@ export class AddForoComponent {
     if (file) {
       this.onFileSelected({ target: { files: [file] } }); // Llama al método para manejar la selección
     }
+  }
+
+  // Función que se ejecuta si ocurre un error al cargar la imagen
+  onImageError(): void {
+    this.imageError = true;
   }
 
   // moveImage(direction: string): void {

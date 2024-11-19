@@ -28,14 +28,25 @@ export class ForoComponent {
   // variable para tomar el id del contenedor principal con scroll
   @ViewChild('contenedorPrincipal') contenedorPrincipal!: ElementRef;
 
+  // variable para tomar el los elementos de like
+  //@ViewChild('likeForo') likeForos!: ElementRef;
+
   // variable para guardar los registros de los foros
   foros: any[] = [];
 
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  idUsuarioActual!: string; 
 
   // variable para tomar el rol de usuario
   rolUsuarioActual!: number;
+
+  // variables para buscar y guardar filtros de foro
+  inputBusqueda: string = '';
+  forosFiltro: any[] = [];
+
+  // variable para el manejo de los likes
+  cantidadLike!: any;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -62,12 +73,16 @@ export class ForoComponent {
       // convertimos la variable a tipo JSON
       var docAdministrador = JSON.parse(this.documentoAdministrador);
 
+      console.log(docAdministrador)
       // tomamos el id_rol y lo guardamos aparte
-      this.rolUsuarioActual = docAdministrador.id_rol; 
+      this.rolUsuarioActual = docAdministrador.id_rol;
+
+      // tomamos el id y lo guardamos aparet
+      this.idUsuarioActual = docAdministrador.documento;
 
       // verificamos quien puede entrar al modulo
       if(docAdministrador.id_rol != 1 && docAdministrador.id_rol != 2){
-        //this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
         console.log('saca del sistema normal');
       }
     } else {
@@ -76,7 +91,9 @@ export class ForoComponent {
     }
 
     // Ejemplo de datos que pueden venir de la base de datos
-    this.cargarRegistrosforo();
+    this.cargarRegistrosforo();   
+    
+    
   }
 
   // abriamos la ventana modal
@@ -112,11 +129,14 @@ export class ForoComponent {
       this.superadminservice.obtenerRegistrosForo()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        // validamos si hay algun mensaje de error
         if (!data.mensaje) {
           this.foros = data;
         } else {
           alert('no hay datos');
+          this.foros = [];
         }
+        this.forosFiltro = [...this.foros];
         resolve();
       });
     })
@@ -127,9 +147,12 @@ export class ForoComponent {
   editarForoModal(foro: any): void {
     // Variable para abrir la ventana modal y enviarle los datos del 
     const dialogRef = this.dialog.open(AddForoComponent, {
+
+      // enviamos los datos necesarios a la modal para que los muestre
       data: {
         titulo: foro.subtitulo_foro,
         contenido: foro.contenido_foro,
+        ruta_imagen: foro.ruta_imagen,
         id: foro.id,
         editar: true
       }
@@ -150,6 +173,7 @@ export class ForoComponent {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         console.log(data)
+        // validamos el dato que nos trae y realizamos
         if(data.status == 200){
           this.cargarRegistrosforo();
           alert('Se elimino con exito');
@@ -172,4 +196,64 @@ export class ForoComponent {
       });
     });
   }
+
+  // funcion para darle un formato a la fecha
+  formatDate(dateString: string): string {
+    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const date = new Date(dateString);
+  
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
+  }
+
+  // funcion para realizar filtro en los datos de foro
+  filtraForosTitulo(): void {
+    // tomamos el valor que haya en el input de busqueda
+    const dato = this.inputBusqueda.toLowerCase();
+    // realizamos el filtro y lo guardamos de la siguiente forma
+    this.forosFiltro = this.foros.filter(
+      foro =>
+        foro.subtitulo_foro.toLowerCase().includes(dato) || // buscamos por titulo y por contenido
+        foro.contenido_foro.toLowerCase().includes(dato)
+    );
+  }
+
+  // funcion para realizar el guardado de los likes por cada foro
+  enviarLikeForo(foro: any): void {
+    // validamos el rol de usuario para que solo el padre pueda votar
+    if (this.rolUsuarioActual != 2) {
+      // realizamos el llamado
+      this.superadminservice.guardarLikeForo(foro, this.idUsuarioActual)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        console.log(data);
+        // si llega esto es que inserto correctamente
+        if(data.status == 201){
+          // tomamos del HTML el elemento necesario
+          const likeselec = document.getElementById(`like-${foro}`);
+          // validamos que todo venga correctamente
+          if( likeselec && likeselec.textContent !== null && likeselec.textContent !== undefined){
+            // le sumamos 1 al valor que haya actual de likes
+            likeselec.textContent = (parseInt(likeselec.textContent) + 1).toString();
+          }
+        } else if(data.status == 404) {
+          // mostramos alerta en caso de fallo
+          alert(data.mensaje);
+        } else if(data.status == 500){
+          // mostramos alerta en caso de fallo
+          alert(data.mensaje);
+        } else if(data.status == 400) {
+          // mostramos alerta en caso de fallo
+          alert(data.mensaje);
+        } else {
+          // mostramos alerta en caso de no ser ninguna 
+          alert(data.mensaje);
+        }
+      });
+    }   
+  }
+
 }

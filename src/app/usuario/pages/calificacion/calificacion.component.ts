@@ -66,7 +66,7 @@ export class CalificacionComponent implements AfterViewInit {
       pointer: { 
         length: 0.5,
         strokeWidth: 0.05,
-        color: '#ffa580'
+        color: '#000000'
       },
       limitMax: false,
       limitMin: false,

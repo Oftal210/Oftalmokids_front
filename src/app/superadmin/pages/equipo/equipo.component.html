@@ -10,19 +10,13 @@
                 </p>
 
                 <!-- Input de buscar -->
-                <div class="relative w-full md:max-w-64 ml-auto border h-10 rounded-xl"
-                    [ngClass]="{'md:mr-4': !botonVisible, 'mr-0': botonVisible}">
-                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        (click)="buscarRegistroUsuario()">
+                <div class="relative w-full md:max-w-64 ml-auto border h-10 rounded-xl md:mr-4 mr-0">
+                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
                         <i class="fa-solid fa-magnifying-glass" style="color: #00ACC9;"></i>
                     </span>
                     <input type="text" class="w-full h-full pl-4 pr-5 rounded-xl focus:outline-none"
-                        [(ngModel)]="inputDatoBusqueda">
+                        [(ngModel)]="inputBusqueda" (input)="filtraAdminsTitulo()">
                 </div>
-
-                <i class="fa-solid fa-rotate-right md:mr-14 ml-1 cursor-pointer" (click)="ocultarBotonBusqueda()"
-                    [ngClass]="{'invisible': !botonVisible, 'cursor-default': !botonVisible}"
-                    style="color: #00ACC9;"></i>
 
                 <button (click)="abrirModal()"
                     class="h-10 bg-[#2EBBEE] text-white text-lg font-semibold py-2 px-4 rounded-xl hover:bg-[#15b3ec] focus:outline-none mr-8 md:mr-0 mt-4 sm:mt-0 flex items-center">
@@ -50,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let usuario of usuarios | paginate: { itemsPerPage: cantreg, currentPage: p }"
+                        <tr *ngFor="let usuario of adminsFiltro | paginate: { itemsPerPage: cantreg, currentPage: p }"
                             class="hover:bg-gray-50">
                             <td>{{ usuario.documento }}</td>
                             <td>{{ usuario.nombre }}</td>
