@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../../../servicios/superadmin.service';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -35,6 +35,7 @@ export class HistoriaClinicaComponent {
   datoInsertado: boolean = false;
   ocultarMotivoConsulta: boolean = false;
   disableed: boolean = true;
+  existeHistoria: boolean = false;
   
 
   // tomamos elementos del HTML
@@ -81,40 +82,45 @@ export class HistoriaClinicaComponent {
     this.formularioForm = this.fb.group({
       // Hoja 1
       historiaForm: this.fb.group({
-        fecha: [''],
-        hora: [''],
-        hijoNombre: [''],
-        hijoApellido: [''],
-        padreNombre: [''],
-        padreApellido: [''],
-        direccion: [''],
-        telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-        motivoConsulta: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        fecha:          [''],
+        hora:           [''],
+        hijoNombre:     [''],
+        hijoApellido:   [''],
+        padreNombre:    [''],
+        padreApellido:  [''],
+        direccion:      [''],
+        telefono:       [''],
+        motivoConsulta: ['', Validators.required],
       }),
 
       // Hoja 2
       antePersoForm: this.fb.group({
         edad_embarazo_madre: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
 
-        fue_alto_riesgo: ['', Validators.required],
+        fue_alto_riesgo: ['', [Validators.required, this.validarSelect()]],
+        especifique_riesgo: ['', Validators.required],
 
-        especifique_riesgo: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
         semanas_gestacion: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
         tipo_parto: ['', [Validators.required, this.validarSelect()]],
+
         complicaciones_parto: ['', [Validators.required, this.validarSelect()]],
-        especifique_complicaciones: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        especifique_complicaciones: ['', Validators.required],
+
         uso_incubadora: ['', [Validators.required, this.validarSelect()]],
-        tiempo_incubadora: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
+        tiempo_incubadora: ['', Validators.required],
         puntaje_apgar: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
         respiro_lloro_alnacer: ['', [Validators.required, this.validarSelect()]],
+
         emfermedad_en_embarazo: ['', [Validators.required, this.validarSelect()]],
-        especifque_enfermedad_emb: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        especifque_enfermedad_emb: ['', Validators.required],
+
         medicamente_en_embarazo: ['', [Validators.required, this.validarSelect()]],
-        especifique_medicamento: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        especifique_medicamento: ['', Validators.required],
+        
         emfermedad_sistemica: ['', [Validators.required, this.validarSelect()]],
-        especifique_enfer_sistemica: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        especifique_enfer_sistemica: ['', Validators.required],
         alergia: ['', [Validators.required, this.validarSelect()]],
-        especifique_alergia: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        especifique_alergia: ['', Validators.required],
         cirugia_general_ocular: ['', [Validators.required, this.validarSelect()]],
       }),
 
@@ -123,123 +129,285 @@ export class HistoriaClinicaComponent {
         //enviar el id de la historia clinica
         correcion_optica: ['', [Validators.required, this.validarSelect()]],
         edad_lente_primera_vez: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
-        cuantos_cambio_rx: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
-        motivo_cambio_rx: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        material_tratamiento_optico: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        indicaciones_uso: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        fecha_ultimo_examen: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        cuantos_cambio_rx: ['', Validators.required],
+        motivo_cambio_rx: ['', Validators.required],
+        material_tratamiento_optico: ['', Validators.required],
+        indicaciones_uso: ['', Validators.required],
+        fecha_ultimo_examen: ['', Validators.required],
       }),
 
       // Hoja 4
       agudezaForm: this.fb.group({
-        test: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        distancia: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        od_sc_vl: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        od_vp: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        od_ph: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        os_sc_vl: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        os_vp: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        os_ph: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        lensome_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        lensome_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        od_cc_vl: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        od_vp_lenso: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        os_cc_vl: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        os_vp_lenso: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        queratome_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        queratome_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        test:         ['', Validators.required],
+        distancia:    ['', Validators.required],
+        od_sc_vl:     ['', Validators.required],
+        od_vp:        ['', Validators.required],
+        od_ph:        ['', Validators.required],
+        os_sc_vl:     ['', Validators.required],
+        os_vp:        ['', Validators.required],
+        os_ph:        ['', Validators.required],
+        lensome_od:   ['', Validators.required],
+        lensome_os:   ['', Validators.required],
+        od_cc_vl:     ['', Validators.required],
+        od_vp_lenso:  ['', Validators.required],
+        os_cc_vl:     ['', Validators.required],
+        os_vp_lenso:  ['', Validators.required],
+        queratome_od: ['', Validators.required],
+        queratome_os: ['', Validators.required],
       }),
 
       // Hoja 5
       retinoscopiaForm: this.fb.group({
-        retino_tecnica: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_ciclople: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_refrac_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_subjet_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_final_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_refrac_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_subjet_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        retino_final_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        retino_tecnica:   ['', Validators.required],
+        retino_ciclople:  ['', Validators.required],
+        retino_refrac_od: ['', Validators.required],
+        retino_subjet_od: ['', Validators.required],
+        retino_final_od:  ['', Validators.required],
+        retino_refrac_os: ['', Validators.required],
+        retino_subjet_os: ['', Validators.required],
+        retino_final_os:  ['', Validators.required],
       }),
 
       // Hoja 6
       alineamientoForm: this.fb.group({
-        hirschberg: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        bruckner: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        covet_test_vl: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        covet_test_vp: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        esta_acomo_flex: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        esta_acomo_aa: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        hirschberg:       ['', Validators.required],
+        bruckner:         ['', Validators.required],
+        covet_test_vl:    ['', Validators.required],
+        covet_test_vp:    ['', Validators.required],
+        esta_acomo_flex:  ['', Validators.required],
+        esta_acomo_aa:    ['', Validators.required],
       }),
 
       // Hoja 7
       versionesForm: this.fb.group({
-        observacion_versiones: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        observacion_versiones: ['', Validators.required],
       }),
 
       // Hoja 8
       duccMotaliExploForm: this.fb.group({
         // PARA DUCCIONES
-        ducc_normal_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        ducc_parecia_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        ducc_paralisis_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        ducc_normal_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        ducc_parecia_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        ducc_paralisis_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        ducc_normal_od:     ['', Validators.required],
+        ducc_parecia_od:    ['', Validators.required],
+        ducc_paralisis_od:  ['', Validators.required],
+        ducc_normal_os:     ['', Validators.required],
+        ducc_parecia_os:    ['', Validators.required],
+        ducc_paralisis_os:  ['', Validators.required],
 
         // PARA MOTALIDAD OCULAR
-        mo_seguimiento_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        mo_sacadicos_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        mo_seguimiento_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        mo_sacadicos_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        mo_seguimiento_ao: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        mo_sacadicos_ao: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        mo_seguimiento_od:  ['', Validators.required],
+        mo_sacadicos_od:    ['', Validators.required],
+        mo_seguimiento_os:  ['', Validators.required],
+        mo_sacadicos_os:    ['', Validators.required],
+        mo_seguimiento_ao:  ['', Validators.required],
+        mo_sacadicos_ao:    ['', Validators.required],
 
         // PARA EXPLORACION DE EXTERNOS
-        explo_exter_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        explo_exter_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        explo_exter_od: ['', Validators.required],
+        explo_exter_os: ['', Validators.required],
       }),
 
       // Hoja 9
       oftalmoscipiaForma: this.fb.group({
-        medi_refrin_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        refle_fovea_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        papila_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        excav_fisio_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        profundidad_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        vasos_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        rela_arte_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        macula_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        reti_perif_od: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        medi_refrin_od: ['', Validators.required],
+        refle_fovea_od: ['', Validators.required],
+        papila_od:      ['', Validators.required],
+        excav_fisio_od: ['', Validators.required],
+        profundidad_od: ['', Validators.required],
+        vasos_od:       ['', Validators.required],
+        rela_arte_od:   ['', Validators.required],
+        macula_od:      ['', Validators.required],
+        reti_perif_od:  ['', Validators.required],
 
-        medi_refrin_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        refle_fovea_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        papila_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        excav_fisio_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        profundidad_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        vasos_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        rela_arte_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        macula_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        reti_perif_os: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        medi_refrin_os: ['', Validators.required],
+        refle_fovea_os: ['', Validators.required],
+        papila_os:      ['', Validators.required],
+        excav_fisio_os: ['', Validators.required],
+        profundidad_os: ['', Validators.required],
+        vasos_os:       ['', Validators.required],
+        rela_arte_os:   ['', Validators.required],
+        macula_os:      ['', Validators.required],
+        reti_perif_os:  ['', Validators.required],
       }),
 
       // Hoja 10
       diagnostico: this.fb.group({
-        diagnostico: ['', [Validators.required, this.validarSelect()]],
-        tratamiento_diagnostico: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        pronostico_diagnostico: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
-        control_diagnostico: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+        diagnostico:              ['', [Validators.required, this.validarSelect()]],
+        tratamiento_diagnostico:  ['', Validators.required],
+        pronostico_diagnostico:   ['', Validators.required],
+        control_diagnostico:      ['', Validators.required],
       })
 
     });
 
     // Validaciones para los formularios con select
     // Escuchar cambios en el select 'fue_alto_riesgo'
-    // this.formularioForm.get('antePersoForm.fue_alto_riesgo')?.valueChanges.subscribe((valor) => {
-      
-    //   //console.log(valor);
-    // });
+    this.formularioForm.get('antePersoForm.fue_alto_riesgo')?.valueChanges.subscribe((valor) => {
+        // tomamos el campo que se asocia al select 
+        const input = this.formularioForm.get('antePersoForm.especifique_riesgo');
+        // si el valor es true pasa a ser requerido para enviar
+        if(valor === 'true'){
+          input?.enable();
+          input?.setValidators(Validators.required);
+        } else {
+          // si no lo es se desabilita y se quita que sea requerido
+          input?.disable();
+          input?.clearValidators();
+        }
+        // reinciamos validaciones y valores
+        input?.updateValueAndValidity();
+    });
 
+    // Escuchar cambios en el select 'fue_alto_riesgo'
+    this.formularioForm.get('antePersoForm.complicaciones_parto')?.valueChanges.subscribe((valor) => {
+      // tomamos el campo que se asocia al select 
+      const input = this.formularioForm.get('antePersoForm.especifique_complicaciones');
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        input?.enable();
+        input?.setValidators(Validators.required);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+
+    // Escuchar cambios en el select 'uso_incubadora'
+    this.formularioForm.get('antePersoForm.uso_incubadora')?.valueChanges.subscribe((valor) => {
+      // tomamos el campo que se asocia al select 
+      const input = this.formularioForm.get('antePersoForm.tiempo_incubadora');
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        input?.enable();
+        input?.setValidators(Validators.required);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+
+    // Escuchar cambios en el select 'emfermedad_en_embarazo'
+    this.formularioForm.get('antePersoForm.emfermedad_en_embarazo')?.valueChanges.subscribe((valor) => {
+      // tomamos el campo que se asocia al select 
+      const input = this.formularioForm.get('antePersoForm.especifque_enfermedad_emb');
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        input?.enable();
+        input?.setValidators(Validators.required);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+
+    // Escuchar cambios en el select 'medicamente_en_embarazo'
+    this.formularioForm.get('antePersoForm.medicamente_en_embarazo')?.valueChanges.subscribe((valor) => {
+      // tomamos el campo que se asocia al select 
+      const input = this.formularioForm.get('antePersoForm.especifique_medicamento');
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        input?.enable();
+        input?.setValidators(Validators.required);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+
+    // Escuchar cambios en el select 'emfermedad_sistemica'
+    this.formularioForm.get('antePersoForm.emfermedad_sistemica')?.valueChanges.subscribe((valor) => {
+      // tomamos el campo que se asocia al select 
+      const input = this.formularioForm.get('antePersoForm.especifique_enfer_sistemica');
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        input?.enable();
+        input?.setValidators([Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+
+    // Escuchar cambios en el select 'alergia'
+    this.formularioForm.get('antePersoForm.alergia')?.valueChanges.subscribe((valor) => {
+      // tomamos el campo que se asocia al select 
+      const input = this.formularioForm.get('antePersoForm.especifique_alergia');
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        input?.enable();
+        input?.setValidators([Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+
+    // Escuchar cambios en el select 'correcion_optica'
+    this.formularioForm.get('anteVisualForm.correcion_optica')?.valueChanges.subscribe((valor) => {
+      // tomamos los campo que se asocia al select 
+      const input   = this.formularioForm.get('anteVisualForm.edad_lente_primera_vez');
+      const input2  = this.formularioForm.get('anteVisualForm.cuantos_cambio_rx');
+      const input3  = this.formularioForm.get('anteVisualForm.material_tratamiento_optico');
+      const input4  = this.formularioForm.get('anteVisualForm.indicaciones_uso');
+      const input5  = this.formularioForm.get('anteVisualForm.fecha_ultimo_examen');
+      
+
+      // si el valor es true pasa a ser requerido para enviar
+      if(valor === 'true'){
+        // cambios para los inputs segun el valor del select
+        input?.enable();
+        input?.setValidators([Validators.required, Validators.pattern('^[0-9]{1,2}$')]);
+
+        input2?.enable();
+        input2?.setValidators(Validators.required);
+
+        input3?.enable();
+        input3?.setValidators(Validators.required);
+
+        input4?.enable();
+        input4?.setValidators(Validators.required);
+
+        input5?.enable();
+        input5?.setValidators([Validators.required, this.validarFecha(this.formularioForm)]);
+      } else {
+        // si no lo es se desabilita y se quita que sea requerido
+        input?.disable();
+        input?.clearValidators();
+
+        input2?.disable();
+        input2?.clearValidators();
+
+        input3?.disable();
+        input3?.clearValidators();
+
+        input4?.disable();
+        input4?.clearValidators();
+
+        input5?.disable();
+        input5?.clearValidators();
+      }
+      // reinciamos validaciones y valores
+      input?.updateValueAndValidity();
+    });
+    
+    
 
   }
 
@@ -253,6 +421,54 @@ export class HistoriaClinicaComponent {
     };
   }
 
+  // metodo para validar que la fecha sea igual inferior a la actual
+  validarFecha(formulario: FormGroup) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const fechaSeleccionada = new Date(control.value);
+      const fechaActual = new Date(); // tomamos la fecha actual
+      const fechaMinima = new Date(
+        // sacamos los calculos necesarios
+        fechaActual.getFullYear() - 17, // calculo del año
+        fechaActual.getMonth(),         // calculo del mes
+        fechaActual.getDate()           // tomamos el dato
+      );
+      // validamos que la fecha sea igual o menor a hoy
+      if (fechaSeleccionada > fechaActual) {
+        return { fechaInvalida: true }; // si es dejamos pasar
+      }
+      // validamos que la fecha sea como mucho igual o menor a 17
+      if (fechaSeleccionada < fechaMinima) {
+        return { fechaInvalida: true }; // si es dejamos pasar
+      }
+      return null;
+    };
+  }
+
+  // metodo para validar que el ingreso de datos sea correcto
+  validarTecla(event: KeyboardEvent): void {
+    const teclasPermitidas = [
+      'Backspace', // Borrar
+      'Delete',    // Eliminar
+      'ArrowLeft', // Flecha izquierda
+      'ArrowRight', // Flecha derecha
+      'Tab',       // Tabulación
+      '@',         // Permitir el símbolo '@'
+      'x',          // Permitir la letra 'x'
+    ];
+  
+    const teclaPresionada = event.key;
+  
+    // Si la tecla está en las permitidas, no bloqueamos su comportamiento
+    if (teclasPermitidas.includes(teclaPresionada)) {
+      return;
+    }
+  
+    // Bloquea únicamente las letras
+    const esLetra = /^[a-zA-ZáéíóúÁÉÍÓÚÑñ]$/.test(teclaPresionada) && teclaPresionada !== 'x';
+    if (esLetra) {
+      event.preventDefault();
+    }
+  }
   // FUNCIONES PARA VALIDAR LOS INPUT's ↑
 
 
@@ -281,76 +497,80 @@ export class HistoriaClinicaComponent {
     
     // tomamos de la URL el documento del hijo
     this.accionModulo = this.route.snapshot.paramMap.get('flag') || '';
+
+    
     
     // metodo para esperar hasta que se termine de realizar al completo
     this.cargarDocumentoHijo().then(() => {
 
       // Esta función se ejecutará después de que cargarDocumentoHijo se complete 
       this.obtenerDatosDelPadre();
-      
-      // verificamos si se va a agregar todo o solo el diagnostico
-      if (this.accionModulo){
 
-        if (this.rolUsuarioActual == 1) {
-          // pasamos al usuario a la pagina 10 donde esta lo que se va a modificar
-          this.currentStep = 10;
-        }
+      // buscar si el hijo tiene historia clinica
+      this.buscarHisoriaClinica().then(() =>{
+        // verificamos si se va a agregar todo o solo el diagnostico
+        if (this.existeHistoria){
 
-        // llamamos a la funcion para traer los datos de la historia clinica
-        this.cargarRegistroHistoria().then(() => {
-
-          // llamamos a la funcion para traer los datos de antecedente visual
-          this.cargarRegistroAnteceVisual();
-
-          // llamamos a la funcion para traer los datos de agudeza visual
-          this.cargarRegistroAgudezaVisual();
-
-          // llamamos a la funcion para traer los datos de retinoscopia
-          this.cargarRegistroRetinoscopia();
-
-          // llamamos a la funcion para traer los datos del alineamiento motor
-          this.cargarRegistroAlineamiento();
-
-          // llamamos a la funcion para traer los datos de las versiones
-          this.cargarRegistroVersiones();
-
-          // llamamos a la funcion para traer los datos de las ducciones
-          this.cargarRegistroDucciones();
-
-          // llamamos a la funcion para traer los datos de la motalidad ocular
-          this.cargarRegistroMotalidad();
-
-          // llamamos a la funcion para traer los datos de la exploracion de externo
-          this.cargarRegistroExploracion();
-
-          // llamamos a la funcion para traer los datos de la oftalmoscopia
-          this.cargarRegistroOftalmoscopia();
+          if (this.rolUsuarioActual == 1) {
+            // pasamos al usuario a la pagina 10 donde esta lo que se va a modificar
+            this.currentStep = 10;
+          }
 
           // llamamos a la funcion para traer los datos de la historia clinica
-          this.cargarRegistrosDiagnosticos();
-        });
-      } else {
+          this.cargarRegistroHistoria().then(() => {
 
-        // metodo para tomar los datos del localstorage en caso de que existan
-        const savedValues = JSON.parse(localStorage.getItem('formValues') || '{}');
-        // aplicamos lo que tengamos en el localstorage
-        this.formularioForm.patchValue(savedValues);
-  
-        // Escuchar cambios en el formulario principal y guardar en localStorage 
-        this.formularioForm.valueChanges.subscribe(values => { 
-          localStorage.setItem('formValues', JSON.stringify(values)); 
-        });
-  
-        // Establecer fecha y hora actuales en los controles del formulario 
-        const currentDate = new Date(); 
-        const currentDateString = currentDate.toISOString().split('T')[0]; 
-        const currentTimeString = currentDate.toTimeString().split(' ')[0].substring(0, 5);
-        this.formularioForm.get('historiaForm')?.patchValue({
-          fecha: currentDateString,
-          hora: currentTimeString,
-        });
-      }
+            // llamamos a la funcion para traer los datos de antecedente visual
+            this.cargarRegistroAnteceVisual();
 
+            // llamamos a la funcion para traer los datos de agudeza visual
+            this.cargarRegistroAgudezaVisual();
+
+            // llamamos a la funcion para traer los datos de retinoscopia
+            this.cargarRegistroRetinoscopia();
+
+            // llamamos a la funcion para traer los datos del alineamiento motor
+            this.cargarRegistroAlineamiento();
+
+            // llamamos a la funcion para traer los datos de las versiones
+            this.cargarRegistroVersiones();
+
+            // llamamos a la funcion para traer los datos de las ducciones
+            this.cargarRegistroDucciones();
+
+            // llamamos a la funcion para traer los datos de la motalidad ocular
+            this.cargarRegistroMotalidad();
+
+            // llamamos a la funcion para traer los datos de la exploracion de externo
+            this.cargarRegistroExploracion();
+
+            // llamamos a la funcion para traer los datos de la oftalmoscopia
+            this.cargarRegistroOftalmoscopia();
+
+            // llamamos a la funcion para traer los datos de la historia clinica
+            this.cargarRegistrosDiagnosticos();
+          });
+        } else {
+
+          // metodo para tomar los datos del localstorage en caso de que existan
+          const savedValues = JSON.parse(localStorage.getItem('formValues') || '{}');
+          // aplicamos lo que tengamos en el localstorage
+          this.formularioForm.patchValue(savedValues);
+    
+          // Escuchar cambios en el formulario principal y guardar en localStorage 
+          this.formularioForm.valueChanges.subscribe(values => { 
+            localStorage.setItem('formValues', JSON.stringify(values)); 
+          });
+    
+          // Establecer fecha y hora actuales en los controles del formulario 
+          const currentDate = new Date(); 
+          const currentDateString = currentDate.toISOString().split('T')[0]; 
+          const currentTimeString = currentDate.toTimeString().split(' ')[0].substring(0, 5);
+          this.formularioForm.get('historiaForm')?.patchValue({
+            fecha: currentDateString,
+            hora: currentTimeString,
+          });
+        }
+      });
     }) 
     .catch((error) => { 
       console.error('Error en la obtención del documento del padre:', error); 
@@ -365,6 +585,21 @@ export class HistoriaClinicaComponent {
     this.unsubscribe$.complete();
   }
 
+  // funcion para verificar si el hijo tiene historia clinica
+  buscarHisoriaClinica(): Promise<void> {
+    // buscamos la historia 
+    return new Promise((resolve, reject) => {
+      this.superadminservice.obtenerRegistroHistoria(this.idHijo)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(data => {
+          if(!data.status) {
+            this.existeHistoria = true;
+          }
+          console.log(this.existeHistoria)
+          resolve();
+      });
+    });
+  }
 
   // FUNCIONES PARA TOMAR DATOS NECESARIOS DE LAS ENTIDADES RELACIONADAS
   // funcion para traer a los hijos 
@@ -397,7 +632,6 @@ export class HistoriaClinicaComponent {
             hijoApellido: data.hijo.apellido,
             direccion: data.hijo.direccion,
           };
-          console.log(datosParaHijo.direccion);
           this.formularioForm.get('historiaForm')?.patchValue(datosParaHijo);
           resolve(); // Resolución de la promesa después de completar la tarea
         } else {
@@ -518,25 +752,90 @@ export class HistoriaClinicaComponent {
           this.formularioForm.reset();
 
           // Limpiar el localstorage cuando se necesite
-          localStorage.removeItem('formularioForm');
+          localStorage.removeItem('formValues');
 
           // Mostrar alerta de éxito 
           alert('Todos los registros se han guardado correctamente.');
         } 
+
       }catch (error) { 
         console.error('Error al guardar los registros:', error);
         // Mostrar alerta de error 
         alert('Ocurrió un error al guardar los registros. Por favor, intenta nuevamente.');
+
+        document.getElementById('overlay')!.style.display = 'none'; 
       } finally { 
         // Ocultar el overlay para permitir la interacción del usuario 
         document.getElementById('overlay')!.style.display = 'none'; 
       } 
     } else {
       console.log('Formulario no válido'); 
-      alert('Datos invalidos')
+      this.formularioForm.markAllAsTouched();
+      this.validarFormulario();
     }
-    this.verificarEstadoPadre();
+    document.getElementById('overlay')!.style.display = 'none';
+    //this.verificarEstadoPadre();
   }
+
+  // funcion para validar que formulario falta por ser rellenado
+  validarFormulario() {
+    const historiaFormInvalid   = this.formularioForm.get('historiaForm')?.invalid;
+    const antePersoFormInvalid  = this.formularioForm.get('antePersoForm')?.invalid;
+    const anteVisualForm      = this.formularioForm.get('anteVisualForm')?.invalid;
+    const agudezaForm         = this.formularioForm.get('agudezaForm')?.invalid;
+    const retinoscopiaForm    = this.formularioForm.get('retinoscopiaForm')?.invalid;
+    const alineamientoForm    = this.formularioForm.get('alineamientoForm')?.invalid;
+    const versionesForm       = this.formularioForm.get('versionesForm')?.invalid;
+    const duccMotaliExploForm = this.formularioForm.get('duccMotaliExploForm')?.invalid;
+    const oftalmoscipiaForma  = this.formularioForm.get('oftalmoscipiaForma')?.invalid;
+    const diagnostico         = this.formularioForm.get('diagnostico')?.invalid;
+  
+    switch (true) {
+      case historiaFormInvalid:
+        alert('Faltan Datos de Anamnesis, Primera Hoja');
+        this.currentStep == 1;
+        break;
+      case antePersoFormInvalid:
+        alert('Faltan Datos en Antecedente Personal, Segunda Hoja');
+        this.currentStep == 2;
+        break;
+      case anteVisualForm:
+        alert('Faltan Datos en Antecedente Visual, Tercera Hoja');
+        this.currentStep == 3;
+        break;
+      case agudezaForm:
+        alert('Faltan Datos en Agudeza Visual, Cuarta Hoja');
+        this.currentStep == 4;
+        break;
+      case retinoscopiaForm:
+        alert('Faltan Datos en Retinoscopía, Quinta Hoja');
+        this.currentStep == 5;
+        break;
+      case alineamientoForm:
+        alert('Faltan Datos en Alineamiento Motor, Sexta Hoja');
+        this.currentStep == 6;
+        break;
+      case versionesForm:
+        alert('Faltan Datos en Antecedente Versiones, Septima Hoja');
+        this.currentStep == 7;
+        break;
+      case duccMotaliExploForm:
+        alert('Faltan Datos en Ducciones, Octava Hoja');
+        this.currentStep == 8;
+        break;
+      case oftalmoscipiaForma:
+        alert('Faltan Datos en Oftalmoscopía, Novena Hoja');
+        this.currentStep == 9;
+        break;
+      case diagnostico:
+        alert('Faltan Datos en Diagnostico, Ultima Hoja');
+        this.currentStep == 10;
+        break;
+      default:
+      break;
+    }
+  }
+
 
   // FUNCIONES DE AGREGACION DE HISTORIA CLINICA ↓
   // Funcion para insertar la historia clinica
@@ -580,9 +879,13 @@ export class HistoriaClinicaComponent {
           // verificamos si existe un registro ya
           if (response.existe) {
             alert('Ya existe un registro de historia clinica para este hijo')
+            document.getElementById('overlay')!.style.display = 'none'; 
           } else {
+            console.log(response)
+            console.log(response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
+              
               // hubo error
               console.log('error al insertar la historia clinica')
               this.datoInsertado = false;
@@ -1430,8 +1733,7 @@ export class HistoriaClinicaComponent {
           
         }, 1000);
       } else {
-        alert('No se encontro historia clinica del paciente')
-        //this.router.navigate(['/paciente']);
+        alert('No se encontro diagnosticos del paciente')
       }
     })
   }
