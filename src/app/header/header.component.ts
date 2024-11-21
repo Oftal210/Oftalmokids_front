@@ -22,6 +22,30 @@ export class HeaderComponent {
     this.showDropdown = !this.showDropdown;
   }
 
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
+  // Ruta para redirigir a la persona
+  rutaPerfil: string = '';
+  nombreperfil: string = '';
+
+
+  // Funcion para redirigir a la persona
+  ngOnInit(){
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol == 1){
+        this.rutaPerfil = '/perfil';
+        this.nombreperfil = 'Administrador';
+      } else {
+        this.rutaPerfil = '/perfil-padre';
+        this.nombreperfil = 'Padre';
+      }
+    }
+  }
+
+  // Funcion para cerrar la sesion actual
   cerrarSesion() {
     this.superadminservice.cerrarSesion().subscribe( response => { 
       // Maneja la respuesta de cierre de sesión exitoso 

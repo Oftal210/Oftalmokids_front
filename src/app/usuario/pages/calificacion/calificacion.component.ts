@@ -170,20 +170,40 @@ export class CalificacionComponent implements AfterViewInit {
     const activ_libre = this.temas[3].respuesta === 'like';
     const buen_alimen = this.temas[4].respuesta === 'like';
     const solict_contr = this.temas[5].respuesta === 'like';
-    const motivo_gafas = this.temas[0].motivo ?? null;
-    const motivo_medic = this.temas[1].motivo ?? null;
-    const motivo_panta = this.temas[2].motivo ?? null;
-    const motivo_activ = this.temas[3].motivo ?? null;
-    const motivo_buen = this.temas[4].motivo ?? null;
-    const motivo_contr = this.temas[5].motivo ?? null;
-    const punt_precon = this.finalValue;
+
+    var motivo_gafas = null;
+    var motivo_medic = null;
+    var motivo_panta = null;
+    var motivo_activ = null;
+    var motivo_buen  = null;
+    var motivo_contr = null;
+    const punt_precon  = this.finalValue;
+    if(!uso_gafas){
+      motivo_gafas = this.temas[0].motivo ?? null;
+    }
+    if(!uso_medic){
+      motivo_medic = this.temas[1].motivo ?? null;
+    }
+    if(!limite_panta){
+      motivo_panta = this.temas[2].motivo ?? null;
+    }
+    if(!activ_libre){
+      motivo_activ = this.temas[3].motivo ?? null;
+    }
+    if(!buen_alimen){
+      motivo_buen = this.temas[4].motivo ?? null;
+    }
+    if(!solict_contr){
+      motivo_contr = this.temas[5].motivo ?? null;
+    }
+    
 
     this.padreService.enviarPreconsulta(
       hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, 
       punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr
     ).subscribe(response => {
       console.log('Respuesta del servidor:', response);
-      if (response.status != 200 ){
+      if (response.status != 200 && response.status != 201){
         alert('error al guardar la preconsulta');
       } else {
         alert('los datos se insertaron correctamente');

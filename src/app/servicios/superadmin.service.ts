@@ -30,6 +30,22 @@ export class SuperadminService {
   obtenerConsultasxMeses(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/diagnosticosxmeses`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
+
+  // Metodo para traer el numero de padres registrados
+  obtenerDiagnosticosDashboard(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/contardiag`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
+  // Metodo para traer el numero de registro de este mes
+  obtenerNumeroMensualDiag(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/diagmensual`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
+  // Metodo para traer la estadistica de diagnosicos, su frecuencia y el rango de edad
+  obtenerFrecuenciaDiagEdad(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/diagxedad`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+  
   // METODOS PARA EL DASHBOARD ↑
 
 
@@ -84,8 +100,8 @@ export class SuperadminService {
   }
 
   // Metodo para guardar o insertar un hijo
-  guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any) {
-    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, edad:edad, genero:genero});
+  guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any, direccion: any) {
+    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, edad:edad, genero:genero, direccion: direccion});
   }
   // METODO PARA PACIENTE ↑
 
@@ -381,14 +397,19 @@ export class SuperadminService {
     motivo_consulta: any,
     tratamiento_diagnostico: any,
     pronostico_diagnostico: any,
-    control_diagnostico: any) {
+    control_diagnostico: any,
+    edad: any
+    
+  ) {
     return this.http.post<any>(this.apiUrl+'/diagnosticoxhistoria', {
       historia_clinica: historia_clinica,
       diagnostico: diagnostico,
       motivo_consulta: motivo_consulta,
       tratamiento_diagnostico: tratamiento_diagnostico,
       pronostico_diagnostico: pronostico_diagnostico,
-      control_diagnostico: control_diagnostico
+      control_diagnostico: control_diagnostico,
+      edad: edad
+      
     });
   }
 

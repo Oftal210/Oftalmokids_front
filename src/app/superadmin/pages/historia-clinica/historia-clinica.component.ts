@@ -31,6 +31,7 @@ export class HistoriaClinicaComponent {
   documentoHijo: string = '';
   accionModulo: string = '';
   idHijo: string = '';
+  edadPaciente: string = '';
   idHistoriaClinica!: number;
   datoInsertado: boolean = false;
   ocultarMotivoConsulta: boolean = false;
@@ -577,6 +578,8 @@ export class HistoriaClinicaComponent {
     });
 
     this.cargarRegistroDiagnostico();
+
+    
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
@@ -623,9 +626,10 @@ export class HistoriaClinicaComponent {
       .subscribe(data => {
         // validmaos que el status sea correcto
         if (!data.mensaje){
-          this.hijo = data;
+          this.hijo = data.hijo;
           this.documentoPadre = data.hijo.id_usuario;
           this.idHijo = data.hijo.id;
+          this.edadPaciente = data.hijo.edad;
           console.log(this.idHijo);
           const datosParaHijo = {
             hijoNombre: data.hijo.nombre,
@@ -1386,7 +1390,7 @@ export class HistoriaClinicaComponent {
             diagnosticoDatos.tratamiento_diagnostico,
             diagnosticoDatos.pronostico_diagnostico,
             diagnosticoDatos.control_diagnostico,
-
+            this.edadPaciente
             
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
@@ -1794,6 +1798,7 @@ export class HistoriaClinicaComponent {
           diagnosticoDatos.tratamiento_diagnostico,
           diagnosticoDatos.pronostico_diagnostico,
           diagnosticoDatos.control_diagnostico,
+          this.edadPaciente
 
         ).pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => { 

@@ -55,7 +55,8 @@ export class AddPacienteComponent {
     apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
     fechanacimiento: ['', [Validators.required, this.validarFecha()]],
     edad: [''],
-    genero: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]]
+    genero: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
+    direccion: ['', Validators.required]
   });
   
   private unsubscribe$ = new Subject<void>();
@@ -348,6 +349,7 @@ export class AddPacienteComponent {
       const apellido        = this.pacienteForm.get('apellido')?.value;
       const fechanacimiento = this.pacienteForm.get('fechanacimiento')?.value;
       const genero          = this.pacienteForm.get('genero')?.value;
+      const direccion       = this.pacienteForm.get('direccion')?.value;
 
       // cambiamos la variable para que no salgan las alertas ahora
       this.verificacioDato = true;
@@ -364,7 +366,7 @@ export class AddPacienteComponent {
 
         if(!this.existePaciente) {
           // realizamos la insercion de los datos
-          this.superadminservice.guardarRegistroHijo(documento, this.documentoPadre, nombre, apellido, tipodocumento, fechanacimiento, this.edadPaciente, genero)
+          this.superadminservice.guardarRegistroHijo(documento, this.documentoPadre, nombre, apellido, tipodocumento, fechanacimiento, this.edadPaciente, genero, direccion)
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => {
             console.log('Respuesta del servidor:', response);
@@ -375,6 +377,7 @@ export class AddPacienteComponent {
               this.datosInsertado.emit();
               alert('el Hijo fue Guardado Correctamente');
               this.pacienteForm.reset();
+              this.cerrar();
             }
           }, error => {
             console.error('Error al enviar los datos:', error);

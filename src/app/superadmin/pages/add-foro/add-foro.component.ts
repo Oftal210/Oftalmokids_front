@@ -38,6 +38,9 @@ export class AddForoComponent {
   // variable para guardar el id del foro
   id = 0;
 
+  // variable para colocarle readonly a los campos segun el rol
+  readonlyRol: boolean = false;
+
   // variables para la imagen
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
@@ -82,6 +85,14 @@ export class AddForoComponent {
 
       // tomamos el id_rol y lo guardamos aparte
       this.rolUsuarioActual = docAdministrador.id_rol; 
+
+      // validamos segun el rol, el readonly para las diferentes cajas
+      if(this.rolUsuarioActual == 1){
+        this.readonlyRol = false;
+      } else {
+        this.readonlyRol = true;
+      }
+
     } else {
       console.log('saca del sistema, no hay json');
       this.router.navigate(['/login']);
@@ -101,7 +112,6 @@ export class AddForoComponent {
     
     // tomamos el id del foro para usarlo mas adelante
     this.id = data?.id || null;
-    console.log(datosobtenidosModal, this.editar, this.id, this.rutaImagenForo);
   }
 
   // metodo para emite un señal cuando se inserto un dato
@@ -116,78 +126,78 @@ export class AddForoComponent {
   tomarDatos(): void {
     if (this.documentoAdministrador) {
       var docAdministrador = JSON.parse(this.documentoAdministrador);
-      console.log(docAdministrador.documento);
-
-      if (!this.foroForm.invalid) {
-        console.log('valido, agg datos');
-        // tomamos los datos necesarios de los inputs que necesitamos
-        const titulo = this.foroForm.get('titulo')?.value;
-        const contenido = this.foroForm.get('contenido')?.value;
-
-        const imagenData = new FormData();
-
-        if(this.selectedFile) {
-          const nombreUnico = `${Date.now()}-${this.selectedFile.name}`;
-          imagenData.append('imagen', this.selectedFile, nombreUnico);
-          console.log(imagenData)
-        } else {
-          imagenData.append('imagen', '');
-        }
-        
-        imagenData.forEach((value, key) => {
-          console.log(`${key}:`, value);
-        });
-
-        console.log(
-          'usuario: ' + imagenData,
-          'titulo: ' + titulo,
-          'contenido: ' + contenido,
-          'img: ' + imagenData,
-          'id: ' + this.id,
-          'editar?: ' + this.editar
-        );
-
-        if (this.editar == false) {
-          // Si es false guardara y hara lo siguiente
-          this.superadminservice
-            .guardarRegistroForo(docAdministrador.documento, titulo, contenido, imagenData)
-            .subscribe(
-              (response) => {
-                console.log('Respuesta del servidor:', response);
-                if(!response.mensaje){
+      if (docAdministrador.id_rol == 1) {
+        if (!this.foroForm.invalid) {
+          console.log('valido, agg datos');
+          // tomamos los datos necesarios de los inputs que necesitamos
+          const titulo = this.foroForm.get('titulo')?.value;
+          const contenido = this.foroForm.get('contenido')?.value;
+  
+          const imagenData = new FormData();
+  
+          if(this.selectedFile) {
+            const nombreUnico = `${Date.now()}-${this.selectedFile.name}`;
+            imagenData.append('imagen', this.selectedFile, nombreUnico);
+            console.log(imagenData)
+          } else {
+            imagenData.append('imagen', '');
+          }
+          
+          imagenData.forEach((value, key) => {
+            console.log(`${key}:`, value);
+          });
+  
+          console.log(
+            'usuario: ' + imagenData,
+            'titulo: ' + titulo,
+            'contenido: ' + contenido,
+            'img: ' + imagenData,
+            'id: ' + this.id,
+            'editar?: ' + this.editar
+          );
+  
+          if (this.editar == false) {
+            // Si es false guardara y hara lo siguiente
+            this.superadminservice
+              .guardarRegistroForo(docAdministrador.documento, titulo, contenido, imagenData)
+              .subscribe(
+                (response) => {
+                  console.log('Respuesta del servidor:', response);
+                  if(!response.mensaje){
+                    // Emite el evento después de la inserción si fue exitosa
+                    this.datosInsertado.emit();
+                    this.cerrar();
+                  } else{
+                    console.log('fallo en el sistema');
+                  };
+                },
+                (error) => {
+                  console.error('Error al enviar los datos:', error);
+                }
+              );
+            this.editar = false;
+            
+          } else {
+            // Si es true editara y hara los siguiente
+            this.superadminservice
+              .editarRegistroForo(this.id, titulo, contenido, imagenData)
+              .subscribe(
+                (response) => {
+                  console.log('Respuesta del servidor:', response);
+  
                   // Emite el evento después de la inserción si fue exitosa
                   this.datosInsertado.emit();
-                  this.cerrar();
-                } else{
-                  console.log('fallo en el sistema');
-                };
-              },
-              (error) => {
-                console.error('Error al enviar los datos:', error);
-              }
-            );
-          this.editar = false;
-          
+                },
+                (error) => {
+                  console.error('Error al enviar los datos:', error);
+                }
+              );
+            this.editar = false;
+            this.cerrar();
+          }
         } else {
-          // Si es true editara y hara los siguiente
-          this.superadminservice
-            .editarRegistroForo(this.id, titulo, contenido, imagenData)
-            .subscribe(
-              (response) => {
-                console.log('Respuesta del servidor:', response);
-
-                // Emite el evento después de la inserción si fue exitosa
-                this.datosInsertado.emit();
-              },
-              (error) => {
-                console.error('Error al enviar los datos:', error);
-              }
-            );
-          this.editar = false;
-          this.cerrar();
+          alert('Faltan campos por rellenar');
         }
-      } else {
-        alert('Faltan campos por rellenar');
       }
     }
   }

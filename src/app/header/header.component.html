@@ -13,8 +13,8 @@
 
         <!-- Menú desplegable de perfil y cerrar sesión -->
         <div *ngIf="showDropdown" class="absolute right-0 mt-40 md:mt-40 mr-4 w-48 bg-white rounded-lg shadow-lg z-50">
-            <p class="text-gray-700 px-4 py-2 border-b font-semibold text-center">nom_user</p>
-            <button [routerLink]="'/perfil'" class="flex items-center px-4 py-2 hover:bg-gray-100 w-full">
+            <p class="text-gray-700 px-4 py-2 border-b font-semibold text-center">{{ nombreperfil }}</p>
+            <button [routerLink]="rutaPerfil" class="flex items-center px-4 py-2 hover:bg-gray-100 w-full">
                 <i class="fa-solid fa-user text-gray-500 mr-2"></i> Perfil
             </button>
             <button class="flex items-center px-4 py-2 hover:bg-gray-100 w-full text-red-600" (click)="cerrarSesion()">

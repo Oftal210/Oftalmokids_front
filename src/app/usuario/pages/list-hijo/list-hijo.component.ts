@@ -110,24 +110,6 @@ export class ListHijoComponent {
     return edad;
   }
 
-  // funcion para buscar el hijo en e input de busqueda 
-  buscarRegistroHijo(): void {
-    
-    this.padreservice.buscarPaciente(this.inputDatoBusqueda)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      if(data.status != 404){
-        this.hijos = [data.hijo];
-        this.p = 1;
-        this.botonVisible = true;
-      } else {
-        alert('No existe el hijo buscado');
-        this.cargarRegistroHijos();
-        this.botonVisible = false;
-      }
-    });
-  }
-
   ocultarBotonBusqueda(): void{
     this.botonVisible = false;
     this.cargarRegistroHijos();
@@ -150,6 +132,13 @@ export class ListHijoComponent {
         direccion: hijo.direccion,
         editar: true,
       }
+    });
+
+    // al insertar correctamente, se avisa por este medio para realizar una actualizacion de los datos
+    dialogRef.componentInstance.datosInsertado.subscribe(() =>{
+
+      // llamamos a la funcion que trae los registros de foro
+      this.cargarRegistroHijos();
     });
   }
 

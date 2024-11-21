@@ -10,7 +10,7 @@
                 <!--TIpo de documento -->
                 <div class="mb-4 w-full md:w-[95%] lg:w-10/12 mx-auto">
                     <label for="" class="block text-sm font-medium text-gray-700">Tipo de documento</label>
-                    <select name="tipodocumento" formControlName="tipodocumento"
+                    <select name="tipodocumento" formControlName="tipodocumento" 
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                         <option selected hidden>Seleccione uno</option>
@@ -29,11 +29,11 @@
                 <div class="mb-4 w-full md:w-[95%] lg:w-10/12 mx-auto">
                     <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
                     <div class="relative w-full">
-                        <input type="text" name="documento" formControlName="documento"
+                        <input type="text" name="documento" formControlName="documento" [readOnly]="desactivarInputs"
                             (input)="onInputChangeNoEspacioPaciente($event)" maxlength="10"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required>
-                        <button type="button" (click)="buscarPaciente()"
+                        <button *ngIf="!editarHijo" type="button" (click)="buscarPaciente()"
                             class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-600">
                             <i class="fa-solid fa-magnifying-glass bg-white"></i>
                         </button>
@@ -85,7 +85,7 @@
                 <!-- Fecha de nacimiento -->
                 <div class="mb-4 w-full md:w-[95%] lg:w-10/12 mx-auto">
                     <label for="" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                    <input type="date" name="fechanacimiento" formControlName="fechanacimiento"
+                    <input type="date" name="fechanacimiento" formControlName="fechanacimiento" [readOnly]="desactivarInputs"
                         (input)="EdadPaciente($event)"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
@@ -102,7 +102,7 @@
                 <!-- Edad -->
                 <div class="mb-4 w-full md:w-[95%] lg:w-10/12 mx-auto">
                     <label for="" class="block text-sm font-medium text-gray-700">Edad</label>
-                    <input type="text" name="edad" value="{{ edadPaciente }}" maxlength="2" formControlName="edad"
+                    <input type="text" name="edad" value="{{ edadPaciente }}" maxlength="2" formControlName="edad" [readOnly]="desactivarInputs"
                         [readonly]="isReadonly"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
@@ -110,8 +110,8 @@
                 <!-- Género -->
                 <div class="mb-4 w-full md:w-[95%] lg:w-10/12 mx-auto">
                     <label for="" class="block text-sm font-medium text-gray-700">Género</label>
-                    <input type="text" name="genero" formControlName="genero"
-                        (input)="onInputChangeNoEspacioPaciente($event)" maxlength="10"
+                    <input type="text" name="genero" formControlName="genero" [readOnly]="desactivarInputs"
+                        (input)="onInputChangeNoEspacioPaciente($event)" maxlength="10" 
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                     <div *ngIf="pacienteForm.get('genero')?.hasError('required') && pacienteForm.get('genero')?.touched"
@@ -157,7 +157,7 @@
                 <button (click)="cerrar()" type="button"
                     class="bg-[#EF7A38] hover:bg-[#ef691e] text-white font-bold py-2 px-4 rounded mr-2">Cancelar</button>
                 <button type="submit"
-                    class="bg-[#15b3ec] hover:bg-[#00a0d9] text-white font-bold py-2 px-4 rounded">Crear</button>
+                    class="bg-[#15b3ec] hover:bg-[#00a0d9] text-white font-bold py-2 px-4 rounded">{{ nombreBoton }}</button>
             </div>
         </form>
     </div>

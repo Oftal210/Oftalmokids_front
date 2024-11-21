@@ -30,32 +30,23 @@ interface Condition {
 })
 export class DashboardComponent {
 
-  consultData: ConsultData[] = [
-    { period: 'Ene-Feb', consultations: 15, newPatients: 5 },
-    { period: 'Mar-Abr', consultations: 20, newPatients: 8 },
-    { period: 'May-Jun', consultations: 25, newPatients: 10 },
-    { period: 'Jul-Ago', consultations: 30, newPatients: 12 },
-    { period: 'Sep-Oct', consultations: 28, newPatients: 7 },
-    { period: 'Nov-Dic', consultations: 35, newPatients: 15 }
-  ];
-
   appointments: Appointment[] = [
-    { name: 'Ana Garcia', type: 'Control mensual', time: '15:30', date: 'Nov 8, 2024' },
-    { name: 'Ana Garcia', type: 'Control mensual', time: '15:30', date: 'Nov 8, 2024' },
-    { name: 'Ana Garcia', type: 'Control mensual', time: '15:30', date: 'Nov 8, 2024' }
+    { name: 'N/A', type: 'N/A', time: 'Rango Edad', date: 'N/A' },
+    { name: 'N/A', type: 'N/A', time: 'Rango Edad', date: 'N/A' },
+    { name: 'N/A', type: 'N/A', time: 'Rango Edad', date: 'N/A' }
   ];
 
   conditions: Condition[] = [
-    { name: 'Miopia', patients: 8 },
-    { name: 'Astigmatismo', patients: 6 },
-    { name: 'Hipermetropia', patients: 4 }
+    { name: 'Miopia', patients: 0 },
+    { name: 'Astigmatismo', patients: 0 },
+    { name: 'Hipermetropia', patients: 0 }
   ];
 
   stats = {
     parentsRegistered: { value: 0, increase: '20%' },
     childrenRegistered: { value: 0, increase: '15%' },
-    consultationsThisMonth: { value: 45, increase: '25%' },
-    upcomingAppointments: { value: 12, period: 'Próximos 7 días' }
+    consultationsThisMonth: { value: 0, increase: '25%' },
+    
   };
 
   // variable para tomar el documento de usuario
@@ -91,6 +82,9 @@ export class DashboardComponent {
     this.buscarMesesConsultas().then(() =>{
       this.initChart(); 
     });
+    this.buscarDiagnosticos();
+    this.buscarNumeroConsultas();
+    this.buscarDiagnosticoEdad();
     window.addEventListener('resize', this.onResize);
   }
 
@@ -108,6 +102,13 @@ export class DashboardComponent {
     const dataValues = Object.values(meses);  // [1, 1, 1, 1, 1, 1]
 
     const option = {
+      grid: {
+        width: "100%",
+        left: '5%',  // Ajusta este valor para mover el gráfico más a la izquierda
+        right: '5%',
+        top: '10%',
+        bottom: '10%'
+      },
       xAxis: {
         type: 'category',
         data: labels,
@@ -119,6 +120,7 @@ export class DashboardComponent {
         {
           data: dataValues,
           type: 'bar',
+          barWidth: "30%",
           itemStyle: {
             color: '#4CAF50' // Color de las barras
           }
@@ -179,7 +181,6 @@ export class DashboardComponent {
               // modificamos el numero si no hay mensaje
               this.meses = data;
             }
-            console.log(data);
             resolve();
           },
           error: err => {
@@ -189,8 +190,41 @@ export class DashboardComponent {
         });
     });
   }
-  
-  
-      
 
+  buscarDiagnosticos(): void {
+    this.superadminservice.obtenerDiagnosticosDashboard()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        if(data.status == 200){
+          this.conditions[0].patients = data.miopias
+          this.conditions[1].patients = data.astigs
+          this.conditions[2].patients = data.hiper
+        }
+      });
+  }
+
+  buscarNumeroConsultas(): void {
+    this.superadminservice.obtenerNumeroMensualDiag()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        if(data.status == 200){
+          this.stats.consultationsThisMonth.value = data.mensual
+        }
+      });
+  }
+
+  buscarDiagnosticoEdad(): void {
+    this.superadminservice.obtenerFrecuenciaDiagEdad()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        if(data.status == 200){
+          console.log(data.diag[0]);
+          for (let i = 0; i < data.diag.length; i++) {
+            this.appointments[i].name = data.diag[i].codigo_diagnostico;
+            this.appointments[i].type = data.diag[i].nombre_diagnostico;
+            this.appointments[i].date = data.diag[i].edad_minima + ' a ' + data.diag[i].edad_maxima;
+          }
+        }
+      });
+  }
 }

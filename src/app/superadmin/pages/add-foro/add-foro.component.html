@@ -10,7 +10,7 @@
 
 			<div class="mt-4">
 				<label class="block text-base font-medium">Título</label>
-				<input type="text" formControlName="titulo"
+				<input type="text" formControlName="titulo" [readOnly]="readonlyRol"
 					class="mt-1 block w-full border border-[#5cc7ee] rounded-md p-2 focus:outline-none"
 					placeholder="Escriba el título para este mensaje..." />
 				<div *ngIf="foroForm.get('titulo')?.hasError('required') && foroForm.get('titulo')?.touched"
@@ -22,7 +22,7 @@
 
 			<div class="mt-4">
 				<label class="block text-base font-medium">Contenido</label>
-				<textarea rows="4" formControlName="contenido"
+				<textarea rows="4" formControlName="contenido" [readOnly]="readonlyRol"
 					class="mt-1 block w-full border border-[#5cc7ee] rounded-md p-2 resize-none focus:outline-none"
 					placeholder="Escriba el texto que contendra..."></textarea>
 				<div *ngIf="foroForm.get('contenido')?.hasError('required') && foroForm.get('contenido')?.touched"
@@ -41,11 +41,11 @@
 
 			<!-- Mensaje de alerta si la imagen no fue encontrada -->
 			<div *ngIf="imageError" class="mt-4 text-red-500 font-medium text-sm">
-				La imagen no pudo ser cargar.
+				La imagen no pudo ser cargada.
 			</div>
 
 			<!-- Estilos para subir la imagen -->
-			<div class="mt-4">
+			<div class="mt-4" *ngIf="rolUsuarioActual == 1">
 				<label class="block text-base font-medium">Imagen</label>
 
 				<!-- Área de arrastre de archivos -->

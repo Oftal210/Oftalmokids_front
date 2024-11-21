@@ -227,6 +227,17 @@
                         El genero debe contener solo letras, max 10.
                     </div>
                 </div>
+
+                <!-- Direccion -->
+                <div class="mb-4">
+                    <label for="" class="block text-sm font-medium text-gray-700">Dirección</label>
+                    <input type="text" name="direccion" formControlName="direccion" (input)="onInputChangeEspacioPaciente($event)" maxlength="70"
+                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        required>
+                    <div *ngIf="pacienteForm.get('direccion')?.hasError('required') && pacienteForm.get('direccion')?.touched" class="text-red-500 font-medium text-sm">
+                        El genero es requerido.
+                    </div>
+                </div>
             </div>
 
             <!-- Botones -->

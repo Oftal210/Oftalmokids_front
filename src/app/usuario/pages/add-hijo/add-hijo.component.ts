@@ -38,6 +38,8 @@ export class AddHijoComponent {
 
   // variable para guardar el valor para el atributo readonly
   isReadonly = true;
+  nombreBoton: string = 'Crear';
+  desactivarInputs: boolean = false;
 
   // variable para verificar si es edicion o guardado
   editarHijo: boolean = false;
@@ -75,6 +77,8 @@ export class AddHijoComponent {
       this.pacienteForm.patchValue(data);
       if(data.editar){
         this.editarHijo = true;
+        this.nombreBoton = 'Guardar';
+        this.desactivarInputs = true;
         this.idPaciente = data.id
         console.log(this.idPaciente)
       }
@@ -243,6 +247,7 @@ export class AddHijoComponent {
     });
   }
 
+  // funcion para tomar los datos del formulario y realizar el proceso
   async tomarDatosPaciente(){
 
     const FotoHijo = new FormData();
@@ -276,24 +281,23 @@ export class AddHijoComponent {
 
       if(this.editarHijo){
 
-        // FotoHijo.append("nombre", this.pacienteForm.get('nombre')?.value || '');
-        // FotoHijo.append('apellido', this.pacienteForm.get('apellido')?.value || '');
-        // FotoHijo.append('tipo_documento', this.pacienteForm.get('tipodocumento')?.value || '');
-        // FotoHijo.append('direccion', String(this.pacienteForm.get('direccion')?.value));
-
-        // FotoHijo.forEach((value, key) => {
-        //   console.log(`${key}:`, value);
-        // });
-
-        const datos = {
-          nombre: this.pacienteForm.get('nombre')?.value,
-          apellido: this.pacienteForm.get('apellido')?.value,
-          tipo_documento: this.pacienteForm.get('tipodocumento')?.value,
-          direccion: this.pacienteForm.get('direccion')?.value,
-          foto: this.imagenBase64 // Aquí va la imagen convertida a Base64
-        };
-
-        console.log(datos);
+        var datos;
+        if (this.imagenBase64 == null || this.imagenBase64 == '') {
+          datos = {
+            nombre: this.pacienteForm.get('nombre')?.value,
+            apellido: this.pacienteForm.get('apellido')?.value,
+            tipo_documento: this.pacienteForm.get('tipodocumento')?.value,
+            direccion: this.pacienteForm.get('direccion')?.value,
+          };
+        } else {
+          datos = {
+            nombre: this.pacienteForm.get('nombre')?.value,
+            apellido: this.pacienteForm.get('apellido')?.value,
+            tipo_documento: this.pacienteForm.get('tipodocumento')?.value,
+            direccion: this.pacienteForm.get('direccion')?.value,
+            foto: this.imagenBase64 // Aquí va la imagen convertida a Base64
+          };
+        }
         
         // realizamos la edicion de los datos
         this.padreservice.modificarRegistroHijo(this.idPaciente, datos)
@@ -304,8 +308,8 @@ export class AddHijoComponent {
           // Emite el evento después de la inserción si fue exitosa
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
-            this.datosInsertado.emit();
             alert('el Hijo fue Actualizado Correctamente');
+            this.datosInsertado.emit();
             this.cerrar();
           }
         }, error => {
@@ -340,6 +344,7 @@ export class AddHijoComponent {
               }
             }, error => {
               console.error('Error al enviar los datos:', error);
+              this.cerrar();
               alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
             });
           } else {
@@ -347,6 +352,7 @@ export class AddHijoComponent {
             this.verificacioDato = false;
             // mostramos alertar de fallo
             alert('El Paciente ya Esta Registrado');
+            this.cerrar();
           }
         } else {
           // cambiamos la variable para que no salgan las alertas ahora
@@ -373,7 +379,7 @@ export class AddHijoComponent {
         reader.onloadend = () => resolve(reader.result as string); // Resuelve con el Base64
         reader.onerror = reject;
     });
-}
+  }
 
 
   verificarEstadoPaciente() {

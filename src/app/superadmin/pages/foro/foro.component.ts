@@ -163,7 +163,7 @@ export class ForoComponent {
 
       // llamamos a la funcion que trae los registros de foro
       this.cargarRegistrosforo();
-    })
+    });
   }
 
   // funcion para eliminar un foro

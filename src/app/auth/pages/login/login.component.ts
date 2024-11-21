@@ -86,29 +86,35 @@ login(): void {
         (rs: any) => {
             this.reply = rs;
             console.log('API response:', rs);
-            if (this.reply) {
-                // this.reply.user.id_rol = Number(this.reply.user.id_rol);
-                console.log('id_rol login',this.reply.user.id_rol);
-                sessionStorage.setItem('token', rs.token);
-                sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
-                sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
-                this.token = this.reply.access_token;
-                if (this.reply.user) {
-                    sessionStorage.setItem('documento', this.reply.user.documento);
+            if(rs.user.estado == 1){
+                if (this.reply) {
+                    // this.reply.user.id_rol = Number(this.reply.user.id_rol);
+                    console.log('id_rol login',this.reply.user.id_rol);
+                    sessionStorage.setItem('token', rs.token);
+                    sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
+                    sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
+                    this.token = this.reply.access_token;
+                    if (this.reply.user) {
+                        sessionStorage.setItem('documento', this.reply.user.documento);
+                    }
+                    //alert('Inicio de sesión exitoso');
+                    if(this.reply.user.id_rol === 1){
+                        setTimeout(() => {
+                            this.router.navigate(['/dashboard']);
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            this.router.navigate(['/hijo']);
+                        }, 2000);
+                    }
+                    
                 }
-                //alert('Inicio de sesión exitoso');
-                if(this,this.reply.user.id_rol === 1){
-                    setTimeout(() => {
-                        this.router.navigate(['/dashboard']);
-                    }, 2000);
-                } else {
-                    setTimeout(() => {
-                        this.router.navigate(['/hijo']);
-                    }, 2000);
-                }
-                
+                this.isSubmitting = false;
+            } else {
+                alert('Esta desactivado para ingresar');
+                this.router.navigate(['/login']);
             }
-            this.isSubmitting = false;
+            
         },
         err => {
             console.error(err);
@@ -129,6 +135,7 @@ login(): void {
             }, 2000);
         }
     );
+    this.isSubmitting = false;
 }
 
 getRoleName(rolId: number | undefined | null): string {
