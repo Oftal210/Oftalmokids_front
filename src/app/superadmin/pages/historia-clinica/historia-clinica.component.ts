@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../../../servicios/superadmin.service';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn  } from '@angular/forms';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -37,6 +37,7 @@ export class HistoriaClinicaComponent {
   ocultarMotivoConsulta: boolean = false;
   disableed: boolean = true;
   existeHistoria: boolean = false;
+  fechaActual!: string;
   
 
   // tomamos elementos del HTML
@@ -235,7 +236,7 @@ export class HistoriaClinicaComponent {
         diagnostico:              ['', [Validators.required, this.validarSelect()]],
         tratamiento_diagnostico:  ['', Validators.required],
         pronostico_diagnostico:   ['', Validators.required],
-        control_diagnostico:      ['', Validators.required],
+        control_diagnostico:      ['', [Validators.required, this.fechaPosteriorValidator()]],
       })
 
     });
@@ -414,6 +415,33 @@ export class HistoriaClinicaComponent {
 
   // FUNCIONES PARA VALIDAR LOS INPUT's ↓
   // SELECT
+
+  // metodo para validar que el ingreso de datos sea correcto
+  validarTecla(event: KeyboardEvent): void {
+    const teclasPermitidas = [
+      'Backspace', // Borrar
+      'Delete',    // Eliminar
+      'ArrowLeft', // Flecha izquierda
+      'ArrowRight', // Flecha derecha
+      'Tab',       // Tabulación
+      '@',         // Permitir el símbolo '@'
+      'x',          // Permitir la letra 'x'
+    ];
+  
+    const teclaPresionada = event.key;
+  
+    // Si la tecla está en las permitidas, no bloqueamos su comportamiento
+    if (teclasPermitidas.includes(teclaPresionada)) {
+      return;
+    }
+  
+    // Bloquea únicamente las letras
+    const esLetra = /^[a-zA-ZáéíóúÁÉÍÓÚÑñ]$/.test(teclaPresionada) && teclaPresionada !== 'x';
+    if (esLetra) {
+      event.preventDefault();
+    }
+  }
+
   // metodo para validar el valor del select y que no sea vacio
   validarSelect() {
     return (control: AbstractControl) => {
@@ -445,37 +473,27 @@ export class HistoriaClinicaComponent {
     };
   }
 
-  // metodo para validar que el ingreso de datos sea correcto
-  validarTecla(event: KeyboardEvent): void {
-    const teclasPermitidas = [
-      'Backspace', // Borrar
-      'Delete',    // Eliminar
-      'ArrowLeft', // Flecha izquierda
-      'ArrowRight', // Flecha derecha
-      'Tab',       // Tabulación
-      '@',         // Permitir el símbolo '@'
-      'x',          // Permitir la letra 'x'
-    ];
+  // metodo para validar la fecha de control que sea diferente a hoy a la actual
+  fechaPosteriorValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const inputDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Asegura que solo compares la fecha, no la hora
   
-    const teclaPresionada = event.key;
-  
-    // Si la tecla está en las permitidas, no bloqueamos su comportamiento
-    if (teclasPermitidas.includes(teclaPresionada)) {
-      return;
-    }
-  
-    // Bloquea únicamente las letras
-    const esLetra = /^[a-zA-ZáéíóúÁÉÍÓÚÑñ]$/.test(teclaPresionada) && teclaPresionada !== 'x';
-    if (esLetra) {
-      event.preventDefault();
-    }
+      if (control.value && inputDate < today) {
+        this.formularioForm.get('diagnostico.control_diagnostico')?.reset();
+        return { fechaAnterior: true }; // Si la fecha es anterior, retorna un error
+      }
+      return null; // Si la fecha es válida, retorna null
+    };
   }
   // FUNCIONES PARA VALIDAR LOS INPUT's ↑
 
 
   // metodo que incia al iniciar el componente
   ngOnInit() {
-    
+    const today = new Date();
+    this.fechaActual = today.toISOString().split('T')[0];
     // verificamos el rol para sacarlo al login
     if (this.documentoAdministrador) {
 

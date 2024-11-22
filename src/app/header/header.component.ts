@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotificacionService } from '../servicios/notificacion.service';
 
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../servicios/superadmin.service';
@@ -11,15 +12,28 @@ import { SuperadminService } from '../servicios/superadmin.service';
 })
 export class HeaderComponent {
   showDropdown = false;
+  dropDownCampa = false;
 
   constructor(
     private router: Router,
-    private superadminservice: SuperadminService
+    private superadminservice: SuperadminService,
+    private notificacionservice: NotificacionService
   ) {}
   
   // Permite abrir el menú del perfil y cerrar sesión
   toggleDropdown() {
+    if(this.dropDownCampa){
+      this.dropDownCampa = false
+    }
     this.showDropdown = !this.showDropdown;
+  }
+
+  // Permite abrir el menú del perfil y cerrar sesión
+  toggleDropdownCampanita() {
+    if(this.showDropdown){
+      this.showDropdown = false
+    }
+    this.dropDownCampa = !this.dropDownCampa;
   }
 
   // variable para tomar el documento de usuario
@@ -43,6 +57,8 @@ export class HeaderComponent {
         this.nombreperfil = 'Padre';
       }
     }
+
+    this.notificacionservice.listenForNotifications(docAdministrador.documento);
   }
 
   // Funcion para cerrar la sesion actual

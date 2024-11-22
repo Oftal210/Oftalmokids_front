@@ -217,6 +217,7 @@ export class DashboardComponent {
     this.superadminservice.obtenerFrecuenciaDiagEdad()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        console.log(data.status)
         if(data.status == 200){
           console.log(data.diag[0]);
           for (let i = 0; i < data.diag.length; i++) {

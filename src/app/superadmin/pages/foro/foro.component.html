@@ -34,7 +34,6 @@
             <!-- Título del tema -->
             <h2 class="text-lg font-semibold text-blue-700"> {{ item.subtitulo_foro }} 
               <i *ngIf="rolUsuarioActual == 1" class="bi bi-pencil-square cursor-pointer" (click)="editarForoModal(item)"></i>
-              <i *ngIf="rolUsuarioActual == 2" class="bi bi-eye cursor-pointer" ></i>
             </h2>
             <div class="flex gap-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
