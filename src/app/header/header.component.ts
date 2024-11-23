@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NotificacionService } from '../servicios/notificacion.service';
+
+// Para usar al hacer la llamada al API
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // Servicio para comunicarse con el API
-import { SuperadminService } from '../servicios/superadmin.service';
+import { NotificacionService } from '../servicios/notificacion.service';
+
 
 @Component({
   selector: 'app-header',
@@ -14,11 +18,45 @@ export class HeaderComponent {
   showDropdown = false;
   dropDownCampa = false;
 
+  // variables para guardar las notificaciones
+  notifi: any[] = [];
+  cantidadCampanita!: number;
+
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
+  // Ruta para redirigir a la persona
+  rutaPerfil: string = '';
+  nombreperfil: string = '';
+
+  private intervalId: any;
+  private unsubscribe$ = new Subject<void>();
+
   constructor(
     private router: Router,
-    private superadminservice: SuperadminService,
-    private notificacionservice: NotificacionService
+    private notifiservice: NotificacionService,
   ) {}
+
+  // Funcion para redirigir a la persona
+  ngOnInit(){
+    // verificamos el rol para sacarlo al login
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+      if(docAdministrador.id_rol == 1){
+        this.rutaPerfil = '/perfil';
+        this.nombreperfil = 'Administrador';
+      } else {
+        this.rutaPerfil = '/perfil-padre';
+        this.nombreperfil = 'Padre';
+      }
+    }
+
+    this.cargarNotificaciones();
+    // carga la funcion cada cierto tiempo
+    this.intervalId = setInterval(() => {
+      this.cargarNotificaciones(); // Llama a la función que quieres ejecutar constantemente
+    }, 30000); // tiempo en milisegunso 1 segundo = 1000
+  }
   
   // Permite abrir el menú del perfil y cerrar sesión
   toggleDropdown() {
@@ -36,34 +74,20 @@ export class HeaderComponent {
     this.dropDownCampa = !this.dropDownCampa;
   }
 
-  // variable para tomar el documento de usuario
-  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
-  // Ruta para redirigir a la persona
-  rutaPerfil: string = '';
-  nombreperfil: string = '';
-
-
-  // Funcion para redirigir a la persona
-  ngOnInit(){
-    // verificamos el rol para sacarlo al login
-    if (this.documentoAdministrador) {
-      var docAdministrador = JSON.parse(this.documentoAdministrador);
-      if(docAdministrador.id_rol == 1){
-        this.rutaPerfil = '/perfil';
-        this.nombreperfil = 'Administrador';
-      } else {
-        this.rutaPerfil = '/perfil-padre';
-        this.nombreperfil = 'Padre';
-      }
+  // funcion para finalizar la consulta y evitar que la pagina se quede cargando
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
     }
 
-    this.notificacionservice.listenForNotifications(docAdministrador.documento);
   }
 
   // Funcion para cerrar la sesion actual
   cerrarSesion() {
-    this.superadminservice.cerrarSesion().subscribe( response => { 
+    this.notifiservice.cerrarSesion().subscribe( response => { 
       // Maneja la respuesta de cierre de sesión exitoso 
       console.log('Sesión cerrada exitosamente', response); 
       // Aquí puedes redirigir al usuario a la página de inicio de sesión o realizar otras acciones necesarias 
@@ -75,4 +99,37 @@ export class HeaderComponent {
     sessionStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
+
+  // funcion para traer a los hijos 
+  cargarNotificaciones(): void {
+    this.notifiservice.obtenerNotificaciones()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      if(data.status != 404) {
+        this.notifi = data.notificacion;
+        this.cantidadCampanita = this.notifi.length;
+      } else{
+        alert(data.mensaje);
+        console.log('no hya na')
+      }
+    })
+  }
+
+  irForo(){
+    this.router.navigate(['/foro']);
+  }
+  
+  // funcion para darle un formato a la fecha
+  formatDate(dateString: string): string {
+    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const date = new Date(dateString);
+  
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
+  }
+
+
 }

@@ -94,14 +94,11 @@ export class MenuComponent {
       console.log('El token ha expirado'); 
       sessionStorage.removeItem('token'); 
       window.location.href = '/login'; // Redirige al login 
-    } else { 
-      console.log('El token sigue siendo válido'); 
-    } 
+    }
   } 
     
   isTokenExpired(token: string): boolean {
     const decoded = jwtDecode<any>(token);
-    console.log(decoded)
     const currentTime = Date.now() / 1000;  // tiempo en segundos 
     return decoded.exp < currentTime;       // exp es el tiempo de expiración del token 
   }

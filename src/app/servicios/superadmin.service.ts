@@ -495,12 +495,6 @@ export class SuperadminService {
   modficarAdministrador(documento: any, nombre: any, apellido: any, email: any, telefono: any, password: any) {
     return this.http.put<any>(`${this.apiUrl}/usuario/${documento}`, {nombre: nombre, apellido: apellido, email: email, telefono: telefono, password: password});
   }
-
-  // Metodo para cerrar la sesión
-  cerrarSesion(){
-    return this.http.post<any>(`${this.apiUrl}/logout`, null);
-  }
-
   // METODO PARA ADMINISTRADORES ↑
 
 

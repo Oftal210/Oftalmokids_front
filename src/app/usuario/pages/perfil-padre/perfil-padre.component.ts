@@ -23,8 +23,12 @@ export class PerfilPadreComponent {
   // variable para guardar el valor para el atributo readonly
   isReadonly = true;
 
+  // variable para guardar los registros de los controles 
+  controles: any[] = [];
+
   // variable para tomar el documento de usuario
-  documentoPadre = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  datosPadre = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  documentoPadre!: string;
 
   private unsubscribe$ = new Subject<void>();
   
@@ -44,8 +48,19 @@ export class PerfilPadreComponent {
   ) {}
 
   ngOnInit() {
+
+    // buscamos el id del padre
+    if (this.datosPadre) {
+      this.documentoPadre = JSON.parse(this.datosPadre).documento;
+    } else {
+      alert('no se encontro un documento del padre');
+    }
+
     // llamamos a la funcion para traer los datos
     this.cargarDatosPerfil();
+
+    //llamamos a la funcion para traer los controles
+    this.cargarTiempoControl();
   }  
 
   // metodo para verificar que si la contraseña se modificara, sea de 8 minimo
@@ -87,15 +102,7 @@ export class PerfilPadreComponent {
 
   // meotdo para buscar los datos del usuario
   cargarDatosPerfil() {
-
-    if (this.documentoPadre) {
-      var docAdministrador = JSON.parse(this.documentoPadre);
-    } else {
-      alert('no se encontro un id valido');
-      return;
-    }
-
-    this.padreService.buscarPadre(docAdministrador.documento)
+    this.padreService.buscarPadre(this.documentoPadre)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         const datosobtenidos = {
@@ -112,13 +119,13 @@ export class PerfilPadreComponent {
 
     // le damos tiempo a que cargue las cajas con los datos
     setTimeout(() => {
+      // realizamos una validacion a los datos en las cajas 
+      this.perfilForm.updateValueAndValidity();
       // Marcar los campos como tocados para que se muestren los mensajes de error
       Object.keys(this.perfilForm.controls).forEach(key => {
         this.perfilForm.get(key)?.markAsTouched();
       });
-      // realizamos una validacion a los datos en las cajas 
-      this.perfilForm.updateValueAndValidity();
-    }, 500);
+    }, 1000);
     
   }
 
@@ -159,4 +166,36 @@ export class PerfilPadreComponent {
       console.log('faltan datos')
     }
   }
+
+  cargarTiempoControl(): void {
+    this.padreService.obtenerTiempoControl(this.documentoPadre)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      console.log(data.status)
+      if(data.status == 200 ) {
+        // this.hijos = data;
+        this.controles = data.datos;
+        console.log(this.controles)
+      } else{
+        alert(data.mensaje)
+      }
+    })
+  }
+
+  // funcion para darle un formato a la fecha
+  formatDate(dateString: string): string {
+    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const date = new Date(dateString);
+  
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
+  }
+
+  verificarTiempoControl(): void {
+
+  }
+
 }

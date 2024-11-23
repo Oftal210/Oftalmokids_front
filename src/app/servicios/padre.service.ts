@@ -32,6 +32,11 @@ export class PadreService {
     return this.http.get<any>(`${this.apiUrl}/hijosdepadre/${padre}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
+  // Metodo para el tiempo de control del hijo
+  obtenerTiempoControl(padre: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/tiempocontrol/${padre}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
   // Metodo para buscar el paciente solicitado 
   buscarPaciente(hijo: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/hijo/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API

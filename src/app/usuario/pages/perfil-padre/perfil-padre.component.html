@@ -3,24 +3,36 @@
     <!-- Imagen de fondo -->
     <div class="inset-0 bg-cover bg-center bg-no-repeat w-[104rem] h-[52rem] ml-[13rem] z-0 flex justify-center"
         style="background-image: url('../../../../assets/images/fondo_vistas.jpg');">
-        <div class="bg-white w-11/12 h-[44rem] mt-16 p-4 rounded-lg overflow-auto md:overflow-hidden">
+        <div class="bg-white w-11/12 h-[44rem] mt-16 p-4 rounded-lg overflow-auto lg:overflow-hidden">
 
             <div class="flex flex-col items-center m-6">
-                <h1 class="text-2xl md:text-4xl font-semibold"> Perfil </h1>
+                <h1 class="text-2xl text-4xl font-semibold"> Perfil </h1>
             </div>
             
-            <div class="flex flex-col md:flex-row justify-center items-start ">
+            <div class="flex flex-col lg:flex-row justify-center items-start ">
                 <!-- Primer recuadro (más estrecho) -->
-                <div class="bg-white shadow-lg rounded-lg p-6 mb-5 xl:mr-10 w-full max-w-lg flex flex-col justify-between md:m-4 md:w-[30%] md:h-[550px]">
+                <div class="bg-white shadow-lg rounded-lg p-6 mb-5 xl:mr-10 w-full lg:max-w-lg flex flex-col justify-between lg:m-4 lg:w-[30%] lg:h-[550px] overflow-auto">
                     <div class="flex flex-col items-center">
                         <img src="../../../../assets/images/pollito.png" alt="Imagen Circular" class="mt-8 w-24 h-24 rounded-full mb-4">
                         <h2 class="text-2xl font-semibold text-center md:my-8 truncate max-w-full">{{ nombrePerfil }}</h2>
                         <h2 class="text-2xl font-semibold text-center my-8 md:m-0 truncate max-w-full">{{ apellidoPerfil }}</h2>
                     </div>
+                    
+                    <div class="bg-white border rounded-lg mt-5 lg:mt-2 px-7 py-4 flex flex-col justify-start">
+                        <h2 class="text-xl font-bold text-center mb-2">Controles Pendientes</h2>
+                        <hr>
+                        <ng-container *ngFor="let control of controles">
+                            <p class="text-gray-600 mt-2">Nombre:  {{ control.nombre }} {{ control.apellido }}</p>
+                            <p class="text-gray-600">Control: {{ formatDate(control.control) }}</p>
+                            <hr>
+                        </ng-container>
+                        
+                    </div>
+
                 </div>
                 
                 <!-- Segundo recuadro (más ancho) -->
-                <div class="bg-white shadow-lg rounded-lg p-2 lg:p-7 md:m-4 w-full max-w-lg flex flex-col justify-between md:w-[70%] md:h-[550px]">
+                <div class="bg-white shadow-lg rounded-lg p-2 py-4 lg:p-7 lg:m-4 w-full lg:max-w-lg flex flex-col justify-between lg:w-[70%] lg:h-[550px]">
                     <h2 class="text-2xl font-bold my-4 text-center">Información Personal</h2>
 
                     <form (ngSubmit)="tomarDatos()" [formGroup]="perfilForm">

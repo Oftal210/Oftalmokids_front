@@ -18,6 +18,7 @@ export class ListHijoComponent {
 
   // variable para guardar los registros de los hijos
   hijos: any[] = [];
+  controles: any[] = [];
 
   // variable para tomar el dato del buscar
   inputDatoBusqueda!: string;
@@ -33,6 +34,7 @@ export class ListHijoComponent {
 
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  documentoPadre!: string;
 
   // variables para buscar y guardar filtros de hijo
   inputBusqueda: string = '';
@@ -46,6 +48,9 @@ export class ListHijoComponent {
   ) {}
 
   ngOnInit() {
+    if (this.documentoAdministrador) {
+      this.documentoPadre = JSON.parse(this.documentoAdministrador).documento;
+    }
     // llamamos a la funcion para traer los datos
     this.cargarRegistroHijos();
   }
@@ -69,21 +74,42 @@ export class ListHijoComponent {
 
   // funcion para traer a los hijos 
   cargarRegistroHijos(): void {
-    if (this.documentoAdministrador) {
-      var docAdministrador = JSON.parse(this.documentoAdministrador);
-    }
-
-    this.padreservice.obtenerHijosPadre(docAdministrador.documento)
+    this.padreservice.obtenerHijosPadre(this.documentoPadre)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      if(data.status != 400 ) {
+      if(data.status != 404) {
         this.hijos = data;
-        console.log(data);
       } else{
         alert(data.mensaje)
         this.hijos = [];
       }
       this.hijosFiltro = [...this.hijos];
+      this.cargarTiempoControl();
+    })
+  }
+
+  // funcion para traer la fecha del control mas reciente de los pacientes
+  cargarTiempoControl(): void {
+    this.padreservice.obtenerTiempoControl(this.documentoPadre)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      console.log(data.status)
+      if(data.status == 200 ) {
+        // this.hijos = data;
+        this.controles = data.datos;
+        this.hijos = this.hijos.map(hijo => {
+          // Buscar el control correspondiente de v1
+          const control = this.controles.find(item => item.id_hijo === hijo.id)?.control;
+          // Si hay un control encontrado, lo añadimos al objeto hijo
+          if (control) {
+            hijo.control = control;
+          }
+          return hijo;
+        });
+      } else{
+        alert(data.mensaje)
+        this.hijos = [];
+      }
     })
   }
 
@@ -155,5 +181,17 @@ export class ListHijoComponent {
         hijo.documento.toLowerCase().includes(dato) ||
         hijo.fecha_nacimiento.toLowerCase().includes(dato)
     );
+  }
+
+  // funcion para darle un formato a la fecha
+  formatDate(dateString: string): string {
+    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const date = new Date(dateString);
+  
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
   }
 }

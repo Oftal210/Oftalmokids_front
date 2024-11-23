@@ -22,7 +22,6 @@ import { LucideAngularModule, LayoutDashboard, Users, UserRound, MessageCircle, 
   declarations: [
     AppComponent,
     MenuComponent,
-    
   ],
   imports: [
     BrowserModule,
