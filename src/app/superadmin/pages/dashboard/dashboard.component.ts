@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import * as echarts from 'echarts';
 import { SuperadminService } from '../../../servicios/superadmin.service';
-import { Subject } from 'rxjs'; // Importar Subject
+import { Subject, Subscription } from 'rxjs'; // Importar Subject
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { error } from 'console';
 
 
 interface ConsultData {
@@ -28,7 +29,16 @@ interface Condition {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
+
+  consultData: ConsultData[] = [
+    { period: 'Ene-Feb', consultations: 15, newPatients: 5 },
+    { period: 'Mar-Abr', consultations: 20, newPatients: 8 },
+    { period: 'May-Jun', consultations: 25, newPatients: 10 },
+    { period: 'Jul-Ago', consultations: 30, newPatients: 12 },
+    { period: 'Sep-Oct', consultations: 28, newPatients: 7 },
+    { period: 'Nov-Dic', consultations: 35, newPatients: 15 }
+  ];
 
   appointments: Appointment[] = [
     { name: 'N/A', type: 'N/A', time: 'Rango Edad', date: 'N/A' },
@@ -43,26 +53,17 @@ export class DashboardComponent {
   ];
 
   stats = {
-    parentsRegistered: { value: 0, increase: '20%' },
-    childrenRegistered: { value: 0, increase: '15%' },
-    consultationsThisMonth: { value: 0, increase: '25%' },
-    
+    parentsRegistered: { value: 24, increase: '20%' },
+    childrenRegistered: { value: 18, increase: '15%' },
+    consultationsThisMonth: { value: 45, increase: '25%' },
+    upcomingAppointments: { value: 12, period: 'Próximos 7 días' }
   };
 
-  // variable para tomar el documento de usuario
-  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  padres:number = 0;
+  hijos: number = 0;
+  consultasMes:number = 0;
 
-  // variable para el total de las consultas
-  totalCondiciones!: number;
-
-  // variables para controlar el grafico
-  private chart: any;
-
-  // variable para guardar la data del grafico
-  meses: any[] = [];
-
-  private unsubscribe$ = new Subject<void>();
-
+  private padresSubscription!: Subscription;
   constructor(
     private superadminservice: SuperadminService,
     private router: Router

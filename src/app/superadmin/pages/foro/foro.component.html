@@ -48,6 +48,11 @@
           <!-- Contenido del foro -->
           <i class="fa-regular fa-calendar text-blue-500 mr-2 mt-2 cursor-pointer" (click)="editarForoModal(item)"></i>{{formatDate(item.created_at)}}
           <p class="mt-2 truncate cursor-pointer" (click)="editarForoModal(item)">{{ item.contenido_foro }}</p>
+          <div class="flex justify-end mt-2">
+            <button (click)="openDialog()" class="bg-[#52c8f2] py-1 px-2 rounded-lg text-white text-sm">
+              Ver más
+            </button>
+          </div>
         </div>
       </div>
     </div>

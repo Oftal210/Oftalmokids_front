@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // Servicio para comunicarse con el API
 import { PadreService } from '../../../servicios/padre.service';
+import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
   selector: 'app-perfil-padre',
@@ -30,6 +31,7 @@ export class PerfilPadreComponent {
   datosPadre = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
   documentoPadre!: string;
 
+  user:any;
   private unsubscribe$ = new Subject<void>();
   
   // metodo para validar el formulario
@@ -44,10 +46,13 @@ export class PerfilPadreComponent {
 
   constructor(
     private fb: FormBuilder,
-    private padreService: PadreService
+    private padreService: PadreService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.user =this.authService.getUser();
+    
 
     // buscamos el id del padre
     if (this.datosPadre) {
@@ -57,7 +62,7 @@ export class PerfilPadreComponent {
     }
 
     // llamamos a la funcion para traer los datos
-    this.cargarDatosPerfil();
+    
 
     //llamamos a la funcion para traer los controles
     this.cargarTiempoControl();
@@ -130,37 +135,37 @@ export class PerfilPadreComponent {
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
-  tomarDatos(): void {
+  // tomarDatos(): void {
 
-    if (this.documentoPadre) {
-      var docAdministrador = JSON.parse(this.documentoPadre);
-    }
+  //   if (this.documentoPadre) {
+  //     var docAdministrador = JSON.parse(this.documentoPadre);
+  //   }
 
-    if (!this.perfilForm.invalid) {
-      console.log('agregen datos')
-      // tomamos los datos necesarios de los inputs que necesitamos
-      const nombre    = this.perfilForm.get('nombre')?.value;
-      const apellido  = this.perfilForm.get('apellido')?.value;
-      const email     = this.perfilForm.get('email')?.value;
-      const telefono  = this.perfilForm.get('telefono')?.value;
-      const password  = this.perfilForm.get('password')?.value;
+  //   if (!this.perfilForm.invalid) {
+  //     console.log('agregen datos')
+  //     // tomamos los datos necesarios de los inputs que necesitamos
+  //     const nombre    = this.perfilForm.get('nombre')?.value;
+  //     const apellido  = this.perfilForm.get('apellido')?.value;
+  //     const email     = this.perfilForm.get('email')?.value;
+  //     const telefono  = this.perfilForm.get('telefono')?.value;
+  //     const password  = this.perfilForm.get('password')?.value;
 
-      this.padreService.modficarPadre(docAdministrador.documento, nombre, apellido, email, telefono, password)
-        .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
-          if (response.status != 400) {
-            // Emite el evento después de la inserción si fue exitosa
-            alert('datos actualizados')
-            setTimeout(() => {
-              this.cargarDatosPerfil();
-            }, 1000);
-          }
-        }, error => {
-          console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');
-          window.location.reload();
-      });
+  //     this.padreService.modficarPadre(docAdministrador.documento, nombre, apellido, email, telefono, password)
+  //       .subscribe(response => {
+  //         console.log('Respuesta del servidor:', response);
+  //         console.log('Respuesta del servidor:', response.status);
+  //         if (response.status != 400) {
+  //           // Emite el evento después de la inserción si fue exitosa
+  //           alert('datos actualizados')
+  //           setTimeout(() => {
+  //             this.cargarDatosPerfil();
+  //           }, 1000);
+  //         }
+  //       }, error => {
+  //         console.error('Error al enviar los datos:', error);
+  //         alert('Error en el sistema vuelva a intentarlo');
+  //         window.location.reload();
+  //     });
   
     } else {
       console.log('faltan datos')

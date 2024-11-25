@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // Servicio para comunicarse con el API
 import { NotificacionService } from '../servicios/notificacion.service';
+import { AuthService } from '../servicios/auth.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { NotificacionService } from '../servicios/notificacion.service';
 })
 export class HeaderComponent {
   showDropdown = false;
+  user:any
   dropDownCampa = false;
 
   // variables para guardar las notificaciones
@@ -35,29 +37,12 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private notifiservice: NotificacionService,
+    private superadminservice: SuperadminService,
+    private authService:AuthService
   ) {}
 
-  // Funcion para redirigir a la persona
   ngOnInit(){
-    // verificamos el rol para sacarlo al login
-    if (this.documentoAdministrador) {
-      var docAdministrador = JSON.parse(this.documentoAdministrador);
-      this.documentoUsuario = docAdministrador.id_rol;
-      if(docAdministrador.id_rol == 1){
-        this.rutaPerfil = '/perfil';
-        this.nombreperfil = 'Administrador';
-      } else {
-        this.rutaPerfil = '/perfil-padre';
-        this.nombreperfil = 'Padre';
-      }
-    }
-
-    this.cargarNotificaciones();
-    // carga la funcion cada cierto tiempo
-    this.intervalId = setInterval(() => {
-      this.cargarNotificaciones(); // Llama a la función que quieres ejecutar constantemente
-    }, 30000); // tiempo en milisegunso 1 segundo = 1000
+    this.user = this.authService.getUser();
   }
   
   // Permite abrir el menú del perfil y cerrar sesión
