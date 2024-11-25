@@ -88,7 +88,7 @@
                 <span class="text-gray-600 w-32">{{condition.name}}</span>
                 <div class="flex-1">
                     <div class="bg-gray-200 h-2 rounded-full">
-                        <div class="bg-blue-600 h-2 rounded-full" [style.width]="(condition.patients / 10 * 100) + '%'">
+                        <div class="bg-blue-600 h-2 rounded-full" [style.width]="(condition.patients / totalCondiciones * 100) + '%'">
                         </div>
                     </div>
                 </div>

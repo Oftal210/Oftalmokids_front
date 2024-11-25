@@ -57,7 +57,7 @@ export class LoginComponent {
                         break;
                 }
             } else {
-                console.error('Id de rol no está definido.');
+                //console.error('Id de rol no está definido.');
                 this.router.navigate(['login']);
             }
         }
@@ -84,12 +84,13 @@ export class LoginComponent {
         }
         this.loginService.login(documento, contrasena).subscribe(
             (rs: any) => {
+                console.log(rs);
                 this.reply = rs;
-                console.log('API response:', rs);
+                //console.log('API response:', rs);
                 if(rs.user.estado == 1){
                     if (this.reply) {
                         // this.reply.user.id_rol = Number(this.reply.user.id_rol);
-                        console.log('id_rol login',this.reply.user.id_rol);
+                        //console.log('id_rol login',this.reply.user.id_rol);
                         sessionStorage.setItem('token', rs.token);
                         sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
                         sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
@@ -117,7 +118,7 @@ export class LoginComponent {
                 
             },
             err => {
-                console.error(err);
+                //console.error(err);
                 if (err.status === 401) {
                     // this.alertService.errorAlert('Error', err.error.message);
                 } else if (err.status === 404) {

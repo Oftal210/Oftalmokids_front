@@ -6,6 +6,7 @@ import { User } from '../Modelos/user.model';
 import { AuthService } from '../servicios/auth.service';
 import { MenuService } from '../servicios/menu.service';
 import { decode } from 'punycode';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -44,12 +45,12 @@ export class MenuComponent {
       this.currentRolId = this.user.id_rol?.toString();
 
     } else {
-      console.log("No está logueado o no se pudo cargar el usuario.");
+      //console.log("No está logueado o no se pudo cargar el usuario.");
     }
     if (this.currentRolName) {
       this.menuItems = this.menuService.getRoutesByRole(this.currentRolName);
     } else {
-      console.warn('currentRolName es null o vacío.');
+      //console.warn('currentRolName es null o vacío.');
       this.menuItems = []; // Manejar el caso
     }
 
@@ -91,15 +92,20 @@ export class MenuComponent {
 
   checkTokenExpiration() { 
     if (this.tokenAdministrador && this.isTokenExpired(this.tokenAdministrador)) { 
-      console.log('El token ha expirado'); 
+      console.log('El token ha expirado');
       sessionStorage.removeItem('token'); 
       window.location.href = '/login'; // Redirige al login 
+      setTimeout(() => {
+        alert('Su Sesión ha expirado, inicie nuevamente');
+      }, 500);
+      
     }
   } 
     
   isTokenExpired(token: string): boolean {
     const decoded = jwtDecode<any>(token);
+    console.log(decoded)
     const currentTime = Date.now() / 1000;  // tiempo en segundos 
-    return decoded.exp < currentTime;       // exp es el tiempo de expiración del token 
+    return decoded.exp < currentTime;       // exp es el tiempo de expiración del token
   }
 }

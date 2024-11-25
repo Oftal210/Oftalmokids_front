@@ -236,7 +236,7 @@ export class HistoriaClinicaComponent {
         diagnostico:              ['', [Validators.required, this.validarSelect()]],
         tratamiento_diagnostico:  ['', Validators.required],
         pronostico_diagnostico:   ['', Validators.required],
-        control_diagnostico:      ['', [Validators.required, this.fechaPosteriorValidator()]],
+        control_diagnostico:      ['', Validators.required],
       })
 
     });
@@ -474,19 +474,19 @@ export class HistoriaClinicaComponent {
   }
 
   // metodo para validar la fecha de control que sea diferente a hoy a la actual
-  fechaPosteriorValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const inputDate = new Date(control.value);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Asegura que solo compares la fecha, no la hora
+  // fechaPosteriorValidator(): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     const inputDate = new Date(control.value);
+  //     const today = new Date();
+  //     today.setHours(0, 0, 0, 0); // Asegura que solo compares la fecha, no la hora
   
-      if (control.value && inputDate < today) {
-        this.formularioForm.get('diagnostico.control_diagnostico')?.reset();
-        return { fechaAnterior: true }; // Si la fecha es anterior, retorna un error
-      }
-      return null; // Si la fecha es válida, retorna null
-    };
-  }
+  //     if (control.value && inputDate < today) {
+  //       this.formularioForm.get('diagnostico.control_diagnostico')?.reset();
+  //       return { fechaAnterior: true }; // Si la fecha es anterior, retorna un error
+  //     }
+  //     return null; // Si la fecha es válida, retorna null
+  //   };
+  // }
   // FUNCIONES PARA VALIDAR LOS INPUT's ↑
 
 
@@ -1741,9 +1741,14 @@ export class HistoriaClinicaComponent {
           diagnostico:               objetoMasReciente.id_diagnostico,
           tratamiento_diagnostico:   objetoMasReciente.tratamiento,
           pronostico_diagnostico:    objetoMasReciente.pronostico,
-          control_diagnostico:       objetoMasReciente.control,
         });
 
+        const fechaFormato = objetoMasReciente.control.split(" ")[0];
+
+        this.formularioForm.get('diagnostico')?.patchValue({
+          control_diagnostico:  fechaFormato,
+        });
+        
         this.formularioForm.get('historiaForm')?.patchValue({
           motivoConsulta: objetoMasReciente.motivo_consulta,
         })
@@ -1781,7 +1786,12 @@ export class HistoriaClinicaComponent {
         diagnostico: registroSelect.id_diagnostico,
         tratamiento_diagnostico: registroSelect.tratamiento,
         pronostico_diagnostico: registroSelect.pronostico,
-        control_diagnostico: registroSelect.control
+      });
+
+      const fechaFormato = registroSelect.control.split(" ")[0];
+
+      this.formularioForm.get('diagnostico')?.patchValue({
+        control_diagnostico:  fechaFormato,
       });
 
       this.formularioForm.get('historiaForm')?.patchValue({

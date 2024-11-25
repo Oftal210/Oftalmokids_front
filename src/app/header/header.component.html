@@ -6,8 +6,8 @@
 
     <div class="flex items-center space-x-6 mr-10">
         <!-- Botón y campana -->
-        <i class="fa-regular fa-bell fa-lg cursor-pointer" (click)="toggleDropdownCampanita()"></i>
-        <span *ngIf="cantidadCampanita > 0" 
+        <i *ngIf="documentoUsuario == 2" class="fa-regular fa-bell fa-lg cursor-pointer" (click)="toggleDropdownCampanita()"></i>
+        <span *ngIf="cantidadCampanita > 0 && documentoUsuario == 2" 
             class="absolute top-[43px] right-[110px] bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center transform translate-x-2 -translate-y-2">
             {{cantidadCampanita}}
         </span>
@@ -16,7 +16,7 @@
         </div>
 
         <!-- Menú desplegable de notificaciones -->
-        <div *ngIf="dropDownCampa" class="absolute right-20 top-1 mt-12 md:mt-12 mr-4 w-56 bg-white rounded-lg shadow-lg z-50">
+        <div *ngIf="dropDownCampa" class="absolute right-20 top-1 mt-12 md:mt-12 mr-4 w-56 h-80 bg-white rounded-lg shadow-lg z-50 overflow-y-auto">
             <p class="text-gray-700 px-4 py-2 border-b font-semibold text-center">Notificaciones</p>
             
             <div *ngFor="let noti of notifi; let i = index" class="px-4 py-2 border-b-2 cursor-pointer" [class.border-b-4]="i !== notifi.length - 1"
@@ -39,7 +39,7 @@
             <button [routerLink]="rutaPerfil" class="flex items-center px-4 py-2 hover:bg-gray-100 w-full">
                 <i class="fa-solid fa-user text-gray-500 mr-2"></i> Perfil
             </button>
-            <button class="flex items-center px-4 py-2 hover:bg-gray-100 w-full text-red-600" (click)="cerrarSesion()"> <!--  -->
+            <button class="flex items-center px-4 py-2 hover:bg-gray-100 w-full text-red-600" (click)="cerrarSesion()">
                 <i class="fa-solid fa-right-from-bracket text-red-600 mr-2"></i> Cerrar Sesión
             </button>
         </div>

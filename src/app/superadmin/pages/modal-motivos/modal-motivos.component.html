@@ -3,7 +3,7 @@
         <h2 class="text-xl font-bold mb-4"> {{ tituloModal }} </h2>
 
         <ng-container *ngIf="!activarCalendario">
-            <textarea rows="4" class="w-full p-2 border rounded">{{ motivoTexto }}</textarea>
+            <textarea rows="4" class="w-full p-2 border rounded" readonly>{{ motivoTexto }}</textarea>
             <div class="flex justify-end space-x-2 mt-4">
                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cerrarModal()">Cancelar</button>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
@@ -15,13 +15,13 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Fecha inicio</label>
                     <input type="date" [(ngModel)]="fechaU"
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full md:w-[95%] lg:w-11/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">Fecha Fin</label>
                     <input type="date" [(ngModel)]="fechaD"
-                        class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full md:w-[95%] lg:w-11/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div> 
             </div>
             <div class="flex justify-center space-x-2 mt-4">

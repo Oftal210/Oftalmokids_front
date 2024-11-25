@@ -24,6 +24,7 @@ export class HeaderComponent {
 
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+  documentoUsuario!: number;
 
   // Ruta para redirigir a la persona
   rutaPerfil: string = '';
@@ -42,6 +43,7 @@ export class HeaderComponent {
     // verificamos el rol para sacarlo al login
     if (this.documentoAdministrador) {
       var docAdministrador = JSON.parse(this.documentoAdministrador);
+      this.documentoUsuario = docAdministrador.id_rol;
       if(docAdministrador.id_rol == 1){
         this.rutaPerfil = '/perfil';
         this.nombreperfil = 'Administrador';
@@ -89,11 +91,11 @@ export class HeaderComponent {
   cerrarSesion() {
     this.notifiservice.cerrarSesion().subscribe( response => { 
       // Maneja la respuesta de cierre de sesión exitoso 
-      console.log('Sesión cerrada exitosamente', response); 
+      //console.log('Sesión cerrada exitosamente', response); 
       // Aquí puedes redirigir al usuario a la página de inicio de sesión o realizar otras acciones necesarias 
       }, error => { 
         // Maneja el error que pueda ocurrir 
-        console.error('Error al cerrar la sesión', error); 
+        //console.error('Error al cerrar la sesión', error); 
       } 
     );
     sessionStorage.removeItem('token');
@@ -108,9 +110,6 @@ export class HeaderComponent {
       if(data.status != 404) {
         this.notifi = data.notificacion;
         this.cantidadCampanita = this.notifi.length;
-      } else{
-        alert(data.mensaje);
-        console.log('no hya na')
       }
     })
   }

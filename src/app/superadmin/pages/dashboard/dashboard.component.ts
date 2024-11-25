@@ -52,6 +52,9 @@ export class DashboardComponent {
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
+  // variable para el total de las consultas
+  totalCondiciones!: number;
+
   // variables para controlar el grafico
   private chart: any;
 
@@ -191,18 +194,24 @@ export class DashboardComponent {
     });
   }
 
+  // funcion para buscar el numero de diagnosticos por enfermedad especifica (miopia, astig y hipermetropia)
   buscarDiagnosticos(): void {
     this.superadminservice.obtenerDiagnosticosDashboard()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         if(data.status == 200){
-          this.conditions[0].patients = data.miopias
-          this.conditions[1].patients = data.astigs
-          this.conditions[2].patients = data.hiper
+          // calculamos el total de los registros y guardamos
+          this.totalCondiciones = data.miopias + data.astigs + data.hiper;
+
+          // colocamos en cada varaible su dato correspondiente
+          this.conditions[0].patients = data.miopias;
+          this.conditions[1].patients = data.astigs;
+          this.conditions[2].patients = data.hiper;
         }
       });
   }
 
+  // funcion para buscar el numero de consultas del mes actual
   buscarNumeroConsultas(): void {
     this.superadminservice.obtenerNumeroMensualDiag()
       .pipe(takeUntil(this.unsubscribe$))
@@ -213,6 +222,7 @@ export class DashboardComponent {
       });
   }
 
+  // funcion para buscar los 3 diagnosticos mas frecuentes y el rango de edad de estos
   buscarDiagnosticoEdad(): void {
     this.superadminservice.obtenerFrecuenciaDiagEdad()
       .pipe(takeUntil(this.unsubscribe$))
@@ -220,6 +230,8 @@ export class DashboardComponent {
         console.log(data.status)
         if(data.status == 200){
           console.log(data.diag[0]);
+          console.log(data.diag[1]);
+          console.log(data.diag[2]);
           for (let i = 0; i < data.diag.length; i++) {
             this.appointments[i].name = data.diag[i].codigo_diagnostico;
             this.appointments[i].type = data.diag[i].nombre_diagnostico;

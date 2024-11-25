@@ -119,6 +119,7 @@ export class AddForoComponent {
 
   // metodo para cerrar la ventana modal
   cerrar(): void {
+    console.log('entro cerr')
     this._matDialogRef.close();
   }
 
@@ -184,16 +185,16 @@ export class AddForoComponent {
               .subscribe(
                 (response) => {
                   console.log('Respuesta del servidor:', response);
-  
                   // Emite el evento después de la inserción si fue exitosa
                   this.datosInsertado.emit();
+                  this.cerrar();
                 },
                 (error) => {
                   console.error('Error al enviar los datos:', error);
                 }
               );
             this.editar = false;
-            this.cerrar();
+            
           }
         } else {
           alert('Faltan campos por rellenar');
@@ -252,18 +253,4 @@ export class AddForoComponent {
   onImageError(): void {
     this.imageError = true;
   }
-
-  // moveImage(direction: string): void {
-  //   switch (direction) {
-  //     case 'left':
-  //       this.position = 'left';
-  //       break;
-  //     case 'center':
-  //       this.position = 'center';
-  //       break;
-  //     case 'right':
-  //       this.position = 'right';
-  //       break;
-  //   }
-  // }
 }

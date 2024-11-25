@@ -31,7 +31,7 @@ export class SuperadminService {
     return this.http.get<any>(`${this.apiUrl}/diagnosticosxmeses`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
-  // Metodo para traer el numero de padres registrados
+  // Metodo para traer el numero de diagnosticos
   obtenerDiagnosticosDashboard(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/contardiag`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }

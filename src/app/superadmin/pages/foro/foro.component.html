@@ -28,12 +28,11 @@
 
       <!-- Estilo de las tarjetas del contenido del foro -->
       <div class="overflow-y-auto max-h-[400px] p-4 space-y-4 rounded-lg">
-        <div *ngFor="let item of forosFiltro; let i = index" class="p-4 rounded-lg shadow-md mb-4 border border-[#c5e6fa] cursor-pointer" (click)="editarForoModal(item)">
+        <div *ngFor="let item of forosFiltro; let i = index" class="p-4 rounded-lg shadow-md mb-4 border border-[#c5e6fa]">
 
           <div class="flex justify-between items-center text-[#ff834d]">
             <!-- Título del tema -->
-            <h2 class="text-lg font-semibold text-blue-700"> {{ item.subtitulo_foro }} 
-              <i *ngIf="rolUsuarioActual == 1" class="bi bi-pencil-square cursor-pointer" (click)="editarForoModal(item)"></i>
+            <h2 class="text-lg font-semibold text-blue-700 cursor-pointer" (click)="editarForoModal(item)"> {{ item.subtitulo_foro }}
             </h2>
             <div class="flex gap-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
@@ -47,8 +46,8 @@
           </div>
 
           <!-- Contenido del foro -->
-          <i class="fa-regular fa-calendar text-blue-500 mr-2 mt-2"></i>{{formatDate(item.created_at)}}
-          <p class="mt-2 truncate">{{ item.contenido_foro }}</p>
+          <i class="fa-regular fa-calendar text-blue-500 mr-2 mt-2 cursor-pointer" (click)="editarForoModal(item)"></i>{{formatDate(item.created_at)}}
+          <p class="mt-2 truncate cursor-pointer" (click)="editarForoModal(item)">{{ item.contenido_foro }}</p>
         </div>
       </div>
     </div>
