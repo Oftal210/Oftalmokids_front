@@ -89,11 +89,6 @@ export class SuperadminService {
   guardarLikeForo(foro: any, usuario: any) {
     return this.http.post<any>(this.apiUrl+'/forolike', {foro: foro, usuario: usuario});
   }
-
-  // Metodo para calificar dando like a un registro de foro
-  guardarLikeForo(foro: any, usuario: any) {
-    return this.http.post<any>(this.apiUrl+'/forolike', {foro: foro, usuario: usuario});
-  }
   // METODO PARA EL FORO ↑
 
 
@@ -416,12 +411,8 @@ export class SuperadminService {
     motivo_consulta: any,
     tratamiento_diagnostico: any,
     pronostico_diagnostico: any,
-    control_diagnostico: any,
-    edad: any
-    
+    control_diagnostico: any
   ) {
-    return this.http.post<any>(this.apiUrl+'/diagnosticoxhistoria', {
-    control_diagnostico: any) {
     return this.http.post<any>(this.apiUrl+'diagnosticoxhistoria', {
       historia_clinica: historia_clinica,
       diagnostico: diagnostico,
@@ -429,8 +420,6 @@ export class SuperadminService {
       tratamiento_diagnostico: tratamiento_diagnostico,
       pronostico_diagnostico: pronostico_diagnostico,
       control_diagnostico: control_diagnostico,
-      edad: edad
-      
     });
   }
 
@@ -564,6 +553,6 @@ export class SuperadminService {
     return this.http.post<any>(this.apiUrl+'usuariopadre', {documento: documento, rol: id_rol, nombre: nombre, apellido:apellido, email:email, telefono:telefono, password:contrasena});
   }
   // METODO PARA PADRE ↑
-
+  
   
 }
