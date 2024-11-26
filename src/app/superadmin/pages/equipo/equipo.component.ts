@@ -141,7 +141,7 @@ export class EquipoComponent {
     // realizamos el filtro y lo guardamos de la siguiente forma
     this.adminsFiltro = this.usuarios.filter(admin => {
       // Convertimos el estado activo/inactivo en texto
-      const estado = admin.activo == 1 ? 'activados' : 'inactivo';
+      const estado = admin.activo == 1 ? 'activado' : 'deshabilitado';
       console.log(estado);
       // Comprobamos si coincide con el dato buscado
       return (

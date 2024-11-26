@@ -318,7 +318,6 @@ export class AddPacienteComponent {
           // Emite el evento después de la inserción si fue exitosa
           if (response.status != 400) {
             // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
-            this.datosInsertado.emit();
             alert('el Padre fue Guardado Correctamente');
           }
         }, error => {   // si encontramos un error lo vemos de la siguiente manera
