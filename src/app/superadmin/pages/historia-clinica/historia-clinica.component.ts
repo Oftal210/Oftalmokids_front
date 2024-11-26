@@ -37,6 +37,7 @@ export class HistoriaClinicaComponent {
   ocultarMotivoConsulta: boolean = false;
   disableed: boolean = true;
   existeHistoria: boolean = false;
+  correctoInsercion: boolean = false;
   fechaActual!: string;
   
 
@@ -776,6 +777,9 @@ export class HistoriaClinicaComponent {
           // Limpiar el localstorage cuando se necesite
           localStorage.removeItem('formValues');
 
+          // verificamos si se inserto la historia
+          this.correctoInsercion = true;
+
           // Mostrar alerta de éxito 
           alert('Todos los registros se han guardado correctamente.');
         } 
@@ -796,6 +800,9 @@ export class HistoriaClinicaComponent {
       this.validarFormulario();
     }
     document.getElementById('overlay')!.style.display = 'none';
+    if (this.correctoInsercion == true) {
+      this.router.navigate(['/paciente']);
+    }
     //this.verificarEstadoPadre();
   }
 
@@ -815,43 +822,43 @@ export class HistoriaClinicaComponent {
     switch (true) {
       case historiaFormInvalid:
         alert('Faltan Datos de Anamnesis, Primera Hoja');
-        this.currentStep == 1;
+        this.currentStep = 1;
         break;
       case antePersoFormInvalid:
         alert('Faltan Datos en Antecedente Personal, Segunda Hoja');
-        this.currentStep == 2;
+        this.currentStep = 2;
         break;
       case anteVisualForm:
         alert('Faltan Datos en Antecedente Visual, Tercera Hoja');
-        this.currentStep == 3;
+        this.currentStep = 3;
         break;
       case agudezaForm:
         alert('Faltan Datos en Agudeza Visual, Cuarta Hoja');
-        this.currentStep == 4;
+        this.currentStep = 4;
         break;
       case retinoscopiaForm:
         alert('Faltan Datos en Retinoscopía, Quinta Hoja');
-        this.currentStep == 5;
+        this.currentStep = 5;
         break;
       case alineamientoForm:
         alert('Faltan Datos en Alineamiento Motor, Sexta Hoja');
-        this.currentStep == 6;
+        this.currentStep = 6;
         break;
       case versionesForm:
         alert('Faltan Datos en Antecedente Versiones, Septima Hoja');
-        this.currentStep == 7;
+        this.currentStep = 7;
         break;
       case duccMotaliExploForm:
         alert('Faltan Datos en Ducciones, Octava Hoja');
-        this.currentStep == 8;
+        this.currentStep = 8;
         break;
       case oftalmoscipiaForma:
         alert('Faltan Datos en Oftalmoscopía, Novena Hoja');
-        this.currentStep == 9;
+        this.currentStep = 9;
         break;
       case diagnostico:
         alert('Faltan Datos en Diagnostico, Ultima Hoja');
-        this.currentStep == 10;
+        this.currentStep = 10;
         break;
       default:
       break;
@@ -1404,6 +1411,7 @@ export class HistoriaClinicaComponent {
 
             this.idHistoriaClinica,
             diagnosticoDatos.diagnostico,
+            this.idHijo,
             historiaDatos.motivoConsulta,
             diagnosticoDatos.tratamiento_diagnostico,
             diagnosticoDatos.pronostico_diagnostico,
@@ -1821,6 +1829,7 @@ export class HistoriaClinicaComponent {
 
           this.idHistoriaClinica,
           diagnosticoDatos.diagnostico,
+          this.idHijo,
           motivoConsulta,
           diagnosticoDatos.tratamiento_diagnostico,
           diagnosticoDatos.pronostico_diagnostico,

@@ -143,11 +143,6 @@ export class PerfilPadreComponent {
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
   tomarDatos(): void {
-    console.log('1');
-    if (this.documentoPadre) {
-      var docAdministrador = JSON.parse(this.documentoPadre);
-    }
-
     if (!this.perfilForm.invalid) {
 
       console.log('agregen datos')
@@ -164,10 +159,10 @@ export class PerfilPadreComponent {
           console.log('status', response.status);
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa
-            alert('datos actualizados')
+            alert(response.mensaje);
             setTimeout(() => {
               this.cargarDatosPerfil();
-            }, 1000);
+            }, 500);
           } else {
             alert(response.mensaje);
           }

@@ -207,6 +207,7 @@ export class CalificacionComponent implements AfterViewInit {
         alert('error al guardar la preconsulta');
       } else {
         alert('los datos se insertaron correctamente');
+        this.router.navigate(['/paciente']);
       }
     }, error => {
       console.error('Error al enviar los datos:', error);

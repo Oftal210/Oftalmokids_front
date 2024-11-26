@@ -407,6 +407,7 @@ export class SuperadminService {
   guardarRegistroDiagxHistoriaClinica (
     historia_clinica: any,
     diagnostico: any,
+    hijo: any,
     motivo_consulta: any,
     tratamiento_diagnostico: any,
     pronostico_diagnostico: any,
@@ -415,6 +416,7 @@ export class SuperadminService {
     return this.http.post<any>(this.apiUrl+'diagnosticoxhistoria', {
       historia_clinica: historia_clinica,
       diagnostico: diagnostico,
+      hijo: hijo,
       motivo_consulta: motivo_consulta,
       tratamiento_diagnostico: tratamiento_diagnostico,
       pronostico_diagnostico: pronostico_diagnostico,
