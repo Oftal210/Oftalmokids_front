@@ -223,6 +223,7 @@ export class ForoComponent {
 
   // funcion para realizar el guardado de los likes por cada foro
   enviarLikeForo(foro: any): void {
+    
     // validamos el rol de usuario para que solo el padre pueda votar
     if (this.rolUsuarioActual != 1) {
       // realizamos el llamado

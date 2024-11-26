@@ -86,8 +86,8 @@ export class LoginComponent {
             (rs: any) => {
                 console.log(rs);
                 this.reply = rs;
-            const { id, nombre, apellido, email, telefono, documento,id_rol } = rs.user.user;
-            const simplifiedUser = { id, nombre, apellido, email, telefono, documento, id_rol };
+                const { id, nombre, apellido, email, telefono, documento, id_rol } = rs.user.user;
+                const simplifiedUser = { id, nombre, apellido, email, telefono, documento, id_rol };
                 //console.log('API response:', rs);
                 if(rs.user.estado == 1){
                     if (this.reply) {
@@ -96,7 +96,7 @@ export class LoginComponent {
                         sessionStorage.setItem('token', rs.token);
                         sessionStorage.setItem('identity', JSON.stringify(this.reply.user));
                         sessionStorage.setItem('currentRolName', this.getRoleName(Number(this.reply.user.id_rol)));
-                sessionStorage.setItem('currentUser', JSON.stringify(simplifiedUser))
+                        sessionStorage.setItem('currentUser', JSON.stringify(simplifiedUser))
                         this.token = this.reply.access_token;
                         if (this.reply.user) {
                             sessionStorage.setItem('documento', this.reply.user.documento);

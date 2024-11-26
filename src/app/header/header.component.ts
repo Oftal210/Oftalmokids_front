@@ -26,7 +26,6 @@ export class HeaderComponent {
 
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
-  documentoUsuario!: number;
 
   // Ruta para redirigir a la persona
   rutaPerfil: string = '';
@@ -37,12 +36,13 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private superadminservice: SuperadminService,
-    private authService:AuthService
+    private authService:AuthService,
+    private notifiservice:NotificacionService
   ) {}
 
   ngOnInit(){
     this.user = this.authService.getUser();
+    this.cargarNotificaciones();
   }
   
   // Permite abrir el menú del perfil y cerrar sesión
@@ -75,16 +75,18 @@ export class HeaderComponent {
   // Funcion para cerrar la sesion actual
   cerrarSesion() {
     this.notifiservice.cerrarSesion().subscribe( response => { 
-      // Maneja la respuesta de cierre de sesión exitoso 
-      //console.log('Sesión cerrada exitosamente', response); 
-      // Aquí puedes redirigir al usuario a la página de inicio de sesión o realizar otras acciones necesarias 
-      }, error => { 
-        // Maneja el error que pueda ocurrir 
-        //console.error('Error al cerrar la sesión', error); 
-      } 
+      //Maneja la respuesta de cierre de sesión exitoso 
+      console.log('Sesión cerrada exitosamente', response);
+      localStorage.clear();
+      sessionStorage.clear();
+      // Redirige al login
+      this.router.navigate(['/login']);
+    }, error => { 
+      // Maneja el error que pueda ocurrir 
+      console.error('Error al cerrar la sesión', error); 
+    } 
     );
-    sessionStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    
   }
 
   // funcion para traer a los hijos 

@@ -37,8 +37,9 @@ export class SuperadminService {
   }
   
   // Metodo para traer el numero de padres registrados
-  obtenerPadres(): Observable<{ count: number }> {
-    return this.http.get<{ count: number }>(`${this.apiUrl}usuariospadre`, {headers:this.createHeaders()});  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  obtenerPadres(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}usuariospadre`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+    // {headers:this.createHeaders()}
   }
 
   // Metodo para traer el numero de consultas registradas por cada 2 meses
@@ -48,17 +49,17 @@ export class SuperadminService {
 
   // Metodo para traer el numero de diagnosticos
   obtenerDiagnosticosDashboard(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/contardiag`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}contardiag`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para traer el numero de registro de este mes
   obtenerNumeroMensualDiag(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/diagmensual`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}diagmensual`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para traer la estadistica de diagnosicos, su frecuencia y el rango de edad
   obtenerFrecuenciaDiagEdad(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/diagxedad`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}diagxedad`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
   
   // METODOS PARA EL DASHBOARD ↑
@@ -76,8 +77,8 @@ export class SuperadminService {
   }
 
   // Metodo para editar un registro de foro
-  editarRegistroForo(id: any, subtitulo: any, contenido: any) {
-    return this.http.put<any>(`${this.apiUrl}foro/${id}`, {subtitulo: subtitulo, contenido: contenido});
+  editarRegistroForo(id: any, subtitulo: any, contenido: any, imagen: FormData) {
+    return this.http.post<any>(`${this.apiUrl}foro/${id}`, imagen, {params: {subtitulo: subtitulo, contenido: contenido}});
   }
 
   // Metodo para editar un registro de foro
@@ -87,7 +88,7 @@ export class SuperadminService {
 
   // Metodo para calificar dando like a un registro de foro
   guardarLikeForo(foro: any, usuario: any) {
-    return this.http.post<any>(this.apiUrl+'/forolike', {foro: foro, usuario: usuario});
+    return this.http.post<any>(this.apiUrl+'forolike', {foro: foro, usuario: usuario});
   }
   // METODO PARA EL FORO ↑
 
@@ -105,7 +106,7 @@ export class SuperadminService {
 
   // Metodo para buscar el pacientes segun documento parecido
   buscarPacienteParecido(hijo: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/pacientescoincidan/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}pacientescoincidan/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para buscar el padre del paciente solicitado 
@@ -115,7 +116,7 @@ export class SuperadminService {
 
   // Metodo para guardar o insertar un hijo
   guardarRegistroHijo(documento: any, padre: any, nombre: any, apellido: any, tipodoc: any, nacimiento: any, edad: any, genero: any, direccion: any) {
-    return this.http.post<any>(this.apiUrl+'/hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, edad:edad, genero:genero, direccion: direccion});
+    return this.http.post<any>(this.apiUrl+'hijo', {documento: documento, padre: padre, nombre: nombre, apellido:apellido, tipodoc:tipodoc, nacimiento:nacimiento, edad:edad, genero:genero, direccion: direccion});
   }
   // METODO PARA PACIENTE ↑
 
@@ -224,8 +225,6 @@ export class SuperadminService {
     queratome_od: any,
     queratome_os: any
   ) {
-    const token = sessionStorage.getItem('token'); // Obtén el token desde el local storage 
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
     return this.http.post<any>(this.apiUrl+'agudezavisual', {
       historia_clinica: historia_clinica,
       test: test,
@@ -516,9 +515,7 @@ export class SuperadminService {
 
   // METODO PARA SUPER ADMINISTRADOR ↓
   // Metodo para buscar el super administrador unicamente
-  buscarSuperAdministrador(admin: any): Observable<any> { 
-    const token = sessionStorage.getItem('token'); // Obtén el token desde el local storage 
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` }); 
+  buscarSuperAdministrador(admin: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}usuariosuperadmin/${admin}`); // Agrega los encabezados a la solicitud 
   }
 
@@ -532,17 +529,17 @@ export class SuperadminService {
   // METODO PARA PRECONSULTAS ↓
   // Metodo para buscar los registros de preconsultas de un hijo especifico
   buscarPreconsultasHijoFechas(hijo: any, fechaInicio: any, fechaFin: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/preconsultafechas/${hijo}`, {fechaInicio: fechaInicio, fechaFin: fechaFin}); // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.post<any>(`${this.apiUrl}preconsultafechas/${hijo}`, {fechaInicio: fechaInicio, fechaFin: fechaFin}); // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para buscar los registros de preconsultas de un hijo especifico
   buscarPromedioPreconsultasHijo(hijo: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/promediomespreconsulta/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}promediomespreconsulta/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
   // Metodo para buscar los registros de preconsultas mas reciente del paciente
   buscarPreconsultaReciente(hijo: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/preconsultareciente/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
+    return this.http.get<any>(`${this.apiUrl}preconsultareciente/${hijo}`); // colocamos la ruta como esta en nuestro archivo de rutas del API
   }  
   // METODO PARA PRECONSULTAS ↑
 

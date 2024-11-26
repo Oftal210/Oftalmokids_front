@@ -32,11 +32,11 @@
 
           <div class="flex justify-between items-center text-[#ff834d]">
             <!-- Título del tema -->
-            <h2 class="text-lg font-semibold text-blue-700 cursor-pointer" (click)="editarForoModal(item)"> {{ item.subtitulo_foro }}
+            <h2 class="text-lg font-semibold text-blue-700"> {{ item.subtitulo_foro }}
             </h2>
             <div class="flex gap-x-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-thumbs-up cursor-pointer" (click)="enviarLikeForo(item.id)">
                 <path d="M7 10v12" />
                 <path
@@ -46,10 +46,10 @@
           </div>
 
           <!-- Contenido del foro -->
-          <i class="fa-regular fa-calendar text-blue-500 mr-2 mt-2 cursor-pointer" (click)="editarForoModal(item)"></i>{{formatDate(item.created_at)}}
-          <p class="mt-2 truncate cursor-pointer" (click)="editarForoModal(item)">{{ item.contenido_foro }}</p>
+          <i class="fa-regular fa-calendar text-blue-500 mr-2 mt-2 cursor-pointer"></i>{{formatDate(item.created_at)}}
+          <p class="mt-2 truncate">{{ item.contenido_foro }}</p>
           <div class="flex justify-end mt-2">
-            <button (click)="openDialog()" class="bg-[#52c8f2] py-1 px-2 rounded-lg text-white text-sm">
+            <button (click)="editarForoModal(item)" class="bg-[#52c8f2] py-1 px-2 rounded-lg text-white text-sm">
               Ver más
             </button>
           </div>

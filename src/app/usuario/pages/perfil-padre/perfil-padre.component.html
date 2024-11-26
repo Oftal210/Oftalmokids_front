@@ -9,32 +9,31 @@
             <form [formGroup]="perfilForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Documento </h3>
-                    <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.documento"   readonly
-                        required>
+                    <input type="text" class="mt-2 p-2 border rounded w-full" formControlName="documento" readonly>
                 </div>
                 <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Nombre</h3>
-                    <input type="text" class="mt-2 p-2 border rounded w-full" [value]="user?.nombre" required>
+                    <input type="text" class="mt-2 p-2 border rounded w-full" formControlName="nombre">
                 </div>
                 <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Apellido</h3>
-                    <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.apellido"  required>
+                    <input type="text" class="mt-2 p-2 border rounded w-full" formControlName="apellido">
                 </div>
                 <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Email</h3>
-                    <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.email"  required>
+                    <input type="text" class="mt-2 p-2 border rounded w-full" formControlName="telefono">
                 </div>
                 <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Telefono</h3>
-                    <input type="text" class="mt-2 p-2 border rounded w-full"  [value]="user?.telefono"  required>
+                    <input type="text" class="mt-2 p-2 border rounded w-full" formControlName="email">
                 </div>
                 <div class="p-2 lg:p-3">
                     <h3 class="text-md font-semibold">Contraseña</h3>
-                    <input type="password" class="mt-2 p-2 border rounded w-full" placeholder="••••••••">
+                    <input type="password" class="mt-2 p-2 border rounded w-full" formControlName="password" placeholder="••••••••">
                 </div>
             </form>
             <div class="flex justify-center mt-4">
-                <button class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded">Editar</button>
+                <button class="bg-[#00ACC9] hover:bg-[#0194ad] text-white font-bold py-2 px-4 rounded" (click)="tomarDatos()">Editar</button>
             </div>
         </div>
     </div>

@@ -1408,7 +1408,6 @@ export class HistoriaClinicaComponent {
             diagnosticoDatos.tratamiento_diagnostico,
             diagnosticoDatos.pronostico_diagnostico,
             diagnosticoDatos.control_diagnostico,
-            this.edadPaciente
             
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
@@ -1826,7 +1825,6 @@ export class HistoriaClinicaComponent {
           diagnosticoDatos.tratamiento_diagnostico,
           diagnosticoDatos.pronostico_diagnostico,
           diagnosticoDatos.control_diagnostico,
-          this.edadPaciente
 
         ).pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => { 

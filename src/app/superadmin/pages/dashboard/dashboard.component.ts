@@ -53,17 +53,23 @@ export class DashboardComponent implements OnDestroy {
   ];
 
   stats = {
-    parentsRegistered: { value: 24, increase: '20%' },
-    childrenRegistered: { value: 18, increase: '15%' },
-    consultationsThisMonth: { value: 45, increase: '25%' },
-    upcomingAppointments: { value: 12, period: 'Próximos 7 días' }
+    parentsRegistered: { value: 11, increase: '20%' },
+    childrenRegistered: { value: 0, increase: '15%' },
+    consultationsThisMonth: { value: 0, increase: '25%' },
+    upcomingAppointments: { value: 0, period: 'Próximos 7 días' }
   };
 
+  // variable para tomar el documento de usuario
+  documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
+
+  totalCondiciones!: number;
   padres:number = 0;
   hijos: number = 0;
   consultasMes:number = 0;
-
-  private padresSubscription!: Subscription;
+  meses: any[] = [];
+  
+  private unsubscribe$ = new Subject<void>();
+  private chart: any;
   constructor(
     private superadminservice: SuperadminService,
     private router: Router
@@ -81,14 +87,14 @@ export class DashboardComponent implements OnDestroy {
     }
 
     // llamamos las siguientes funciones para iniciar los datos en el dashboard
-    this.buscarNumeroPadre();
+    this.obtenerPadres();
     this.buscarNumeroPaciente();
-    this.buscarMesesConsultas().then(() =>{
-      this.initChart(); 
-    });
-    this.buscarDiagnosticos();
     this.buscarNumeroConsultas();
+    this.buscarMesesConsultas().then(() =>{
+       this.initChart(); 
+    });
     this.buscarDiagnosticoEdad();
+    this.buscarDiagnosticos();
     window.addEventListener('resize', this.onResize);
   }
 
@@ -107,7 +113,7 @@ export class DashboardComponent implements OnDestroy {
 
     const option = {
       grid: {
-        width: "100%",
+        width: "95%",
         left: '5%',  // Ajusta este valor para mover el gráfico más a la izquierda
         right: '5%',
         top: '10%',
@@ -151,13 +157,13 @@ export class DashboardComponent implements OnDestroy {
   }
 
   // funcion para buscar el numero de padres registrados
-  buscarNumeroPadre(): void { 
+  obtenerPadres(): void { 
     this.superadminservice.obtenerPadres()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        if(!data.mensaje){
+        if(data && data.status == 200){
           // modificamos el numero si no hay mensaje
-          this.stats.parentsRegistered.value = data
+          this.padres = data.cantidad;
         }
       });
   }
@@ -167,9 +173,9 @@ export class DashboardComponent implements OnDestroy {
     this.superadminservice.obtenerNumeroPacientes()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        if(!data.mensaje){
+        if(data && data.status == 200){
           // modificamos el numero si no hay mensaje
-          this.stats.childrenRegistered.value = data
+          this.hijos = data.cantidad
         }
       });
   }
@@ -181,13 +187,12 @@ export class DashboardComponent implements OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe({
           next: data => {
-            if (!data.mensaje) {
+            if (data && data.status == 200) {
               // modificamos el numero si no hay mensaje
-              this.meses = data;
+              this.meses = data.registros;
             }
             resolve();
-          },
-          error: err => {
+          }, error: err => {
             console.error(err);
             reject(err);
           }
@@ -217,8 +222,9 @@ export class DashboardComponent implements OnDestroy {
     this.superadminservice.obtenerNumeroMensualDiag()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        console.log(data);
         if(data.status == 200){
-          this.stats.consultationsThisMonth.value = data.mensual
+          this.consultasMes = data.mensual
         }
       });
   }

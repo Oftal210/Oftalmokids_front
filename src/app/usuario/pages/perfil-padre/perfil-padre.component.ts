@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 // Servicio para comunicarse con el API
 import { PadreService } from '../../../servicios/padre.service';
 import { AuthService } from '../../../servicios/auth.service';
+import { use } from 'echarts';
 
 @Component({
   selector: 'app-perfil-padre',
@@ -32,6 +33,7 @@ export class PerfilPadreComponent {
   documentoPadre!: string;
 
   user:any;
+
   private unsubscribe$ = new Subject<void>();
   
   // metodo para validar el formulario
@@ -51,8 +53,17 @@ export class PerfilPadreComponent {
   ) {}
 
   ngOnInit() {
-    this.user =this.authService.getUser();
-    
+
+    this.user = this.authService.getUser();
+
+    const datosUser = {
+      documento: this.user.documento,
+      nombre: this.user.nombre,
+      apellido: this.user.apellido,
+      telefono: this.user.telefono,
+      email: this.user.email,
+    }
+    this.perfilForm.patchValue(datosUser);
 
     // buscamos el id del padre
     if (this.datosPadre) {
@@ -60,12 +71,6 @@ export class PerfilPadreComponent {
     } else {
       alert('no se encontro un documento del padre');
     }
-
-    // llamamos a la funcion para traer los datos
-    
-
-    //llamamos a la funcion para traer los controles
-    this.cargarTiempoControl();
   }  
 
   // metodo para verificar que si la contraseña se modificara, sea de 8 minimo
@@ -107,9 +112,11 @@ export class PerfilPadreComponent {
 
   // meotdo para buscar los datos del usuario
   cargarDatosPerfil() {
-    this.padreService.buscarPadre(this.documentoPadre)
+    this.padreService.buscarPadre(this.user.documento)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        sessionStorage.setItem('currentUser', JSON.stringify(data.usuario));
+        this.user = data.usuario;
         const datosobtenidos = {
           documento: data.usuario.documento,
           nombre: data.usuario.nombre,
@@ -135,37 +142,40 @@ export class PerfilPadreComponent {
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
-  // tomarDatos(): void {
+  tomarDatos(): void {
+    console.log('1');
+    if (this.documentoPadre) {
+      var docAdministrador = JSON.parse(this.documentoPadre);
+    }
 
-  //   if (this.documentoPadre) {
-  //     var docAdministrador = JSON.parse(this.documentoPadre);
-  //   }
+    if (!this.perfilForm.invalid) {
 
-  //   if (!this.perfilForm.invalid) {
-  //     console.log('agregen datos')
-  //     // tomamos los datos necesarios de los inputs que necesitamos
-  //     const nombre    = this.perfilForm.get('nombre')?.value;
-  //     const apellido  = this.perfilForm.get('apellido')?.value;
-  //     const email     = this.perfilForm.get('email')?.value;
-  //     const telefono  = this.perfilForm.get('telefono')?.value;
-  //     const password  = this.perfilForm.get('password')?.value;
+      console.log('agregen datos')
+      // tomamos los datos necesarios de los inputs que necesitamos
+      const nombre    = this.perfilForm.get('nombre')?.value;
+      const apellido  = this.perfilForm.get('apellido')?.value;
+      const email     = this.perfilForm.get('email')?.value;
+      const telefono  = this.perfilForm.get('telefono')?.value;
+      const password  = this.perfilForm.get('password')?.value;
 
-  //     this.padreService.modficarPadre(docAdministrador.documento, nombre, apellido, email, telefono, password)
-  //       .subscribe(response => {
-  //         console.log('Respuesta del servidor:', response);
-  //         console.log('Respuesta del servidor:', response.status);
-  //         if (response.status != 400) {
-  //           // Emite el evento después de la inserción si fue exitosa
-  //           alert('datos actualizados')
-  //           setTimeout(() => {
-  //             this.cargarDatosPerfil();
-  //           }, 1000);
-  //         }
-  //       }, error => {
-  //         console.error('Error al enviar los datos:', error);
-  //         alert('Error en el sistema vuelva a intentarlo');
-  //         window.location.reload();
-  //     });
+      this.padreService.modficarPadre(this.user.documento, nombre, apellido, email, telefono, password)
+        .subscribe(response => {
+          console.log('Respuesta del servidor:', response);
+          console.log('status', response.status);
+          if (response.status == 200) {
+            // Emite el evento después de la inserción si fue exitosa
+            alert('datos actualizados')
+            setTimeout(() => {
+              this.cargarDatosPerfil();
+            }, 1000);
+          } else {
+            alert(response.mensaje);
+          }
+        }, error => {
+          console.error('Error al enviar los datos:', error);
+          alert('Error en el sistema vuelva a intentarlo');
+          window.location.reload();
+      });
   
     } else {
       console.log('faltan datos')
@@ -198,9 +208,4 @@ export class PerfilPadreComponent {
   
     return `${day} ${month} ${year}`;
   }
-
-  verificarTiempoControl(): void {
-
-  }
-
 }

@@ -95,10 +95,7 @@ export class MenuComponent {
       console.log('El token ha expirado');
       sessionStorage.removeItem('token'); 
       window.location.href = '/login'; // Redirige al login 
-      setTimeout(() => {
-        alert('Su Sesión ha expirado, inicie nuevamente');
-      }, 500);
-      
+      alert('Su Sesión ha expirado, inicie nuevamente');
     }
   } 
     

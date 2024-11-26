@@ -52,7 +52,16 @@ export class PerfilComponent {
   ) {}
 
   ngOnInit() {
-    this.user = this.authService.getUser();
+    this.user = this.authService.getUser(); 
+    const datosUser = {
+      documento: this.user.documento,
+      nombre: this.user.nombre,
+      apellido: this.user.apellido,
+      telefono: this.user.telefono,
+      email: this.user.email,
+    }
+    this.perfilForm.patchValue(datosUser);
+
     // verificamos el rol para sacarlo al login
     if (this.documentoAdministrador) {
       var docAdministrador = JSON.parse(this.documentoAdministrador);
@@ -101,62 +110,112 @@ export class PerfilComponent {
     this.unsubscribe$.complete();
   }
 
+  // meotdo para buscar los datos del usuario
+  cargarDatosPerfil() {
+    if(this.user.id == 1){
+      this.superadminservice.buscarSuperAdministrador(this.user.documento)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        sessionStorage.setItem('currentUser', JSON.stringify(data.usuario));
+        const datosobtenidos = {
+          documento: data.usuario.documento,
+          nombre: data.usuario.nombre,
+          apellido: data.usuario.apellido,
+          telefono: data.usuario.telefono,
+          email: data.usuario.email,
+        }
+        this.perfilForm.patchValue(datosobtenidos);
+        this.nombrePerfil = data.usuario.nombre;
+        this.apellidoPerfil = data.usuario.apellido;
+      })
+    } else {
+      this.superadminservice.buscarAdministrador(this.user.documento)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        sessionStorage.setItem('currentUser', JSON.stringify(data.usuario));
+        const datosobtenidos = {
+          documento: data.usuario.documento,
+          nombre: data.usuario.nombre,
+          apellido: data.usuario.apellido,
+          telefono: data.usuario.telefono,
+          email: data.usuario.email,
+        }
+        this.perfilForm.patchValue(datosobtenidos);
+        this.nombrePerfil = data.usuario.nombre;
+        this.apellidoPerfil = data.usuario.apellido;
+      })    
+    }
+
+    // le damos tiempo a que cargue las cajas con los datos
+    setTimeout(() => {
+      // Marcar los campos como tocados para que se muestren los mensajes de error
+      Object.keys(this.perfilForm.controls).forEach(key => {
+        this.perfilForm.get(key)?.markAsTouched();
+      });
+      // realizamos una validacion a los datos en las cajas 
+      this.perfilForm.updateValueAndValidity();
+    }, 500);
+    
+  }
  
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
-  // tomarDatos(): void {
+  tomarDatos(): void {
 
-  //   if (this.documentoAdministrador) {
-  //     var docAdministrador = JSON.parse(this.documentoAdministrador);
-  //   }
+    if (this.documentoAdministrador) {
+      var docAdministrador = JSON.parse(this.documentoAdministrador);
+    }
 
-  //   if (!this.perfilForm.invalid) {
-  //     console.log('agregen datos')
-  //     // tomamos los datos necesarios de los inputs que necesitamos
-  //     const nombre    = this.perfilForm.get('nombre')?.value;
-  //     const apellido  = this.perfilForm.get('apellido')?.value;
-  //     const email     = this.perfilForm.get('email')?.value;
-  //     const telefono  = this.perfilForm.get('telefono')?.value;
-  //     const password  = this.perfilForm.get('password')?.value;
+    if (!this.perfilForm.invalid) {
+      console.log('agregen datos')
+      // tomamos los datos necesarios de los inputs que necesitamos
+      const nombre    = this.perfilForm.get('nombre')?.value;
+      const apellido  = this.perfilForm.get('apellido')?.value;
+      const email     = this.perfilForm.get('email')?.value;
+      const telefono  = this.perfilForm.get('telefono')?.value;
+      const password  = this.perfilForm.get('password')?.value;
 
-  //     if(docAdministrador.documento == '1234567890') {
-  //       this.superadminservice.modficarSuperAdministrador(docAdministrador.documento, nombre, apellido, email, telefono, password)
-  //       .subscribe(response => {
-  //         console.log('Respuesta del servidor:', response);
-  //         console.log('Respuesta del servidor:', response.status);
-  //         if (response.status != 400) {
-  //           // Emite el evento después de la inserción si fue exitosa
-  //           alert('datos actualizados')
-  //           setTimeout(() => {
-  //             this.cargarDatosPerfil();
-  //           }, 1000);
-  //         }
-  //       }, error => {
-  //         console.error('Error al enviar los datos:', error);
-  //         alert('Error en el sistema vuelva a intentarlo');
-  //         window.location.reload();
-  //       });
-  //     } else {
-  //       this.superadminservice.modficarAdministrador(docAdministrador.documento, nombre, apellido, email, telefono, password)
-  //       .subscribe(response => {
-  //         console.log('Respuesta del servidor:', response);
-  //         console.log('Respuesta del servidor:', response.status);
-  //         if (response.status != 400) {
-  //           // Emite el evento después de la inserción si fue exitosa
-  //           alert('datos actualizados')
-  //           setTimeout(() => {
-  //             this.cargarDatosPerfil();
-  //           }, 1000);
-  //         }
-  //       }, error => {
-  //         console.error('Error al enviar los datos:', error);
-  //         alert('Error en el sistema vuelva a intentarlo');
-  //         window.location.reload();
-  //       });
-  //     }
+      if(this.user.id == 1) {
+        this.superadminservice.modficarSuperAdministrador(this.user.documento, nombre, apellido, email, telefono, password)
+        .subscribe(response => {
+          console.log('Respuesta del servidor:', response);
+          console.log('Respuesta del servidor:', response.status);
+          if (response.status == 200) {
+            // Emite el evento después de la inserción si fue exitosa
+            alert(response.mensaje);
+            setTimeout(() => {
+              this.cargarDatosPerfil();
+            }, 1000);
+          } else {
+            alert(response.mensaje);
+          }
+        }, error => {
+          console.error('Error al enviar los datos:', error);
+          alert('Error en el sistema vuelva a intentarlo');
+          window.location.reload();
+        });
+      } else {
+        this.superadminservice.modficarAdministrador(docAdministrador.documento, nombre, apellido, email, telefono, password)
+        .subscribe(response => {
+          console.log('Respuesta del servidor:', response);
+          console.log('Respuesta del servidor:', response.status);
+          if (response.status != 400) {
+            // Emite el evento después de la inserción si fue exitosa
+            alert('datos actualizados')
+            setTimeout(() => {
+              this.cargarDatosPerfil();
+            }, 1000);
+          }
+        }, error => {
+          console.error('Error al enviar los datos:', error);
+          alert('Error en el sistema vuelva a intentarlo');
+          window.location.reload();
+        });
+      }
       
 
-  //   } else {
-  //     console.log('faltan datos')
-  //   }
-  // }
+    } else {
+      console.log('faltan datos')
+      console.log(this.perfilForm.get('nombre')?.valid);
+    }
+  }
 }
