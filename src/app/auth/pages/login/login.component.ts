@@ -86,10 +86,10 @@ export class LoginComponent {
             (rs: any) => {
                 console.log(rs);
                 this.reply = rs;
-                const { id, nombre, apellido, email, telefono, documento, id_rol } = rs.user.user;
-                const simplifiedUser = { id, nombre, apellido, email, telefono, documento, id_rol };
                 //console.log('API response:', rs);
                 if(rs.user.estado == 1){
+                    const { id, nombre, apellido, email, telefono, documento, id_rol } = rs.user.user;
+                    const simplifiedUser = { id, nombre, apellido, email, telefono, documento, id_rol };
                     if (this.reply) {
                         // this.reply.user.id_rol = Number(this.reply.user.id_rol);
                         //console.log('id_rol login',this.reply.user.id_rol);

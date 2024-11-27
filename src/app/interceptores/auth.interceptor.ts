@@ -28,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           // Si recibimos un error 401 (No autorizado), redirigimos al login
-          localStorage.removeItem('token');
+          sessionStorage.removeItem('token');
           this.router.navigate(['/login']);
         }
         return throwError(() => error);
