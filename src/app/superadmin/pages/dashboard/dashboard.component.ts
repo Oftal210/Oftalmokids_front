@@ -236,9 +236,9 @@ export class DashboardComponent implements OnDestroy {
       .subscribe(data => {
         console.log(data.status)
         if(data.status == 200){
-          console.log(data.diag[0]);
-          console.log(data.diag[1]);
-          console.log(data.diag[2]);
+          // console.log(data.diag[0]);
+          // console.log(data.diag[1]);
+          // console.log(data.diag[2]);
           for (let i = 0; i < data.diag.length; i++) {
             this.appointments[i].name = data.diag[i].codigo_diagnostico;
             this.appointments[i].type = data.diag[i].nombre_diagnostico;

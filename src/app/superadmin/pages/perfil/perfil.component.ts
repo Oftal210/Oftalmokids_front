@@ -78,9 +78,9 @@ export class PerfilComponent {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const value = control.value;
       if (!value) {
-        return null; // Si está vacío, no hay error
+        return null; // Si está vacío
       }
-      return value.length >= 4 ? null : { minlength: true }; // Verifica la longitud mínima
+      return value.length >= 8 ? null : { minlength: true }; // Verifica la longitud mínima
     };
   }
 
@@ -211,11 +211,8 @@ export class PerfilComponent {
           window.location.reload();
         });
       }
-      
-
     } else {
       console.log('faltan datos')
-      console.log(this.perfilForm.get('nombre')?.valid);
     }
   }
 }
