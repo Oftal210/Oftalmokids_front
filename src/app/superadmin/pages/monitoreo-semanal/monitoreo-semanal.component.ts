@@ -103,7 +103,7 @@ export class MonitoreoSemanalComponent {
           apellido:   data.hijo.apellido,
           documento:  data.hijo.documento,
           foto: data.hijo.foto && data.hijo.foto !== '' 
-          ? 'http://127.0.0.1:8000/storage/' + data.hijo.foto 
+          ? 'https://api.oftalmokids.com.co/storage/' + data.hijo.foto 
           : this.hijo.foto
         }
         console.log(this.hijo.foto);

@@ -133,7 +133,7 @@ export class ForoComponent {
         if (!data.mensaje) {
           this.foros = data;
         } else {
-          alert('no hay datos');
+          alert('Aun no hay foros');
           this.foros = [];
         }
         this.forosFiltro = [...this.foros];

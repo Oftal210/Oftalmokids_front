@@ -235,15 +235,16 @@ export class DashboardComponent implements OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         console.log(data.status)
-        if(data.status == 200){
+        if(data.status == 200 && data.mensual != 0){
+          console.log('qweqw')
           // console.log(data.diag[0]);
           // console.log(data.diag[1]);
           // console.log(data.diag[2]);
-          for (let i = 0; i < data.diag.length; i++) {
-            this.appointments[i].name = data.diag[i].codigo_diagnostico;
-            this.appointments[i].type = data.diag[i].nombre_diagnostico;
-            this.appointments[i].date = data.diag[i].edad_minima + ' a ' + data.diag[i].edad_maxima;
-          }
+          // for (let i = 0; i < data.diag.length; i++) {
+          //   this.appointments[i].name = data.diag[i].codigo_diagnostico;
+          //   this.appointments[i].type = data.diag[i].nombre_diagnostico;
+          //   this.appointments[i].date = data.diag[i].edad_minima + ' a ' + data.diag[i].edad_maxima;
+          // }
         }
       });
   }
