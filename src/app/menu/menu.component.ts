@@ -93,12 +93,12 @@ export class MenuComponent {
   checkTokenExpiration() { 
     if (this.tokenAdministrador && this.isTokenExpired(this.tokenAdministrador)) { 
       //console.log('El token ha expirado');
-      sessionStorage.removeItem('token'); 
-      window.location.href = '/login'; // Redirige al login 
+      sessionStorage.removeItem('token');
+      this.router.navigate(['home']); // Redirige al login
       alert('Su Sesión ha expirado, inicie nuevamente');
     }
   } 
-    
+   
   isTokenExpired(token: string): boolean {
     const decoded = jwtDecode<any>(token);
     //console.log(decoded)
