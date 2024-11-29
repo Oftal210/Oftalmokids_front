@@ -197,7 +197,6 @@ export class CalificacionComponent implements AfterViewInit {
       motivo_contr = this.temas[5].motivo ?? null;
     }
     
-
     this.padreService.enviarPreconsulta(
       hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, 
       punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr
@@ -207,7 +206,7 @@ export class CalificacionComponent implements AfterViewInit {
         alert('error al guardar la preconsulta');
       } else {
         alert('los datos se insertaron correctamente');
-        this.router.navigate(['/paciente']);
+        this.router.navigate(['hijo']);
       }
     }, error => {
       console.error('Error al enviar los datos:', error);
