@@ -24,6 +24,7 @@ export class MenuComponent {
   menuItems: any[] = [];
   isAuthenticated: boolean = true;
   logueado = false;
+  private intervaloToken: any;
 
   // variable para tomar el token de usuario
   tokenAdministrador = sessionStorage.getItem('token'); 
@@ -56,9 +57,16 @@ export class MenuComponent {
 
     // funcion para validar cada 60 segundos 
     this.checkTokenExpiration(); 
-    setInterval(() => { 
+    this.intervaloToken = setInterval(() => { 
       this.checkTokenExpiration();
     }, 60000); // tiempo en milisegunos 1000 ml = 1 s
+  }
+
+  ngOnDestroy() {
+    // Detener el intervalo al destruir el componente
+    if (this.intervaloToken) {
+      clearInterval(this.intervaloToken);
+    }
   }
 
   /* Determina el rol del usuario basado en su id_rol */
@@ -94,6 +102,7 @@ export class MenuComponent {
     if (this.tokenAdministrador && this.isTokenExpired(this.tokenAdministrador)) { 
       //console.log('El token ha expirado');
       sessionStorage.removeItem('token');
+      clearInterval(this.intervaloToken);
       this.router.navigate(['home']); // Redirige al login
       alert('Su Sesión ha expirado, inicie nuevamente');
     }
