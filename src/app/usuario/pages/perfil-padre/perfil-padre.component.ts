@@ -145,7 +145,7 @@ export class PerfilPadreComponent {
   tomarDatos(): void {
     if (!this.perfilForm.invalid) {
 
-      console.log('agregen datos')
+      //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
       const nombre    = this.perfilForm.get('nombre')?.value;
       const apellido  = this.perfilForm.get('apellido')?.value;
@@ -155,8 +155,8 @@ export class PerfilPadreComponent {
 
       this.padreService.modficarPadre(this.user.documento, nombre, apellido, email, telefono, password)
         .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('status', response.status);
+          //console.log('Respuesta del servidor:', response);
+          //console.log('status', response.status);
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa
             alert(response.mensaje);
@@ -173,7 +173,7 @@ export class PerfilPadreComponent {
       });
   
     } else {
-      console.log('faltan datos')
+      //console.log('faltan datos')
     }
   }
 
@@ -181,26 +181,14 @@ export class PerfilPadreComponent {
     this.padreService.obtenerTiempoControl(this.documentoPadre)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data.status)
+      //console.log(data.status)
       if(data.status == 200 ) {
         // this.hijos = data;
         this.controles = data.datos;
-        console.log(this.controles)
+        //console.log(this.controles)
       } else{
         alert(data.mensaje)
       }
     })
-  }
-
-  // funcion para darle un formato a la fecha
-  formatDate(dateString: string): string {
-    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-    const date = new Date(dateString);
-  
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-  
-    return `${day} ${month} ${year}`;
   }
 }

@@ -202,7 +202,7 @@ export class CalificacionComponent implements AfterViewInit {
       hijo, uso_gafas, uso_medic, limite_panta, activ_libre, buen_alimen, solict_contr, 
       punt_precon, motivo_gafas, motivo_medic, motivo_panta, motivo_activ, motivo_buen, motivo_contr
     ).subscribe(response => {
-      console.log('Respuesta del servidor:', response);
+      //console.log('Respuesta del servidor:', response);
       if (response.status != 200 && response.status != 201){
         alert('error al guardar la preconsulta');
       } else {

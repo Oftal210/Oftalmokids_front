@@ -93,7 +93,7 @@ export class ListHijoComponent {
     this.padreservice.obtenerTiempoControl(this.documentoPadre)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data.status)
+      //console.log(data.status)
       if(data.status == 200 ) {
         // this.hijos = data;
         this.controles = data.datos;
@@ -143,7 +143,7 @@ export class ListHijoComponent {
 
   // funcion para editar el foro
   editarHijoModal(hijo: any): void {
-    console.log(hijo)
+    //console.log(hijo)
     // Variable para abrir la ventana modal y enviarle los datos del 
     const dialogRef = this._matDialog.open(AddHijoComponent, {
       data: {

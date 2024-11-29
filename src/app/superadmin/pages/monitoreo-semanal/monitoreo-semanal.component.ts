@@ -96,7 +96,7 @@ export class MonitoreoSemanalComponent {
     this.superadminservice.buscarPaciente(this.documentohijo)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data)
+      //console.log(data)
       if(data.hijo){
         this.hijo = {
           nombre:     data.hijo.nombre,
@@ -106,7 +106,7 @@ export class MonitoreoSemanalComponent {
           ? 'https://api.oftalmokids.com.co/storage/' + data.hijo.foto 
           : this.hijo.foto
         }
-        console.log(this.hijo.foto);
+        //console.log(this.hijo.foto);
       } else {
         alert(data.mensaje);
       }
@@ -138,7 +138,7 @@ export class MonitoreoSemanalComponent {
     this.superadminservice.buscarPreconsultasHijoFechas(this.documentohijo, fechaInicio, fechaFin)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data)
+      //console.log(data)
       if (data.status != 200){
         alert(data.mensaje);
         this.cargarRegistrosPreconsulta();

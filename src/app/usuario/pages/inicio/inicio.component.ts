@@ -25,7 +25,7 @@ export class InicioComponent {
       this.superadminservice.obtenerRegistrosForo()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        console.log(data);
+        //console.log(data);
         if (!data.mensaje) {
           this.foros = data;
         } else {

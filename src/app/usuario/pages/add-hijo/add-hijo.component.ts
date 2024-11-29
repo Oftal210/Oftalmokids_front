@@ -80,7 +80,7 @@ export class AddHijoComponent {
         this.nombreBoton = 'Guardar';
         this.desactivarInputs = true;
         this.idPaciente = data.id
-        console.log(this.idPaciente)
+        //console.log(this.idPaciente)
       }
     }
   }
@@ -152,7 +152,7 @@ export class AddHijoComponent {
     const edadpaciente = this.pacienteForm.get('fechanacimiento')?.value as string | null | undefined;
     // validamos que haya un valor valido
     if (edadpaciente) { 
-      console.log('aqui no')
+      //console.log('aqui no')
       // tomamos la fecha actual
       const fechaActual = new Date();
       // convertimos la fecha a tipo date
@@ -205,7 +205,7 @@ export class AddHijoComponent {
 
         // validmaos que el status sea correcto
         if (data.status == 200){
-          console.log(data);
+          //console.log(data);
           // tomamos los datos de la consulta hecha y los gestionamos
           const datosObtenidosPaciente = {
             tipodocumento: data.hijo.tipo_documento,
@@ -220,8 +220,8 @@ export class AddHijoComponent {
           this.existePaciente = true;                           // seteamos el valor para validar                    
           this.documentoPaciente = data.hijo.documento;         // tomamos el documento del padre para manejarlo mas facil
 
-          console.log(this.existePaciente);
-          console.log(this.documentoPaciente);
+          //console.log(this.existePaciente);
+          //console.log(this.documentoPaciente);
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
@@ -233,7 +233,7 @@ export class AddHijoComponent {
           }
           this.existePaciente = false;      // seteamos el valor para validar
 
-          console.log(this.verificacioDato);
+          //console.log(this.verificacioDato);
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
@@ -255,18 +255,18 @@ export class AddHijoComponent {
     if(this.selectedFile) {
       const nombreUnico = `${Date.now()}-${this.selectedFile.name}`;
       FotoHijo.append('foto', this.selectedFile, nombreUnico); // IMPORTANTISIMO QUE ESTO TENGA EL MISMO VALOR QUE ESTE MENSAJE EN EL BACK
-      console.log(FotoHijo)
+      //console.log(FotoHijo)
     } else {
       FotoHijo.append('foto', ''); // AQUI TAMBIEN
     }
     
     FotoHijo.forEach((value, key) => {
-      console.log(`${key}:`, value);
+      //console.log(`${key}:`, value);
     });
 
     // si el formulario no es invalido hacemos
     if(!this.pacienteForm.invalid) {
-      console.log('agregen datos')
+      //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
       const tipodocumento   = this.pacienteForm.get('tipodocumento')?.value;
       const documento       = this.pacienteForm.get('documento')?.value;
@@ -303,8 +303,8 @@ export class AddHijoComponent {
         this.padreservice.modificarRegistroHijo(this.idPaciente, datos)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
+          //console.log('Respuesta del servidor:', response);
+          //console.log('Respuesta del servidor:', response.status);
           // Emite el evento después de la inserción si fue exitosa
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
@@ -332,8 +332,8 @@ export class AddHijoComponent {
             this.padreservice.guardarRegistroHijo(documento, this.idPadre, nombre, apellido, tipodocumento, fechanacimiento, this.edadPaciente, genero, direccion, FotoHijo)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(response => {
-              console.log('Respuesta del servidor:', response);
-              console.log('Respuesta del servidor:', response.status);
+              //console.log('Respuesta del servidor:', response);
+              //console.log('Respuesta del servidor:', response.status);
               // Emite el evento después de la inserción si fue exitosa
               if (response.status != 400) {
                 // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
@@ -362,7 +362,7 @@ export class AddHijoComponent {
         }
       }
     } else {
-      console.log('datos fallidos')
+      //console.log('datos fallidos')
       alert('Faltan Datos o Correciones en Paciente');
     }
 
@@ -391,14 +391,14 @@ export class AddHijoComponent {
           const control = this.pacienteForm.get(controlName) as FormControl; // Usa get para obtener el control
           if (control && control.invalid) {
             // Imprimir el nombre del control y su estado
-            console.log(`${controlName} es inválido:`, control.errors);
+            //console.log(`${controlName} es inválido:`, control.errors);
           } else {
-            console.log(`${controlName} es válido`);
+            //console.log(`${controlName} es válido`);
           }
         }
       }
     } else {
-      console.log('El formulario es válido');
+      //console.log('El formulario es válido');
     }
   }
 
@@ -418,7 +418,7 @@ export class AddHijoComponent {
         };
         reader.readAsDataURL(file);  // Esto convierte la imagen en una cadena base64
         this.selectedFile = file;
-        console.log(this.selectedFile);
+        //console.log(this.selectedFile);
       } else {
         alert('Por favor selecciona una imagen válida (JPEG, PNG)');
         this.selectedImage = null;

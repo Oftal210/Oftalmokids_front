@@ -76,14 +76,14 @@ export class HeaderComponent {
   cerrarSesion() {
     this.notifiservice.cerrarSesion().subscribe( response => { 
       //Maneja la respuesta de cierre de sesión exitoso 
-      console.log('Sesión cerrada exitosamente', response);
+      //console.log('Sesión cerrada exitosamente', response);
       localStorage.clear();
       sessionStorage.clear();
       // Redirige al login
       this.router.navigate(['/login']);
     }, error => { 
       // Maneja el error que pueda ocurrir 
-      console.error('Error al cerrar la sesión', error); 
+      //console.error('Error al cerrar la sesión', error); 
     } 
     );
     

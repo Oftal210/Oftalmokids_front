@@ -83,7 +83,7 @@ export class EquipoComponent {
     this.superadminservice.obtenerRegistroUsuario()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data)
+      //console.log(data)
       if (data.status == 200){
         this.usuarios = data.usuarios;
       } else {
@@ -142,7 +142,7 @@ export class EquipoComponent {
     this.adminsFiltro = this.usuarios.filter(admin => {
       // Convertimos el estado activo/inactivo en texto
       const estado = admin.activo == 1 ? 'activado' : 'deshabilitado';
-      console.log(estado);
+      //console.log(estado);
       // Comprobamos si coincide con el dato buscado
       return (
         admin.nombre.toLowerCase().includes(dato) ||
@@ -153,6 +153,6 @@ export class EquipoComponent {
         estado.includes(dato) // Coincidencia con estado como texto
       );
     })
-    console.log(this.adminsFiltro);
+    //console.log(this.adminsFiltro);
   }
 }

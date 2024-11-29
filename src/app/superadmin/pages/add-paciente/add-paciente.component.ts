@@ -157,7 +157,7 @@ export class AddPacienteComponent {
     const edadpaciente = this.pacienteForm.get('fechanacimiento')?.value as string | null | undefined;
     // validamos que haya un valor valido
     if (edadpaciente) { 
-      console.log('aqui no')
+      //console.log('aqui no')
       // tomamos la fecha actual
       const fechaActual = new Date();
       // convertimos la fecha a tipo date
@@ -206,8 +206,8 @@ export class AddPacienteComponent {
           this.existePadre = true;                        // seteamos el valor para validar
           this.documentoPadre = data.usuario.id;          // tomamos el documento del padre para manejarlo mas facil
 
-          console.log(this.existePadre);
-          console.log(this.documentoPadre);
+          //console.log(this.existePadre);
+          //console.log(this.documentoPadre);
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
@@ -220,7 +220,7 @@ export class AddPacienteComponent {
           
           this.existePadre = false;   // seteamos el valor para validar
 
-          console.log(this.verificacioDato);
+          //console.log(this.verificacioDato);
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
@@ -243,7 +243,7 @@ export class AddPacienteComponent {
 
         // validmaos que el status sea correcto
         if (data.status == 200){
-          console.log(data);
+          //console.log(data);
           // tomamos los datos de la consulta hecha y los gestionamos
           const datosObtenidosPaciente = {
             tipodocumento: data.hijo.tipo_documento,
@@ -258,8 +258,8 @@ export class AddPacienteComponent {
           this.existePaciente = true;                           // seteamos el valor para validar                    
           this.documentoPaciente = data.hijo.documento;         // tomamos el documento del padre para manejarlo mas facil
 
-          console.log(this.existePaciente);
-          console.log(this.documentoPaciente);
+          //console.log(this.existePaciente);
+          //console.log(this.documentoPaciente);
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
@@ -271,7 +271,7 @@ export class AddPacienteComponent {
           }
           this.existePaciente = false;      // seteamos el valor para validar
 
-          console.log(this.verificacioDato);
+          //console.log(this.verificacioDato);
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
@@ -289,7 +289,7 @@ export class AddPacienteComponent {
   async tomarDatosPadre(){ 
     // si el formulario no es invalido hacemos
     if(!this.padreForm.invalid) {
-      console.log('agregen datos')
+      //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
       const documento = this.padreForm.get('documento')?.value;
       const nombre    = this.padreForm.get('nombre')?.value;
@@ -313,8 +313,8 @@ export class AddPacienteComponent {
         this.superadminservice.guardarRegistroPadre(documento, 2, nombre, apellido, email, telefono,  password)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
+          //console.log('Respuesta del servidor:', response);
+          //console.log('Respuesta del servidor:', response.status);
           // Emite el evento después de la inserción si fue exitosa
           if (response.status != 400) {
             // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
@@ -328,11 +328,11 @@ export class AddPacienteComponent {
         alert('El Usuario o Correo ya Estan Registrados');
       }
     } else {
-      console.log('datos fallidos')
+      //console.log('datos fallidos')
       alert('Faltan Datos o Correciones en Padre');
     }
 
-    console.log('fun tomardatospadre')
+    //console.log('fun tomardatospadre')
     this.verificarEstadoPadre();
   }
 
@@ -340,7 +340,7 @@ export class AddPacienteComponent {
   async tomarDatosPaciente(){ 
     // si el formulario no es invalido hacemos
     if(!this.pacienteForm.invalid) {
-      console.log('agregen datos')
+      //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
       const tipodocumento   = this.pacienteForm.get('tipodocumento')?.value;
       const documento       = this.pacienteForm.get('documento')?.value;
@@ -368,8 +368,8 @@ export class AddPacienteComponent {
           this.superadminservice.guardarRegistroHijo(documento, this.documentoPadre, nombre, apellido, tipodocumento, fechanacimiento, this.edadPaciente, genero, direccion)
           .pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => {
-            console.log('Respuesta del servidor:', response);
-            console.log('Respuesta del servidor:', response.status);
+            //console.log('Respuesta del servidor:', response);
+            //console.log('Respuesta del servidor:', response.status);
             // Emite el evento después de la inserción si fue exitosa
             if (response.status != 400) {
               // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
@@ -395,13 +395,13 @@ export class AddPacienteComponent {
         alert('La Cedula del Padre no se Encuentra Registrada')
       }
     } else {
-      console.log('datos fallidos')
+      //console.log('datos fallidos')
       alert('Faltan Datos o Correciones en Paciente');
     }
 
     // cambiamos la variable para que no salgan las alertas ahora
     this.verificacioDato = false;
-    console.log('fun tomardatospaciente');
+    //console.log('fun tomardatospaciente');
     this.verificarEstadoPaciente();
   }
 
@@ -414,14 +414,14 @@ export class AddPacienteComponent {
           const control = this.padreForm.get(controlName) as FormControl; // Usa get para obtener el control
           if (control && control.invalid) {
             // Imprimir el nombre del control y su estado
-            console.log(`${controlName} es inválido:`, control.errors);
+            //console.log(`${controlName} es inválido:`, control.errors);
           } else {
-            console.log(`${controlName} es válido`);
+            //console.log(`${controlName} es válido`);
           }
         }
       }
     } else {
-      console.log('El formulario es válido');
+      //console.log('El formulario es válido');
     }
   }
 
@@ -434,14 +434,14 @@ export class AddPacienteComponent {
           const control = this.pacienteForm.get(controlName) as FormControl; // Usa get para obtener el control
           if (control && control.invalid) {
             // Imprimir el nombre del control y su estado
-            console.log(`${controlName} es inválido:`, control.errors);
+            //console.log(`${controlName} es inválido:`, control.errors);
           } else {
-            console.log(`${controlName} es válido`);
+            //console.log(`${controlName} es válido`);
           }
         }
       }
     } else {
-      console.log('El formulario es válido');
+      //console.log('El formulario es válido');
     }
   }
 

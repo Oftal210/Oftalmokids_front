@@ -54,7 +54,7 @@ export class RegistroComponent implements OnInit {
     this.authService.registro(user).subscribe({
         next: (response: any) => {
           this.router.navigate(['/verificacion'], { queryParams: { email: response.email } });
-          // console.log(response.email);
+          //console.log(response.email);
         },
         error: (error) => {
           console.error('Error al registrar', error);

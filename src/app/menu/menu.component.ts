@@ -81,7 +81,7 @@ export class MenuComponent {
       if (identityJSON) {
         this.user = JSON.parse(identityJSON);
         this.currentRolName = sessionStorage.getItem('currentRolName');
-        console.log(this.currentRolName);
+        //console.log(this.currentRolName);
         this.currentRolId = this.user?.id_rol?.toString() || '';
       }
     } else {
@@ -92,7 +92,7 @@ export class MenuComponent {
 
   checkTokenExpiration() { 
     if (this.tokenAdministrador && this.isTokenExpired(this.tokenAdministrador)) { 
-      console.log('El token ha expirado');
+      //console.log('El token ha expirado');
       sessionStorage.removeItem('token'); 
       window.location.href = '/login'; // Redirige al login 
       alert('Su Sesión ha expirado, inicie nuevamente');
@@ -101,7 +101,7 @@ export class MenuComponent {
     
   isTokenExpired(token: string): boolean {
     const decoded = jwtDecode<any>(token);
-    console.log(decoded)
+    //console.log(decoded)
     const currentTime = Date.now() / 1000;  // tiempo en segundos 
     return decoded.exp < currentTime;       // exp es el tiempo de expiración del token
   }

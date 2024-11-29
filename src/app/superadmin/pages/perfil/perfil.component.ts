@@ -166,7 +166,7 @@ export class PerfilComponent {
     }
 
     if (!this.perfilForm.invalid) {
-      console.log('agregen datos')
+      //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
       const nombre    = this.perfilForm.get('nombre')?.value;
       const apellido  = this.perfilForm.get('apellido')?.value;
@@ -177,8 +177,8 @@ export class PerfilComponent {
       if(this.user.id == 1) {
         this.superadminservice.modficarSuperAdministrador(this.user.documento, nombre, apellido, email, telefono, password)
         .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
+          //console.log('Respuesta del servidor:', response);
+          //console.log('Respuesta del servidor:', response.status);
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa
             alert(response.mensaje);
@@ -196,8 +196,8 @@ export class PerfilComponent {
       } else {
         this.superadminservice.modficarAdministrador(docAdministrador.documento, nombre, apellido, email, telefono, password)
         .subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
+          //console.log('Respuesta del servidor:', response);
+          //console.log('Respuesta del servidor:', response.status);
           if (response.status != 400) {
             // Emite el evento después de la inserción si fue exitosa
             alert('datos actualizados')
@@ -212,7 +212,7 @@ export class PerfilComponent {
         });
       }
     } else {
-      console.log('faltan datos')
+      //console.log('faltan datos')
     }
   }
 }

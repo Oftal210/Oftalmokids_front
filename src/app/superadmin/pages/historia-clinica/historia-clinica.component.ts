@@ -409,9 +409,6 @@ export class HistoriaClinicaComponent {
       // reinciamos validaciones y valores
       input?.updateValueAndValidity();
     });
-    
-    
-
   }
 
   // FUNCIONES PARA VALIDAR LOS INPUT's ↓
@@ -493,6 +490,7 @@ export class HistoriaClinicaComponent {
 
   // metodo que incia al iniciar el componente
   ngOnInit() {
+
     const today = new Date();
     this.fechaActual = today.toISOString().split('T')[0];
     // verificamos el rol para sacarlo al login
@@ -517,8 +515,6 @@ export class HistoriaClinicaComponent {
     
     // tomamos de la URL el documento del hijo
     this.accionModulo = this.route.snapshot.paramMap.get('flag') || '';
-
-    
     
     // metodo para esperar hasta que se termine de realizar al completo
     this.cargarDocumentoHijo().then(() => {
@@ -570,15 +566,20 @@ export class HistoriaClinicaComponent {
             this.cargarRegistrosDiagnosticos();
           });
         } else {
-
           // metodo para tomar los datos del localstorage en caso de que existan
-          const savedValues = JSON.parse(localStorage.getItem('formValues') || '{}');
+          const savedValues = JSON.parse(localStorage.getItem(`formValues_${this.documentoHijo}`) || '{}');
+
+          // Eliminamos el grupo `historiaForm` del objeto `savedValues`
+          if (savedValues.historiaForm) {
+            delete savedValues.historiaForm; // Excluir valores de historiaForm
+          }
+
           // aplicamos lo que tengamos en el localstorage
           this.formularioForm.patchValue(savedValues);
     
           // Escuchar cambios en el formulario principal y guardar en localStorage 
           this.formularioForm.valueChanges.subscribe(values => { 
-            localStorage.setItem('formValues', JSON.stringify(values)); 
+            localStorage.setItem(`formValues_${this.documentoHijo}`, JSON.stringify(values));
           });
     
           // Establecer fecha y hora actuales en los controles del formulario 
@@ -617,7 +618,7 @@ export class HistoriaClinicaComponent {
           if(!data.status) {
             this.existeHistoria = true;
           }
-          console.log(this.existeHistoria)
+          //console.log(this.existeHistoria)
           resolve();
       });
     });
@@ -649,7 +650,7 @@ export class HistoriaClinicaComponent {
           this.documentoPadre = data.hijo.id_usuario;
           this.idHijo = data.hijo.id;
           this.edadPaciente = data.hijo.edad;
-          console.log(this.idHijo);
+          //console.log(this.idHijo);
           const datosParaHijo = {
             hijoNombre: data.hijo.nombre,
             hijoApellido: data.hijo.apellido,
@@ -738,7 +739,7 @@ export class HistoriaClinicaComponent {
   async guardarHistoriaClinica() { 
     // validamos que el fomrulario este correctamn
     if (this.formularioForm.valid) {
-      console.log(this.formularioForm.value);
+      //console.log(this.formularioForm.value);
       alert('espere mientras se guarda la historia clinica');
 
       // Mostrar el overlay para evitar la interacción del usuario
@@ -768,14 +769,14 @@ export class HistoriaClinicaComponent {
         
         await this.guardarRegistrosDiagnostico();
 
-        console.log(this.datoInsertado);
+        //console.log(this.datoInsertado);
 
         if (this.datoInsertado) {
 
           this.formularioForm.reset();
 
           // Limpiar el localstorage cuando se necesite
-          localStorage.removeItem('formValues');
+          localStorage.removeItem(`formValues_${this.documentoHijo}`);
 
           // verificamos si se inserto la historia
           this.correctoInsercion = true;
@@ -795,7 +796,7 @@ export class HistoriaClinicaComponent {
         document.getElementById('overlay')!.style.display = 'none'; 
       } 
     } else {
-      console.log('Formulario no válido'); 
+      //console.log('Formulario no válido'); 
       this.formularioForm.markAllAsTouched();
       this.validarFormulario();
     }
@@ -871,7 +872,7 @@ export class HistoriaClinicaComponent {
   guardarRegistrosHistoriaClinica(): Promise<void> {
     return new Promise((resolve, reject) => {
       if(!this.formularioForm.invalid){
-        console.log('es verdadero');
+        //console.log('es verdadero');
         const historiaFormValues = this.formularioForm.get('historiaForm')?.value;
         const antePersoFormValues = this.formularioForm.get('antePersoForm')?.value;
 
@@ -910,17 +911,17 @@ export class HistoriaClinicaComponent {
             alert('Ya existe un registro de historia clinica para este hijo')
             document.getElementById('overlay')!.style.display = 'none'; 
           } else {
-            console.log(response)
-            console.log(response.status)
+            //console.log(response)
+            //console.log(response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               
               // hubo error
-              console.log('error al insertar la historia clinica')
+              //console.log('error al insertar la historia clinica')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta de historia clinica')
+              //console.log('insercion correcta de historia clinica')
               this.idHistoriaClinica = response.historia_clinica.id;
               this.datoInsertado = true;
             }
@@ -937,11 +938,11 @@ export class HistoriaClinicaComponent {
 
   // Funcion para insertar el antecedente visual
   guardarRegistrosAntecedenteVisual(): Promise<void> {
-    console.log('entro a antece visu');
+    //console.log('entro a antece visu');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const anteceVisualDatos = this.formularioForm.get('anteVisualForm')?.value;
   
           this.superadminservice.guardarRegistroAntecedenteVisual(
@@ -958,16 +959,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status antevisu: '+response.status)
+            //console.log(response);
+            //console.log('status antevisu: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar el antecedente visual')
+              //console.log('error al insertar el antecedente visual')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en antecedente visual')
+              //console.log('insercion correcta en antecedente visual')
               this.datoInsertado = true;
             }
             resolve();
@@ -979,21 +980,21 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto antecedente visual');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto antecedente visual');
       }
     });
   }
 
   // Funcion para insertar la agudeza visual
   guardarRegistrosAgudezaVisual(): Promise<void> {
-    console.log('entro a agudeza visua');
+    //console.log('entro a agudeza visua');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const agudezaVisuDatos = this.formularioForm.get('agudezaForm')?.value;
-          console.log(agudezaVisuDatos);
+          //console.log(agudezaVisuDatos);
   
           this.superadminservice.guardarRegistroAgudezaVisual(
 
@@ -1019,16 +1020,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status agudeza visu: '+response.status)
+            //console.log(response);
+            //console.log('status agudeza visu: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar la agudeza visual')
+              //console.log('error al insertar la agudeza visual')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en agudeza visual')
+              //console.log('insercion correcta en agudeza visual')
               this.datoInsertado = true;
             }
             resolve();
@@ -1040,19 +1041,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en agudeza visual');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en agudeza visual');
       }
     });
   }
 
   // Funcion para insertar la retinoscopia
   guardarRegistrosRetinoscopia(): Promise<void> {
-    console.log('entro a retinoscopia');
+    //console.log('entro a retinoscopia');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const retinoscopiaDatos = this.formularioForm.get('retinoscopiaForm')?.value;
   
           this.superadminservice.guardarRegistroRetinoscopia(
@@ -1071,16 +1072,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status retinos: '+response.status)
+            //console.log(response);
+            //console.log('status retinos: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar la retinosco')
+              //console.log('error al insertar la retinosco')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en retinosco')
+              //console.log('insercion correcta en retinosco')
               this.datoInsertado = true;
             }
             resolve();
@@ -1092,19 +1093,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto la retinosco');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto la retinosco');
       }
     });
   }
 
   // Funcion para insertar el alineamiento motor
   guardarRegistrosAlineamiento(): Promise<void> {
-    console.log('entro a alineamiento');
+    //console.log('entro a alineamiento');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const alineamientoDatos = this.formularioForm.get('alineamientoForm')?.value;
   
           this.superadminservice.guardarRegistroAlineamientoMotor(
@@ -1121,16 +1122,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status alineam: '+response.status)
+            //console.log(response);
+            //console.log('status alineam: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar el alineam')
+              //console.log('error al insertar el alineam')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en alineam')
+              //console.log('insercion correcta en alineam')
               this.datoInsertado = true;
             }
             resolve();
@@ -1142,19 +1143,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto el alineami');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto el alineami');
       }
     });
   }
 
   // Funcion para insertar las versiones
   guardarRegistrosVersiones(): Promise<void> {
-    console.log('entro a version');
+    //console.log('entro a version');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const versionDatos = this.formularioForm.get('versionesForm')?.value;
   
           this.superadminservice.guardarRegistroVersiones(
@@ -1165,16 +1166,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status version: '+response.status)
+            //console.log(response);
+            //console.log('status version: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar en versiones')
+              //console.log('error al insertar en versiones')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en versiones')
+              //console.log('insercion correcta en versiones')
               this.datoInsertado = true;
             }
             resolve();
@@ -1186,19 +1187,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en versiones');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en versiones');
       }
     });
   }
 
   // Funcion para insertar las ducciones
   guardarRegistrosDucciones(): Promise<void> {
-    console.log('entro a ducciones');
+    //console.log('entro a ducciones');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const duccionDatos = this.formularioForm.get('duccMotaliExploForm')?.value;
   
           this.superadminservice.guardarRegistroDucciones(
@@ -1214,16 +1215,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status duccion: '+response.status)
+            //console.log(response);
+            //console.log('status duccion: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar en duccion')
+              //console.log('error al insertar en duccion')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en duccion')
+              //console.log('insercion correcta en duccion')
               this.datoInsertado = true;
             }
             resolve();
@@ -1235,19 +1236,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en duccion');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en duccion');
       }
     });
   }
 
   // Funcion para insertar las motalidades oculares
   guardarRegistrosMotalidades(): Promise<void> {
-    console.log('entro a motalidad');
+    //console.log('entro a motalidad');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const motalidadDatos = this.formularioForm.get('duccMotaliExploForm')?.value;
   
           this.superadminservice.guardarRegistroMotalidadOcular(
@@ -1263,16 +1264,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status motalidad: '+response.status)
+            //console.log(response);
+            //console.log('status motalidad: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar en motalidad')
+              //console.log('error al insertar en motalidad')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en motalidad')
+              //console.log('insercion correcta en motalidad')
               this.datoInsertado = true;
             }
             resolve();
@@ -1284,19 +1285,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en motalidad');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en motalidad');
       }
     });
   }
 
   // Funcion para insertar las exploracionres
   guardarRegistrosExploracion(): Promise<void> {
-    console.log('entro a exploracion');
+    //console.log('entro a exploracion');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const exploracionDatos = this.formularioForm.get('duccMotaliExploForm')?.value;
   
           this.superadminservice.guardarRegistroExploracionExternos(
@@ -1309,16 +1310,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status explo: '+response.status)
+            //console.log(response);
+            //console.log('status explo: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar en explo')
+              //console.log('error al insertar en explo')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en explo')
+              //console.log('insercion correcta en explo')
               this.datoInsertado = true;
             }
             resolve();
@@ -1330,19 +1331,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en explo');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en explo');
       }
     });
   }
 
   // Funcion para insertar las oftalmoscopias
   guardarRegistrosOftalmoscopias(): Promise<void> {
-    console.log('entro a oftalmoscopia');
+    //console.log('entro a oftalmoscopia');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const oftalmosDatos = this.formularioForm.get('oftalmoscipiaForma')?.value;
   
           this.superadminservice.guardarRegistroOftalmoscopia(
@@ -1370,16 +1371,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status oftalmo: '+response.status)
+            //console.log(response);
+            //console.log('status oftalmo: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar en oftalmo')
+              //console.log('error al insertar en oftalmo')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en oftalmo')
+              //console.log('insercion correcta en oftalmo')
               this.datoInsertado = true;
             }
             resolve();
@@ -1391,19 +1392,19 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en oftalmo');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en oftalmo');
       }
     });
   }
 
   // Funcion para insertar los diagnosticos x historia clinica
   guardarRegistrosDiagnostico(): Promise<void> {
-    console.log('entro a diagnostico');
+    //console.log('entro a diagnostico');
     return new Promise((resolve, reject) => {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
-          console.log('es verdadero');
+          //console.log('es verdadero');
           const diagnosticoDatos = this.formularioForm.get('diagnostico')?.value;
           const historiaDatos = this.formularioForm.get('historiaForm')?.value;
   
@@ -1420,16 +1421,16 @@ export class HistoriaClinicaComponent {
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
 
-            console.log(response);
-            console.log('status diagn: '+response.status)
+            //console.log(response);
+            //console.log('status diagn: '+response.status)
             // varificamos si se inserto o hubo error
             if (response.status != 200 && response.status != 201) {
               // hubo error
-              console.log('error al insertar en diagn')
+              //console.log('error al insertar en diagn')
               this.datoInsertado = false;
             } else {
               // salio bien   
-              console.log('insercion correcta en diagn')
+              //console.log('insercion correcta en diagn')
               this.datoInsertado = true;
             }
             resolve();
@@ -1441,8 +1442,8 @@ export class HistoriaClinicaComponent {
           })
         }
       } else {
-        console.log(this.datoInsertado);
-        console.log('no se inserto en diagn');
+        //console.log(this.datoInsertado);
+        //console.log('no se inserto en diagn');
       }
     });
   }
@@ -1458,7 +1459,7 @@ export class HistoriaClinicaComponent {
         } 
       } 
     } else { 
-      console.log('El formulario principal es válido'); 
+      //console.log('El formulario principal es válido'); 
     } 
   } 
   
@@ -1469,9 +1470,9 @@ export class HistoriaClinicaComponent {
         const control = formGroup.get(controlName) as AbstractControl; 
         if (control && control.invalid) { 
           // Imprimir el nombre del control y su estado 
-          console.log(`${formGroupName}.${controlName} es inválido:`, control.errors); 
+          //console.log(`${formGroupName}.${controlName} es inválido:`, control.errors); 
         } else { 
-          console.log(`${formGroupName}.${controlName} es válido`); 
+          //console.log(`${formGroupName}.${controlName} es válido`); 
         } 
       } 
     } 
@@ -1741,7 +1742,7 @@ export class HistoriaClinicaComponent {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
-        console.log(data);
+        //console.log(data);
         this.diagnosticoHechos = data;
         const objetoMasReciente = this.diagnosticoHechos.reduce((a, b) => new Date(a.fecha) > new Date(b.fecha) ? a : b);
         this.formularioForm.get('diagnostico')?.patchValue({
@@ -1821,10 +1822,10 @@ export class HistoriaClinicaComponent {
     if (this.txaMotivo && this.txaMotivo.nativeElement) {  
       
       if(!this.formularioForm.get('diagnostico')?.invalid &&  this.txaMotivo.nativeElement.value != ''){
-        console.log('es verdadero');
+        //console.log('es verdadero');
         const diagnosticoDatos = this.formularioForm.get('diagnostico')?.value;
         const motivoConsulta = this.txaMotivo.nativeElement.value;
-        console.log(motivoConsulta);
+        //console.log(motivoConsulta);
         this.superadminservice.guardarRegistroDiagxHistoriaClinica(
 
           this.idHistoriaClinica,
@@ -1837,16 +1838,16 @@ export class HistoriaClinicaComponent {
 
         ).pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => { 
-          console.log(response);
-          console.log('status diagn: '+response.status)
+          //console.log(response);
+          //console.log('status diagn: '+response.status)
           // varificamos si se inserto o hubo error
           if (response.status != 200 && response.status != 201) {
             // hubo error
-            console.log('error al insertar en diagnostico, verifiquue los datos y vuelva a intentarlo')
+            //console.log('error al insertar en diagnostico, verifiquue los datos y vuelva a intentarlo')
             
           } else {
             // salio bien   
-            console.log('El diagnostico se agrego correcta')
+            //console.log('El diagnostico se agrego correcta')
             location.reload();
           }
         }, error => {
@@ -1854,10 +1855,10 @@ export class HistoriaClinicaComponent {
           this.datoInsertado = false;
         })
       } else {
-        console.log('faltan datos por agregar');
+        //console.log('faltan datos por agregar');
       }
     } else {
-      console.log('rellene el motivo de la consulta')
+      //console.log('rellene el motivo de la consulta')
       this.ocultarMotivoConsulta = true;
     }
   }

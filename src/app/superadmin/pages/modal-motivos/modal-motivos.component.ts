@@ -35,7 +35,7 @@ export class ModalMotivosComponent {
     @Inject(MAT_DIALOG_DATA) public data:any,
     private dialogRef: MatDialogRef<ModalMotivosComponent>
   ){
-    console.log(data);
+    //console.log(data);
     this.motivoTexto = data.motivo;
     this.activarCalendario = data.filtro;
     if(this.activarCalendario){

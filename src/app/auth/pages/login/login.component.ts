@@ -84,7 +84,7 @@ export class LoginComponent {
         }
         this.loginService.login(documento, contrasena).subscribe(
             (rs: any) => {
-                console.log(rs);
+                //console.log(rs);
                 this.reply = rs;
                 //console.log('API response:', rs);
                 if(rs.user.estado == 1){

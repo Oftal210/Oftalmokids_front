@@ -79,7 +79,7 @@ export class AddAdminComponent {
     return new Promise((resolve, reject) =>{
       this.superadminservice.buscarAdministrador(documento).subscribe(
         data => {
-          console.log(data);
+          //console.log(data);
           if (!data.mensaje){
             this.adminEncontrado = true;
           } else {
@@ -95,7 +95,7 @@ export class AddAdminComponent {
   // funcion para guardar el administrador nuevo
   async tomarDatos() {
     if (!this.administradorForm.invalid) {
-      console.log('agregen datos')
+      //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
       const documento = this.administradorForm.get('documento')?.value;
       const nombre    = this.administradorForm.get('nombre')?.value;
@@ -106,12 +106,12 @@ export class AddAdminComponent {
 
       // variable para realizar la consulta si el admin existe
       const esperarAdminBuscado = await this.buscarAdministrador(documento);
-      console.log(email)
+      //console.log(email)
       if (!this.adminEncontrado) {
         // realizamos el envio de los datos
         this.superadminservice.guardarRegistroAdministrador(documento, 1, nombre, apellido, email, telefono, password).subscribe(response => {
-          console.log('Respuesta del servidor:', response);
-          console.log('Respuesta del servidor:', response.status);
+          //console.log('Respuesta del servidor:', response);
+          //console.log('Respuesta del servidor:', response.status);
           if (response.status != 400) {
             // Emite el evento después de la inserción si fue exitosa
             this.datosInsertado.emit();

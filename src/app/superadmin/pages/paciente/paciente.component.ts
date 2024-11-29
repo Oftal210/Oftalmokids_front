@@ -82,7 +82,7 @@ export class PacienteComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       // validamos que no venga un mensaje con el error
-      console.log(data)
+      //console.log(data)
       if(data.status == 200) {
         this.hijos = data.hijo;
       } else {

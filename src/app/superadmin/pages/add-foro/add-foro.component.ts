@@ -94,7 +94,7 @@ export class AddForoComponent {
       }
 
     } else {
-      console.log('saca del sistema, no hay json');
+      //console.log('saca del sistema, no hay json');
       this.router.navigate(['/login']);
     }
 
@@ -119,7 +119,7 @@ export class AddForoComponent {
 
   // metodo para cerrar la ventana modal
   cerrar(): void {
-    console.log('entro cerr')
+    //console.log('entro cerr')
     this._matDialogRef.close();
   }
 
@@ -129,7 +129,7 @@ export class AddForoComponent {
       var docAdministrador = JSON.parse(this.documentoAdministrador);
       if (docAdministrador.id_rol == 1) {
         if (!this.foroForm.invalid) {
-          console.log('valido, agg datos');
+          //console.log('valido, agg datos');
           // tomamos los datos necesarios de los inputs que necesitamos
           const titulo = this.foroForm.get('titulo')?.value;
           const contenido = this.foroForm.get('contenido')?.value;
@@ -139,23 +139,23 @@ export class AddForoComponent {
           if(this.selectedFile) {
             const nombreUnico = `${Date.now()}-${this.selectedFile.name}`;
             imagenData.append('imagen', this.selectedFile, nombreUnico);
-            console.log(imagenData)
+            //console.log(imagenData)
           } else {
             imagenData.append('imagen', '');
           }
           
           imagenData.forEach((value, key) => {
-            console.log(`${key}:`, value);
+            //console.log(`${key}:`, value);
           });
   
-          console.log(
-            'usuario: ' + imagenData,
-            'titulo: ' + titulo,
-            'contenido: ' + contenido,
-            'img: ' + imagenData,
-            'id: ' + this.id,
-            'editar?: ' + this.editar
-          );
+          //console.log(
+          //   'usuario: ' + imagenData,
+          //   'titulo: ' + titulo,
+          //   'contenido: ' + contenido,
+          //   'img: ' + imagenData,
+          //   'id: ' + this.id,
+          //   'editar?: ' + this.editar
+          // );
   
           if (this.editar == false) {
             // Si es false guardara y hara lo siguiente
@@ -163,17 +163,18 @@ export class AddForoComponent {
               .guardarRegistroForo(docAdministrador.documento, titulo, contenido, imagenData)
               .subscribe(
                 (response) => {
-                  console.log('Respuesta del servidor:', response);
+                  //console.log('Respuesta del servidor:', response);
                   if(!response.mensaje){
                     // Emite el evento después de la inserción si fue exitosa
                     this.datosInsertado.emit();
                     this.cerrar();
                   } else{
-                    console.log('fallo en el sistema');
+                    //console.log('fallo en el sistema');
                   };
                 },
                 (error) => {
-                  console.error('Error al enviar los datos:', error);
+                  //console.error('Error al enviar los datos:', error);
+                  alert('Ocurrio un error, intentelo de nuevo');
                 }
               );
             this.editar = false;
@@ -184,13 +185,14 @@ export class AddForoComponent {
               .editarRegistroForo(this.id, titulo, contenido, imagenData)
               .subscribe(
                 (response) => {
-                  console.log('Respuesta del servidor:', response);
+                  //console.log('Respuesta del servidor:', response);
                   // Emite el evento después de la inserción si fue exitosa
                   this.datosInsertado.emit();
                   this.cerrar();
                 },
                 (error) => {
-                  console.error('Error al enviar los datos:', error);
+                  //console.error('Error al enviar los datos:', error);
+                  alert('Ocurrio un error, intentelo de nuevo');
                 }
               );
             this.editar = false;
@@ -219,7 +221,7 @@ export class AddForoComponent {
         };
         reader.readAsDataURL(file);  // Esto convierte la imagen en una cadena base64
         this.selectedFile = file;
-        console.log(this.selectedFile);
+        //console.log(this.selectedFile);
       } else {
         alert('Por favor selecciona una imagen válida (JPEG, PNG)');
         this.selectedImage = null;

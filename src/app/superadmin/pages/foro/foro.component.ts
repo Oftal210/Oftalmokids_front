@@ -73,7 +73,7 @@ export class ForoComponent {
       // convertimos la variable a tipo JSON
       var docAdministrador = JSON.parse(this.documentoAdministrador);
 
-      console.log(docAdministrador)
+      //console.log(docAdministrador)
       // tomamos el id_rol y lo guardamos aparte
       this.rolUsuarioActual = docAdministrador.id_rol;
 
@@ -83,10 +83,10 @@ export class ForoComponent {
       // verificamos quien puede entrar al modulo
       if(docAdministrador.id_rol != 1 && docAdministrador.id_rol != 2){
         this.router.navigate(['/login']);
-        console.log('saca del sistema normal');
+        //console.log('saca del sistema normal');
       }
     } else {
-      console.log('saca del sistema, no hay json');
+      //console.log('saca del sistema, no hay json');
       //this.router.navigate(['/login']);
     }
 
@@ -168,11 +168,11 @@ export class ForoComponent {
 
   // funcion para eliminar un foro
   eliminarRegistroForo (id: any) {
-    console.log(id);
+    //console.log(id);
     this.superadminservice.eliminiarRegistroForo(id)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        console.log(data)
+        //console.log(data)
         // validamos el dato que nos trae y realizamos
         if(data.status == 200){
           this.cargarRegistrosforo();
@@ -230,7 +230,7 @@ export class ForoComponent {
       this.superadminservice.guardarLikeForo(foro, this.idUsuarioActual)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        console.log(data);
+        //console.log(data);
         // si llega esto es que inserto correctamente
         if(data.status == 201){
           // tomamos del HTML el elemento necesario
