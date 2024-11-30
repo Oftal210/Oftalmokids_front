@@ -4,6 +4,7 @@ import { User } from '../../../Modelos/user.model';
 import { AuthService } from '../../../servicios/auth.service';
 import { Router } from '@angular/router';
 import { Login } from '../../../Modelos/login';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -73,20 +74,21 @@ export class LoginComponent {
         const contrasena = this.loginForm.get('contrasena')?.value;
 
         if (!documento) {
-            // this.alertService.errorAlert('Error', "El campo de Correo es requerido");
+            this.mostrarAlerta('', 'No Ingreso el Documento', 'error');
             this.isSubmitting = false;
             return;
         }
         if (!contrasena) {
-            // this.alertService.errorAlert('Error', "el campo de contraseña es requerido");
+            this.mostrarAlerta('', 'No Ingreso la Contraseña', 'error');
             this.isSubmitting = false;
             return;
         }
         this.loginService.login(documento, contrasena).subscribe(
             (rs: any) => {
+                this.mostrarAlerta('Espere un Momento', 'Estamos validando sus Datos', 'info');
                 //console.log(rs);
                 if (rs.incorrecto){
-                    alert(rs.incorrecto.mensaje);
+                    this.mostrarAlerta('', rs.incorrecto.mensaje, 'error');
                     return;
                 }
                 this.reply = rs;
@@ -105,7 +107,6 @@ export class LoginComponent {
                         if (this.reply.user) {
                             sessionStorage.setItem('documento', this.reply.user.documento);
                         }
-                        //alert('Inicio de sesión exitoso');
                         if(this.reply.user.id_rol === 1){
                             setTimeout(() => {
                                 this.router.navigate(['/dashboard']);
@@ -119,7 +120,7 @@ export class LoginComponent {
                     }
                     this.isSubmitting = false;
                 } else {
-                    alert('Esta desactivado para ingresar');
+                    this.mostrarAlerta('Usuario Desactivado', 'Comuniquese con el Administrador', 'warning');
                     this.router.navigate(['/login']);
                 }
                 
@@ -127,13 +128,13 @@ export class LoginComponent {
             err => {
                 //console.error(err);
                 if (err.status === 401) {
-                    // this.alertService.errorAlert('Error', err.error.message);
+                    
                 } else if (err.status === 404) {
-                    // this.alertService.errorAlert('Error', err.error.message);
+                    
                 } else if (err.status === 403) {
-                    // this.alertService.errorAlert('Error', err.error.message);
+                    
                 } else if (err.status === 410) {
-                    // this.alertService.errorAlert('Error', err.error.message);
+                    
                 }
                 if (err.status === 409) {
                     // this.router.navigate(['/verification'], { queryParams: { email: email } });
@@ -153,6 +154,29 @@ export class LoginComponent {
             default:
                 return 'Padre';
         }
+    }
+
+    // this.mostrarAlerta('', 'No Ingreso el Documento', 'error');
+
+    // import Swal from 'sweetalert2';
+
+    // funcion para las alertas del sistema
+    mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+        Swal.fire({
+            title: titulo,
+            icon: icono,
+            text: mensaje,
+            confirmButtonText: 'Aceptar',
+            timer: 3000, // Duración en milisegundos (3 segundos)
+            background: '#fff', // Color de fondo
+            color: '#333', // Color del texto
+            heightAuto: false,
+            width: '450px',
+            position: 'top',
+            customClass: {
+                popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+            }
+        });
     }
 
 }

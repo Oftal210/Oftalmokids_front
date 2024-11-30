@@ -9,6 +9,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -174,7 +175,7 @@ export class AddForoComponent {
                 },
                 (error) => {
                   //console.error('Error al enviar los datos:', error);
-                  alert('Ocurrio un error, intentelo de nuevo');
+                  this.mostrarAlerta('Formulario Incompleto', 'Ocurrio un error, intentelo de nuevo', 'error');
                 }
               );
             this.editar = false;
@@ -192,14 +193,14 @@ export class AddForoComponent {
                 },
                 (error) => {
                   //console.error('Error al enviar los datos:', error);
-                  alert('Ocurrio un error, intentelo de nuevo');
+                  this.mostrarAlerta('Formulario Incompleto', 'Ocurrio un error, intentelo de nuevo', 'error');
                 }
               );
             this.editar = false;
             
           }
         } else {
-          alert('Faltan campos por rellenar');
+          this.mostrarAlerta('Formulario Incompleto', 'Faltan campos por rellenar', 'error');
         }
       }
     }
@@ -223,13 +224,13 @@ export class AddForoComponent {
         this.selectedFile = file;
         //console.log(this.selectedFile);
       } else {
-        alert('Por favor selecciona una imagen válida (JPEG, PNG)');
+        this.mostrarAlerta('Formato Invalido', 'Por favor selecciona una imagen válida (JPEG, PNG)', 'info');
         this.selectedImage = null;
         this.selectedFile = null;
       }
 
       if (file.size > fileSizeLimit) {
-        alert('El archivo excede el tamaño máximo permitido de 2 MB.');
+        this.mostrarAlerta('', 'El archivo excede el tamaño máximo permitido de 2 MB.', 'info');
         this.selectedImage = null;
         this.selectedFile = null;
         return;
@@ -255,4 +256,23 @@ export class AddForoComponent {
   onImageError(): void {
     this.imageError = true;
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 }

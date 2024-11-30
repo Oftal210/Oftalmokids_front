@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -11,6 +12,7 @@ import { SuperadminService } from '../../../servicios/superadmin.service';
 
 // Componente para agregar pacientes, modal
 import { AddAdminComponent } from '../add-admin/add-admin.component';
+import { NullEncryptedPrivateChannel } from 'laravel-echo/dist/channel';
 
 @Component({
   selector: 'app-equipo',
@@ -88,7 +90,7 @@ export class EquipoComponent {
         this.usuarios = data.usuarios;
       } else {
         this.usuarios = [];
-        alert(data.mensaje)
+        this.mostrarAlerta('', data.mensaje, 'info');
       }
       this.adminsFiltro = [...this.usuarios];
     });
@@ -101,31 +103,40 @@ export class EquipoComponent {
     var mensaje: string = '';
     // validamos el estado para modificar el mensaje
     if(estado == 'activo') {
-      mensaje = 'Activar';
-    } else {
       mensaje = 'Desactivar';
+    } else {
+      mensaje = 'Activar';
     }
 
     // creamos la variable que realizara la pregunta y confirmacion
-    const alertaDesactivar = window.confirm(`¿Desea ${mensaje} el usuario?`);
-
-    // validamos si se confirmo la accion
-    if (alertaDesactivar) {
-      // llamamos al metodo para realizar la accion
-      this.superadminservice.desactivarAdministrador(docum)
-      .subscribe(
-        data => {
-          // mostramos alerta en base al resultado
-          if (data.activado) {
-            alert('Se Activo con Exito');
-          } else {
-            alert('Se Desactivo con Exito');
-          }
-        }, error => {
-          console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');
-        });
-    }
+    Swal.fire({
+      title: `¿Desea ${mensaje} a Este Usuario?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: " Si ",
+      cancelButtonText: 'No',
+    }).then((result) => {
+      console.log(result);
+      // validamos si se confirmo la accion
+      if (result.isConfirmed) {
+        // llamamos al metodo para realizar la accion
+        this.superadminservice.desactivarAdministrador(docum)
+        .subscribe(
+          data => {
+            // mostramos alerta en base al resultado
+            if (data.activado) {
+              this.mostrarAlerta('', 'Se Activo con Exito', 'success');
+            } else {
+              this.mostrarAlerta('', 'Se Desactivo con Exito', 'success');
+            }
+          }, error => {
+            console.error('Error al enviar los datos:', error);
+            this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
+          });
+      }
+    });
     
     setTimeout(() => {
       // llamamos a la funcion para cargar los datos nuevamente
@@ -155,4 +166,23 @@ export class EquipoComponent {
     })
     //console.log(this.adminsFiltro);
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 }

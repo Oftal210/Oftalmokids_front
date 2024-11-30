@@ -16,6 +16,7 @@ import { MenuComponent } from './menu/menu.component';
 import { AuthInterceptor } from './interceptores/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LucideAngularModule, LayoutDashboard, Users, UserRound, MessageCircle, ContactRound, MessageSquareText,  } from 'lucide-angular';
+import Swal from 'sweetalert2';
  
 
 @NgModule({

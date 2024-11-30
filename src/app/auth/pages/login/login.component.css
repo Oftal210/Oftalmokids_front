@@ -5,3 +5,10 @@
     width: 20px;
     height: 20px;
 }
+
+.custom-popup {
+    font-size: 14px;  /* Tamaño de fuente más pequeño */
+    width: 300px !important;  /* Asegura que la alerta tenga un ancho específico */
+    max-width: 100% !important;  /* Evita que la alerta sea más grande que el ancho de la pantalla */
+    padding: 10px;  /* Ajusta el espaciado interno de la alerta */
+}

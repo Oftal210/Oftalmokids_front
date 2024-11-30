@@ -13,6 +13,7 @@ import { rejects } from 'assert';
 import { resourceLimits } from 'worker_threads';
 import { BlobOptions } from 'buffer';
 import internal from 'stream';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-paciente',
@@ -211,7 +212,7 @@ export class AddPacienteComponent {
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
-            alert('Ya se encuentra registrado este padre');
+            this.mostrarAlerta('', 'Ya se encuentra registrado este padre', 'info');
           }
         } else {
           if (this.existePadre == true) {  // validamos si hubo datos antes
@@ -224,7 +225,7 @@ export class AddPacienteComponent {
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
-            alert('No se encuentra registrado el padre');
+            this.mostrarAlerta('', 'No se encuentra registrado el padre', 'info');
           }
         }
         resolve(this.existePadre);
@@ -263,7 +264,7 @@ export class AddPacienteComponent {
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
-            alert('Ya se encuentra registrado este paciente');
+            this.mostrarAlerta('', 'Ya se encuentra registrado este paciente', 'info');
           }
         } else {
           if(this.existePaciente == true) {   // validamos si hubo datos antes
@@ -275,7 +276,7 @@ export class AddPacienteComponent {
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
-            alert('No se encuentra registrado el hijo');
+            this.mostrarAlerta('', 'No se encuentra registrado el hijo', 'info');
           }
         }
         resolve(this.existePaciente);
@@ -318,18 +319,18 @@ export class AddPacienteComponent {
           // Emite el evento después de la inserción si fue exitosa
           if (response.status != 400) {
             // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
-            alert('el Padre fue Guardado Correctamente');
+            this.mostrarAlerta('Exito', 'El Padre fue Guardado Correctamente', 'success');
           }
         }, error => {   // si encontramos un error lo vemos de la siguiente manera
-          console.error('Error al enviar los datos:', error);  
-          alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
+          console.error('Error al enviar los datos:', error);
+          this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
         });
       } else {
-        alert('El Usuario o Correo ya Estan Registrados');
+        this.mostrarAlerta('', 'El Usuario o Correo ya Estan Registrados', 'info');
       }
     } else {
       //console.log('datos fallidos')
-      alert('Faltan Datos o Correciones en Padre');
+      this.mostrarAlerta('Datos del Padre', 'Faltan Datos o Correciones en Padre', 'error');
     }
 
     //console.log('fun tomardatospadre')
@@ -374,29 +375,29 @@ export class AddPacienteComponent {
             if (response.status != 400) {
               // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
               this.datosInsertado.emit();
-              alert('el Hijo fue Guardado Correctamente');
+              this.mostrarAlerta('Exito', 'el Hijo fue Guardado Correctamente', 'success')
               this.pacienteForm.reset();
               this.cerrar();
             }
           }, error => {
-            console.error('Error al enviar los datos:', error);
-            alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
+            //console.error('Error al enviar los datos:', error);
+            this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
           });
         } else {
           // cambiamos la variable para que no salgan las alertas ahora
           this.verificacioDato = false;
           // mostramos alertar de fallo
-          alert('El Paciente o Correo ya Estan Registrados');
+          this.mostrarAlerta('', 'El Paciente o Correo ya Estan Registrados', 'info');
         }
       } else {
         // cambiamos la variable para que no salgan las alertas ahora
         this.verificacioDato = false;
         // mostramos alertar de fallo
-        alert('La Cedula del Padre no se Encuentra Registrada')
+        this.mostrarAlerta('', 'La Cedula del Padre no se Encuentra Registrada', 'info');
       }
     } else {
       //console.log('datos fallidos')
-      alert('Faltan Datos o Correciones en Paciente');
+      this.mostrarAlerta('Datos del Paciente', 'Faltan Datos o Correciones en Paciente', 'error');
     }
 
     // cambiamos la variable para que no salgan las alertas ahora
@@ -445,5 +446,22 @@ export class AddPacienteComponent {
     }
   }
 
-
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+      Swal.fire({
+          title: titulo,
+          icon: icono,
+          text: mensaje,
+          confirmButtonText: 'Aceptar',
+          timer: 3000, // Duración en milisegundos (3 segundos)
+          background: '#fff', // Color de fondo
+          color: '#333', // Color del texto
+          heightAuto: false,
+          width: '450px',
+          position: 'top',
+          customClass: {
+              popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+          }
+      });
+  }
 }

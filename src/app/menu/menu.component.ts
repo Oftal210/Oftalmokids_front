@@ -7,6 +7,8 @@ import { AuthService } from '../servicios/auth.service';
 import { MenuService } from '../servicios/menu.service';
 import { decode } from 'punycode';
 import { timeout } from 'rxjs';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-menu',
@@ -105,7 +107,7 @@ export class MenuComponent {
       sessionStorage.removeItem('token');
       clearInterval(this.intervaloToken);
       this.router.navigate(['home']); // Redirige al login
-      alert('Su Sesión ha expirado, inicie nuevamente');
+      this.mostrarAlerta('', 'Su Sesión ha expirado, inicie nuevamente', 'info');
     }
   } 
    
@@ -115,4 +117,23 @@ export class MenuComponent {
     const currentTime = Date.now() / 1000;  // tiempo en segundos 
     return decoded.exp < currentTime;       // exp es el tiempo de expiración del token
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 }

@@ -1,5 +1,6 @@
 import { Component, HostListener, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Metodos y funciones con ventanas modales
 import { MatDialog } from '@angular/material/dialog';
@@ -251,10 +252,29 @@ export class ForoComponent {
           alert(data.mensaje);
         } else {
           // mostramos alerta en caso de no ser ninguna 
-          alert(data.mensaje);
+          this.mostrarAlerta('', data.mensaje, 'info');
         }
       });
     }   
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 
 }
