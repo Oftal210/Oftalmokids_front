@@ -1,24 +1,42 @@
-<div class="max-w-6xl mx-auto">
-    <div class="flex items-center justify-center h-screen">
-        <div
-        class="py-12 container rounded overflow-hidden shadow-lg bg-white  w-11/12 lg:w-[600px] h-[450px] ">
-            <div class="flex flex-col items-center justify-center text-center">
-                <p>¿Has olvidado tu contraseña?<br>¡No te preocupes! Ingresa tu correo electronico para enviarte una
-                    clave temporal,recuerda cambiarla luego.</p>
-            </div>
-            <form [formGroup]="contrasenaForm" (ngSubmit)="constrasena()">
-                <div class="flex flex-col flex-wrap items-center justify-center max-w-full space-x-1">
-                    <div class="mb-4">
-                        <input type="email" #txt1 class="h-12 text-xl text-center border rounded-md w-96" formControlName="email">
+<div class="relative flex items-center justify-center flex-col min-h-screen">
+
+    <!-- Imagen de fondo -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style="background-image: url('../../../../assets/images/login/fondo2.png');">
+    </div>
+
+    <div class="relative bg-[#396CB3] backdrop-filter rounded-xl overflow-hidden w-[90%] max-w-[500px] min-h-[300px] p-6 sm:p-8 md:p-10"> 
+
+        <div class="absolute top-0 h-full transition-all duration-600 ease-in-out left-0 w-full z-20">
+            <a href="/login" class="ml-[15px]">
+                <i class="fa-solid fa-arrow-left text-white z-20 buttonVolver text-xl cursor-pointer mt-2"></i>
+            </a>
+
+            <div class="flex items-center justify-center">
+                <div
+                class="py-8 container rounded overflow-hidden shadow-lg lg:w-[600px] h-[450px] ">
+                    <div class="flex flex-col items-center justify-center text-center text-white mb-2">
+                        <p>¿Has olvidado tu contraseña?<br>¡No te preocupes! Ingresa tu correo electronico para enviarte una
+                            clave temporal,recuerda cambiarla luego.</p>
                     </div>
-                    <div>
-                        <button type="submit" class="px-10 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700" 
-                        [disabled]="contrasenaForm.invalid || isSubmitting">
-                        {{ isSubmitting ? 'Enviando...' : 'Enviar' }}
-                        </button>
-                    </div>
+                    <form [formGroup]="contrasenaForm" (ngSubmit)="constrasena()"> <!--  -->
+                        <div class="flex flex-col flex-wrap items-center justify-center max-w-full space-x-1">
+                            <div class="mb-4">
+                                <input type="email" #txt1 class="h-12 text-xl text-center border rounded-md w-96" formControlName="email">
+                            </div>
+                            <div>
+                                <button type="submit" class="px-10 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700" 
+                                >
+                                {{ isSubmitting ? 'Enviando...' : 'Enviar' }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
+        
     </div>
 </div>
+
+    

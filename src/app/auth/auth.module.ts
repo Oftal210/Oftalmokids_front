@@ -17,8 +17,8 @@ import { RecuperarContrasenaComponent } from './pages/recuperar-contrasena/recup
   declarations: [
     LoginComponent,
     RegistroComponent,
+    RecuperarContrasenaComponent,
     VerificacionComponent,
-    RecuperarContrasenaComponent
   ],
   imports: [
     CommonModule,

@@ -37,6 +37,7 @@ export class MenuComponent {
 
   /* Inicializa el componente y valida el token de usuario */
   ngOnInit() {
+    
     this.validateToken();
     this.isAuthenticated = this.authservices.isAuthenticated();
     this.logueado = this.token !== null;

@@ -19,7 +19,10 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         // Verificar si estamos en una de las rutas de login o registro
         const currentRoute = event.urlAfterRedirects;
-        this.mostrarMenu = !currentRoute.includes('/login') && !currentRoute.includes('/registro');
+        this.mostrarMenu = !currentRoute.includes('/login') 
+                        && !currentRoute.includes('/registro') 
+                        && !currentRoute.includes('/recuperar-contrasena') 
+                        && !currentRoute.includes('/verificacion');
       }
     });
   }

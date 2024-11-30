@@ -13,9 +13,8 @@ const routes: Routes =  [
     children:[
       {path:'login', component: LoginComponent},
       {path:'registro', component: RegistroComponent},
-      {path: 'verificacion', component: VerificacionComponent},
-      {path: 'recuperar-contrasena', component: RecuperarContrasenaComponent},
-
+      {path:'recuperar-contrasena', component: RecuperarContrasenaComponent},
+      {path:'verificacion', component: VerificacionComponent},
     ]
   }
 ]
@@ -26,6 +25,7 @@ const routes: Routes =  [
     RouterModule.forChild(routes)
   ]
 })
+
 export class AuthRoutingModule { 
   static getRoutes(): Routes{
     return routes;
