@@ -129,21 +129,19 @@ export class EquipoComponent {
             if (data.activado) {
               this.mostrarAlerta('', 'Se Activo con Exito', 'success');
             } else {
-              this.mostrarAlerta('', 'Se Desactivo con Exito', 'success');
+              this.mostrarAlerta('', 'Se Desactivo con Exito', 'success'); 
             }
           }, error => {
             console.error('Error al enviar los datos:', error);
             this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
           });
       }
+
+      setTimeout(() => {
+        // llamamos a la funcion para cargar los datos nuevamente
+        this.cargarRegistrosUsuarios();
+      }, 1500);
     });
-    
-    setTimeout(() => {
-      console.log('aqui');
-      // llamamos a la funcion para cargar los datos nuevamente
-      this.cargarRegistrosUsuarios();
-    }, 1500);
-    
   }
 
   // funcion para realizar filtro en los datos de los administradores
