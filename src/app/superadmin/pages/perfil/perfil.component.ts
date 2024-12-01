@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 // Para usar al hacer la llamada al API
@@ -181,16 +182,16 @@ export class PerfilComponent {
           //console.log('Respuesta del servidor:', response.status);
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa
-            alert(response.mensaje);
+            this.mostrarAlerta('', response.mensaje, 'success');
             setTimeout(() => {
               this.cargarDatosPerfil();
             }, 1000);
           } else {
-            alert(response.mensaje);
+            this.mostrarAlerta('', response.mensaje, 'warning');
           }
         }, error => {
           console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');
+          this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
           window.location.reload();
         });
       } else {
@@ -200,19 +201,38 @@ export class PerfilComponent {
           //console.log('Respuesta del servidor:', response.status);
           if (response.status != 400) {
             // Emite el evento después de la inserción si fue exitosa
-            alert('datos actualizados')
+            this.mostrarAlerta('', 'Datos Actualizados', 'success');
             setTimeout(() => {
               this.cargarDatosPerfil();
             }, 1000);
           }
         }, error => {
           console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');
+          this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
           window.location.reload();
         });
       }
     } else {
       //console.log('faltan datos')
     }
+  }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
   }
 }

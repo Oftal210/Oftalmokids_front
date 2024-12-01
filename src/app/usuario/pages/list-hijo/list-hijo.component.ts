@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -80,7 +81,7 @@ export class ListHijoComponent {
       if(data.status != 404) {
         this.hijos = data;
       } else{
-        alert(data.mensaje)
+        this.mostrarAlerta('', data.mensaje, 'info');
         this.hijos = [];
       }
       this.hijosFiltro = [...this.hijos];
@@ -107,7 +108,7 @@ export class ListHijoComponent {
           return hijo;
         });
       } else{
-        alert(data.mensaje)
+        this.mostrarAlerta('', data.mensaje, 'error');
         this.hijos = [];
       }
     })
@@ -194,4 +195,23 @@ export class ListHijoComponent {
   
     return `${day} ${month} ${year}`;
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 }

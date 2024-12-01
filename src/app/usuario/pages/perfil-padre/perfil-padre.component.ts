@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -69,7 +70,7 @@ export class PerfilPadreComponent {
     if (this.datosPadre) {
       this.documentoPadre = JSON.parse(this.datosPadre).documento;
     } else {
-      alert('no se encontro un documento del padre');
+      this.mostrarAlerta('', 'No se Encontro el Documento del Padre', 'warning');
     }
   }  
 
@@ -158,17 +159,16 @@ export class PerfilPadreComponent {
           //console.log('Respuesta del servidor:', response);
           //console.log('status', response.status);
           if (response.status == 200) {
-            // Emite el evento después de la inserción si fue exitosa
-            alert(response.mensaje);
+            this.mostrarAlerta('', response.mensaje, 'success');
             setTimeout(() => {
               this.cargarDatosPerfil();
             }, 500);
           } else {
-            alert(response.mensaje);
+            this.mostrarAlerta('', response.mensaje, 'warning');
           }
         }, error => {
           console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');
+          this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
           window.location.reload();
       });
   
@@ -177,18 +177,22 @@ export class PerfilPadreComponent {
     }
   }
 
-  cargarTiempoControl(): void {
-    this.padreService.obtenerTiempoControl(this.documentoPadre)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      //console.log(data.status)
-      if(data.status == 200 ) {
-        // this.hijos = data;
-        this.controles = data.datos;
-        //console.log(this.controles)
-      } else{
-        alert(data.mensaje)
-      }
-    })
-  }
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 }

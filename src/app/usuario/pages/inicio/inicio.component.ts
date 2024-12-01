@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SuperadminService } from '../../../servicios/superadmin.service';
 import { Subject, takeUntil } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inicio',
@@ -29,10 +30,29 @@ export class InicioComponent {
         if (!data.mensaje) {
           this.foros = data;
         } else {
-          alert('no hay datos');
+          this.mostrarAlerta('', 'No Hay Publicaciones Aun', 'info');
         }
         resolve();
       });
     })
+  }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
   }
 }

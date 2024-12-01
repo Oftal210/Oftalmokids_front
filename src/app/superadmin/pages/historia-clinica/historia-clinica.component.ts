@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -633,7 +634,7 @@ export class HistoriaClinicaComponent {
       if(!data.mensaje){
         this.diagnosticos = data;
       } else {
-        alert('no hay diagnosticos');
+        this.mostrarAlerta('', 'No hay diagnosticos', 'info');
       }
     })
   }
@@ -659,7 +660,13 @@ export class HistoriaClinicaComponent {
           this.formularioForm.get('historiaForm')?.patchValue(datosParaHijo);
           resolve(); // Resolución de la promesa después de completar la tarea
         } else {
-          alert('el hijo no esta registrado');
+          this.mostrarAlerta('', 'El hijo no esta registrado', 'error');
+          if (this.rolUsuarioActual == 1) {
+            this.router.navigate(['/paciente']);
+          } else {
+            this.router.navigate(['/hijo']);
+          }
+          
           reject('El hijo no está registrado, error en reject');
         }
       });
@@ -687,7 +694,7 @@ export class HistoriaClinicaComponent {
         }
         this.formularioForm.get('historiaForm')?.patchValue(datosParaPadre);
       } else {
-        alert('el padre no esta registrado');
+        this.mostrarAlerta('', 'El padre no esta registrado', 'error');
       }
     });
   }
@@ -740,7 +747,7 @@ export class HistoriaClinicaComponent {
     // validamos que el fomrulario este correctamn
     if (this.formularioForm.valid) {
       //console.log(this.formularioForm.value);
-      alert('espere mientras se guarda la historia clinica');
+      this.mostrarAlerta('', 'Espere mientras se guarda la historia clinica', 'info');
 
       // Mostrar el overlay para evitar la interacción del usuario
       document.getElementById('overlay')!.style.display = 'block';
@@ -782,13 +789,13 @@ export class HistoriaClinicaComponent {
           this.correctoInsercion = true;
 
           // Mostrar alerta de éxito 
-          alert('Todos los registros se han guardado correctamente.');
+          this.mostrarAlerta('', 'Todos los registros se han guardado correctamente.', 'success');
         } 
 
       }catch (error) { 
         console.error('Error al guardar los registros:', error);
         // Mostrar alerta de error 
-        alert('Ocurrió un error al guardar los registros. Por favor, intenta nuevamente.');
+        this.mostrarAlerta('', 'Ocurrió un error al guardar los registros. Por favor, intenta nuevamente.', 'error');
 
         document.getElementById('overlay')!.style.display = 'none'; 
       } finally { 
@@ -822,43 +829,43 @@ export class HistoriaClinicaComponent {
   
     switch (true) {
       case historiaFormInvalid:
-        alert('Faltan Datos de Anamnesis, Primera Hoja');
+        this.mostrarAlerta('', 'Faltan Datos de Anamnesis, Primera Hoja', 'warning');
         this.currentStep = 1;
         break;
       case antePersoFormInvalid:
-        alert('Faltan Datos en Antecedente Personal, Segunda Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Antecedente Personal, Segunda Hoja', 'warning');
         this.currentStep = 2;
         break;
       case anteVisualForm:
-        alert('Faltan Datos en Antecedente Visual, Tercera Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Antecedente Visual, Tercera Hoja', 'warning');
         this.currentStep = 3;
         break;
       case agudezaForm:
-        alert('Faltan Datos en Agudeza Visual, Cuarta Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Agudeza Visual, Cuarta Hoja', 'warning');
         this.currentStep = 4;
         break;
       case retinoscopiaForm:
-        alert('Faltan Datos en Retinoscopía, Quinta Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Retinoscopía, Quinta Hoja', 'warning');
         this.currentStep = 5;
         break;
       case alineamientoForm:
-        alert('Faltan Datos en Alineamiento Motor, Sexta Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Alineamiento Motor, Sexta Hoja', 'warning');
         this.currentStep = 6;
         break;
       case versionesForm:
-        alert('Faltan Datos en Antecedente Versiones, Septima Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Antecedente Versiones, Septima Hoja', 'warning');
         this.currentStep = 7;
         break;
       case duccMotaliExploForm:
-        alert('Faltan Datos en Ducciones, Octava Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Ducciones, Octava Hoja', 'warning');
         this.currentStep = 8;
         break;
       case oftalmoscipiaForma:
-        alert('Faltan Datos en Oftalmoscopía, Novena Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Oftalmoscopía, Novena Hoja', 'warning');
         this.currentStep = 9;
         break;
       case diagnostico:
-        alert('Faltan Datos en Diagnostico, Ultima Hoja');
+        this.mostrarAlerta('', 'Faltan Datos en Diagnostico, Ultima Hoja', 'warning');
         this.currentStep = 10;
         break;
       default:
@@ -908,7 +915,7 @@ export class HistoriaClinicaComponent {
           
           // verificamos si existe un registro ya
           if (response.existe) {
-            alert('Ya existe un registro de historia clinica para este hijo')
+            this.mostrarAlerta('', 'Ya existe un registro de historia clinica para este hijo', 'info');
             document.getElementById('overlay')!.style.display = 'none'; 
           } else {
             //console.log(response)
@@ -1515,7 +1522,7 @@ export class HistoriaClinicaComponent {
             cirugia_general_ocular:         data.cirugia_ocular  === 1 ? 'true' : 'false',
           });
         } else {
-          alert('No se encontro historia clinica del paciente')
+          this.mostrarAlerta('', 'No se encontro Historia Clinica del paciente', 'info');
           this.router.navigate(['/paciente']);
         }
         resolve();
@@ -1539,7 +1546,7 @@ export class HistoriaClinicaComponent {
           fecha_ultimo_examen:          data.fecha_ultimo_examen,
         });
       } else {
-        alert('No se encontro antecedente visual del paciente')
+        this.mostrarAlerta('', 'No se encontro Antecedente Visual del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1571,7 +1578,7 @@ export class HistoriaClinicaComponent {
           queratome_os:   data.queratome_os,
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro Agudeza Visual del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
     })
@@ -1594,7 +1601,7 @@ export class HistoriaClinicaComponent {
           retino_final_os:    data.retino_final_os
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro Retinoscopia del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1616,7 +1623,7 @@ export class HistoriaClinicaComponent {
           esta_acomo_aa:    data.esta_acomo_aa,
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro Alineamiento Motor del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1633,7 +1640,7 @@ export class HistoriaClinicaComponent {
           observacion_versiones:  data.observacion
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro registro de Versiones del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1655,7 +1662,7 @@ export class HistoriaClinicaComponent {
           ducc_paralisis_os:  data.ducc_paralisis_os,
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro registro de Ducciones del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1677,7 +1684,7 @@ export class HistoriaClinicaComponent {
           mo_sacadicos_ao:    data.mo_sacadicos_ao,
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro registro de Motalidad del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1695,7 +1702,7 @@ export class HistoriaClinicaComponent {
           explo_exter_os:  data.explo_exter_os,
         });
       } else {
-        alert('No se encontro la agudeza visual del paciente')
+        this.mostrarAlerta('', 'No se encontro registro de Exploración de Externos del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1729,7 +1736,7 @@ export class HistoriaClinicaComponent {
           reti_perif_os:    data.reti_perif_os,
         });
       } else {
-        alert('No se encontro la oftalmoscopia del paciente')
+        this.mostrarAlerta('', 'No se encontro Oftalmoscopia del paciente', 'info');
         //this.router.navigate(['/paciente']);
       }
       
@@ -1768,7 +1775,7 @@ export class HistoriaClinicaComponent {
           
         }, 1000);
       } else {
-        alert('No se encontro diagnosticos del paciente')
+        this.mostrarAlerta('', 'No se encontro registro de Diagnosticos del paciente', 'info');
       }
     })
   }
@@ -1862,4 +1869,23 @@ export class HistoriaClinicaComponent {
       this.ocultarMotivoConsulta = true;
     }
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 }

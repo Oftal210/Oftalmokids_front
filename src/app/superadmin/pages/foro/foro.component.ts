@@ -88,13 +88,12 @@ export class ForoComponent {
       }
     } else {
       //console.log('saca del sistema, no hay json');
-      //this.router.navigate(['/login']);
+      this.router.navigate(['/login']);
+      this.mostrarAlerta('', 'No Tiene Credenciales, Regístrese', 'warning');
     }
 
     // Ejemplo de datos que pueden venir de la base de datos
-    this.cargarRegistrosforo();   
-    
-    
+    this.cargarRegistrosforo();
   }
 
   // abriamos la ventana modal
@@ -134,7 +133,7 @@ export class ForoComponent {
         if (!data.mensaje) {
           this.foros = data;
         } else {
-          alert('Aun no hay foros');
+          this.mostrarAlerta('', 'Aun no hay foros', 'info');
           this.foros = [];
         }
         this.forosFiltro = [...this.foros];
@@ -177,10 +176,10 @@ export class ForoComponent {
         // validamos el dato que nos trae y realizamos
         if(data.status == 200){
           this.cargarRegistrosforo();
-          alert('Se elimino con exito');
+          this.mostrarAlerta('', 'Se elimino con exito', 'success');
         } else {
           this.cargarRegistrosforo();
-          alert('No se pudo eliminar');
+          this.mostrarAlerta('', 'No se pudo eliminar', 'error');
         }
       });
   }
@@ -243,13 +242,13 @@ export class ForoComponent {
           }
         } else if(data.status == 404) {
           // mostramos alerta en caso de fallo
-          alert(data.mensaje);
+          this.mostrarAlerta('', data.mensaje, 'error');
         } else if(data.status == 500){
           // mostramos alerta en caso de fallo
-          alert(data.mensaje);
+          this.mostrarAlerta('', data.mensaje, 'error');
         } else if(data.status == 400) {
           // mostramos alerta en caso de fallo
-          alert(data.mensaje);
+          this.mostrarAlerta('', data.mensaje, 'error');
         } else {
           // mostramos alerta en caso de no ser ninguna 
           this.mostrarAlerta('', data.mensaje, 'info');
@@ -275,6 +274,6 @@ export class ForoComponent {
             popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
         }
     });
-}
+  }
 
 }

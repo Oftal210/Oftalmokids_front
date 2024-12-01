@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Servicio para comunicarse con el API
 import { PadreService } from '../../../servicios/padre.service';
@@ -159,7 +160,7 @@ export class CalificacionComponent implements AfterViewInit {
     const faltanMotivos = this.temas.some(t => t.respuesta === 'dislike' && !t.motivo);
 
     if (noCalificados || faltanMotivos) {
-      alert('Asegúrate de calificar todos los temas y proporcionar un motivo para los "dislike".');
+      this.mostrarAlerta('', 'Asegúrate de calificar todos los temas y proporcionar un motivo para los negativos.', 'warning');
       return;
     }
 
@@ -203,13 +204,32 @@ export class CalificacionComponent implements AfterViewInit {
     ).subscribe(response => {
       //console.log('Respuesta del servidor:', response);
       if (response.status != 200 && response.status != 201){
-        alert('error al guardar la preconsulta');
+        this.mostrarAlerta('', 'Error al guardar la preconsulta', 'error');
       } else {
-        alert('los datos se insertaron correctamente');
+        this.mostrarAlerta('', 'Los datos se insertaron correctamente', 'success');
         this.router.navigate(['hijo']);
       }
     }, error => {
       console.error('Error al enviar los datos:', error);
+    });
+  }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
     });
   }
 }

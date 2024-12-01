@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -87,7 +88,7 @@ export class PacienteComponent implements OnInit {
         this.hijos = data.hijo;
       } else {
         this.hijos = [];
-        alert(data.mensaje);
+        this.mostrarAlerta('', data.mensaje, 'warning');
       }
       // clonamos los datos dentro de la siguiente variable
       this.pacientesFiltro = [...this.hijos];
@@ -131,6 +132,25 @@ export class PacienteComponent implements OnInit {
         paciente.documento.toLowerCase().includes(dato) ||
         paciente.fecha_nacimiento.toLowerCase().includes(dato)
     );
+  }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
   }
 
 }

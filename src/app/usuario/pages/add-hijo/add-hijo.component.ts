@@ -1,6 +1,7 @@
 import { Component, Inject, Output, EventEmitter, DebugElement } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -188,11 +189,11 @@ export class AddHijoComponent {
           if (!data.mensaje){
             this.idPadre = data.usuario.id;
           } else {
-            alert('no hay cedula para insertar hijos')
+            this.mostrarAlerta('', 'No Ingreso Cedula para Insertar el Hijo', 'warning');
           }
         })
     } else {
-      alert('documento invalido')
+      this.mostrarAlerta('', 'Documento Invalido', 'warning');
     }    
   }
 
@@ -225,7 +226,7 @@ export class AddHijoComponent {
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
-            alert('Ya se encuentra registrado este paciente');
+            this.mostrarAlerta('', 'Ya se encuentra registrado este paciente', 'info');
           }
         } else {
           if(this.existePaciente == true) {   // validamos si hubo datos antes
@@ -237,7 +238,7 @@ export class AddHijoComponent {
 
           // validamos si es necesario mostrar la alerta
           if(this.verificacioDato == false){
-            alert('No se encuentra registrado el hijo');
+            this.mostrarAlerta('', 'No se encuentra registrado el hijo', 'info');
           }
         }
         resolve(this.existePaciente);
@@ -308,13 +309,13 @@ export class AddHijoComponent {
           // Emite el evento después de la inserción si fue exitosa
           if (response.status == 200) {
             // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
-            alert('el Hijo fue Actualizado Correctamente');
+            this.mostrarAlerta('', 'El Hijo fue Actualizado Correctamente', 'success');
             this.datosInsertado.emit();
             this.cerrar();
           }
         }, error => {
           console.error('Error al enviar los datos:', error);
-          alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
+          this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
         });
         return;
       } else{
@@ -338,32 +339,32 @@ export class AddHijoComponent {
               if (response.status != 400) {
                 // Emite el evento después de la inserción si fue exitosa  ESTO ES SOLO PARA HIJO, PORQUE LA TABLA ES LA DE HIJO
                 this.datosInsertado.emit();
-                alert('el Hijo fue Guardado Correctamente');
+                this.mostrarAlerta('', 'El Hijo fue Guardado Correctamente', 'success');
                 this.pacienteForm.reset();
                 this.cerrar();
               }
             }, error => {
               console.error('Error al enviar los datos:', error);
               this.cerrar();
-              alert('Error en el sistema vuelva a intentarlo');   // mostramos alerta
+              this.mostrarAlerta('', 'Error en el sistema vuelva a intentarlo', 'error');
             });
           } else {
             // cambiamos la variable para que no salgan las alertas ahora
             this.verificacioDato = false;
             // mostramos alertar de fallo
-            alert('El Paciente ya Esta Registrado');
+            this.mostrarAlerta('', 'El Paciente ya Esta Registrado', 'info');
             this.cerrar();
           }
         } else {
           // cambiamos la variable para que no salgan las alertas ahora
           this.verificacioDato = false;
           // mostramos alertar de fallo
-          alert('no tiene un documento valido para agregar')
+          this.mostrarAlerta('', 'No tiene un documento valido para agregar', 'warning');
         }
       }
     } else {
       //console.log('datos fallidos')
-      alert('Faltan Datos o Correciones en Paciente');
+      this.mostrarAlerta('', 'Faltan Datos o Correciones en Paciente', 'warning');
     }
 
     // cambiamos la variable para que no salgan las alertas ahora
@@ -420,7 +421,7 @@ export class AddHijoComponent {
         this.selectedFile = file;
         //console.log(this.selectedFile);
       } else {
-        alert('Por favor selecciona una imagen válida (JPEG, PNG)');
+        this.mostrarAlerta('', 'Por favor selecciona una imagen válida (JPEG, PNG)', 'warning');
         this.selectedImage = null;
         this.selectedFile = null;
       }
@@ -443,5 +444,24 @@ export class AddHijoComponent {
       this.onFileSelected({ target: { files: [file] } }); // Llama al método para manejar la selección
     }
   }
+
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+}
 
 }

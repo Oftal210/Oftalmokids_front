@@ -2,6 +2,7 @@ import { Component, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 // Para usar al hacer la llamada al API
 import { Subject } from 'rxjs';
@@ -108,7 +109,7 @@ export class MonitoreoSemanalComponent {
         }
         //console.log(this.hijo.foto);
       } else {
-        alert(data.mensaje);
+        this.mostrarAlerta('', data.mensaje, 'warning');
       }
     })
   }
@@ -120,7 +121,7 @@ export class MonitoreoSemanalComponent {
     .subscribe(data => {
       if (data.status != 200){
         // mensaje con el fallo que se encontro
-        alert(data.mensaje);
+        this.mostrarAlerta('', data.mensaje, 'warning');
         // vaciamos la variable de preconsulta
         this.preconsultas = [];
       } else {
@@ -140,7 +141,7 @@ export class MonitoreoSemanalComponent {
     .subscribe(data => {
       //console.log(data)
       if (data.status != 200){
-        alert(data.mensaje);
+        this.mostrarAlerta('', data.mensaje, 'warning');
         this.cargarRegistrosPreconsulta();
       } else {
         this.preconsultas = data.consultas;
@@ -154,7 +155,7 @@ export class MonitoreoSemanalComponent {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if (data.status != 200){
-        alert(data.mensaje)
+        this.mostrarAlerta('', data.mensaje, 'warning');
       } else {
         this.barraProgreso = data.promedio*100/6;
       }
@@ -176,9 +177,27 @@ export class MonitoreoSemanalComponent {
       if (result.fechaInicio != '' || result.fechaFin != ''){
         this.cargarRegistrosFechas(result.fechaInicio, result.fechaFin);
       } else {
-        alert('no selecciono fechas para filtrar');
+        this.mostrarAlerta('', 'No selecciono fechas para filtrar', 'info');
       }
     });
   }
 
+  // funcion para las alertas del sistema
+  mostrarAlerta(titulo: string ,mensaje: any, icono: any) {
+    Swal.fire({
+        title: titulo,
+        icon: icono,
+        text: mensaje,
+        confirmButtonText: 'Aceptar',
+        timer: 3000, // Duración en milisegundos (3 segundos)
+        background: '#fff', // Color de fondo
+        color: '#333', // Color del texto
+        heightAuto: false,
+        width: '450px',
+        position: 'top',
+        customClass: {
+            popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
+        }
+    });
+  }
 }
