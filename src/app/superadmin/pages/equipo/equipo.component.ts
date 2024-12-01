@@ -118,7 +118,7 @@ export class EquipoComponent {
       confirmButtonText: " Si ",
       cancelButtonText: 'No',
     }).then((result) => {
-      console.log(result);
+      //console.log(result);
       // validamos si se confirmo la accion
       if (result.isConfirmed) {
         // llamamos al metodo para realizar la accion
@@ -139,6 +139,7 @@ export class EquipoComponent {
     });
     
     setTimeout(() => {
+      console.log('aqui');
       // llamamos a la funcion para cargar los datos nuevamente
       this.cargarRegistrosUsuarios();
     }, 1500);
@@ -184,5 +185,5 @@ export class EquipoComponent {
             popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
         }
     });
-}
+  }
 }

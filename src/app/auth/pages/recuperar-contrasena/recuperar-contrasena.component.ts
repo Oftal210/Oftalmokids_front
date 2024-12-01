@@ -13,14 +13,6 @@ export class RecuperarContrasenaComponent {
   contrasenaForm: FormGroup;
   isSubmitting = false;
 
-  ngOnInit() {
-    // verificamos el rol para sacarlo al login
-    this.router.navigate(['/recuperar-contrasena']);
-    console.log('hola');
-    //debugger;
-    
-  }
-
   constructor(
     private recuperarContrasenaService: AuthService,
     private router: Router,
@@ -43,7 +35,7 @@ export class RecuperarContrasenaComponent {
     this.recuperarContrasenaService.recuperarContrasena(email).subscribe({
       next: () => {
         console.log('Correo de recuperación enviado');
-        this.router.navigate(['/registro']);
+        this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Error al recuperar contraseña', error);
