@@ -74,7 +74,6 @@ export class AddAdminComponent {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    this.cerrar();
   }
 
   buscarAdministrador(documento: any): Promise<boolean>{

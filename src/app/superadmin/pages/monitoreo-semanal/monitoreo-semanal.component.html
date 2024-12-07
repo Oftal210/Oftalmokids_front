@@ -81,16 +81,6 @@
                         <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.lentes }} </p>
                     </div>
 
-                    <div *ngIf="preco.uso_gafa_lentes == 0" id="preco.id" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
-                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motivo_uso_gafas, false)">
-                                Ver motivo
-                            </button>
-                        </div>
-                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.lentes }} </p>
-                    </div>
-
                     <!-- Medicamento -->
                     <div *ngIf="preco.uso_medicamento == 0" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
                         <div class="flex justify-between items-center">
