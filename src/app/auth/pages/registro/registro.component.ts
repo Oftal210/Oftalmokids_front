@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators }
 import { User } from '../../../Modelos/user.model';
 import { AuthService } from '../../../servicios/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro',
@@ -57,7 +58,7 @@ export class RegistroComponent implements OnInit {
           //console.log(response.email);
         },
         error: (error) => {
-          console.error('Error al registrar', error);
+          this.mostrarAlerta(error.error.mensaje);
           // Aquí deberías manejar el error, tal vez mostrando un mensaje al usuario
         }
       });
@@ -83,6 +84,24 @@ export class RegistroComponent implements OnInit {
 
   private noNumbersValidator(control: AbstractControl): ValidationErrors | null {
     return /\d/.test(control.value) ? { hasNumbers: 'El campo no debe contener números' } : null;
+  }
+
+  mostrarAlerta(texto: string): void {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+    Toast.fire({
+      icon: "error",
+      title: texto
+    });
   }
 }
 
