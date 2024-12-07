@@ -19,10 +19,10 @@ export class HeaderComponent {
   showDropdown = false;
   user:any
   dropDownCampa = false;
+  iconoCampanitaVisible: boolean = true;
 
   // variables para guardar las notificaciones
   notifi: any[] = [];
-  cantidadCampanita!: number;
 
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
@@ -43,6 +43,8 @@ export class HeaderComponent {
   ngOnInit(){
     this.user = this.authService.getUser();
     this.cargarNotificaciones();
+    const campanitaOculta = localStorage.getItem('campanitaOculta');
+    this.iconoCampanitaVisible = campanitaOculta !== 'true';
   }
   
   // Permite abrir el menú del perfil y cerrar sesión
@@ -59,6 +61,8 @@ export class HeaderComponent {
       this.showDropdown = false
     }
     this.dropDownCampa = !this.dropDownCampa;
+    this.iconoCampanitaVisible = false;
+    localStorage.setItem('campanitaOculta', 'true');
   }
 
 
@@ -96,7 +100,6 @@ export class HeaderComponent {
     .subscribe(data => {
       if(data.status != 404) {
         this.notifi = data.notificacion;
-        this.cantidadCampanita = this.notifi.length;
       }
     })
   }

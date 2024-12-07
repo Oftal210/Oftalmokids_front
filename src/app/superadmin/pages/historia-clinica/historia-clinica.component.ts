@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, 
   templateUrl: './historia-clinica.component.html',
   styleUrl: './historia-clinica.component.css'
 })
-export class HistoriaClinicaComponent {
+export class HistoriaClinicaComponent implements AfterViewInit {
   currentStep: number = 1;
 
   formularioForm: FormGroup;
@@ -490,7 +490,7 @@ export class HistoriaClinicaComponent {
 
 
   // metodo que incia al iniciar el componente
-  ngOnInit() {
+  ngAfterViewInit(): void {
 
     const today = new Date();
     this.fechaActual = today.toISOString().split('T')[0];
@@ -536,6 +536,9 @@ export class HistoriaClinicaComponent {
           // llamamos a la funcion para traer los datos de la historia clinica
           this.cargarRegistroHistoria().then(() => {
 
+            // llamamos a la funcion para traer los datos de la historia clinica
+            this.cargarRegistrosDiagnosticos();
+
             // llamamos a la funcion para traer los datos de antecedente visual
             this.cargarRegistroAnteceVisual();
 
@@ -562,9 +565,6 @@ export class HistoriaClinicaComponent {
 
             // llamamos a la funcion para traer los datos de la oftalmoscopia
             this.cargarRegistroOftalmoscopia();
-
-            // llamamos a la funcion para traer los datos de la historia clinica
-            this.cargarRegistrosDiagnosticos();
           });
         } else {
           // metodo para tomar los datos del localstorage en caso de que existan
@@ -597,10 +597,7 @@ export class HistoriaClinicaComponent {
     .catch((error) => { 
       console.error('Error en la obtención del documento del padre:', error); 
     });
-
     this.cargarRegistroDiagnostico();
-
-    
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
@@ -1855,14 +1852,16 @@ export class HistoriaClinicaComponent {
           } else {
             // salio bien   
             //console.log('El diagnostico se agrego correcta')
-            location.reload();
+            this.mostrarAlerta('', 'Diagnóstico insertado con exito', 'success');
+            this.cargarRegistrosDiagnosticos();
           }
         }, error => {
           console.error('Error al guardar el registro', error);
+          this.mostrarAlerta('', 'Error al guardar el registro', 'error');
           this.datoInsertado = false;
         })
       } else {
-        //console.log('faltan datos por agregar');
+        this.mostrarAlerta('', 'Faltan Datos por Ingresar', 'info');
       }
     } else {
       //console.log('rellene el motivo de la consulta')

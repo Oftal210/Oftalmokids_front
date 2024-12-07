@@ -59,6 +59,7 @@ export class RegistroComponent implements OnInit {
         },
         error: (error) => {
           this.mostrarAlerta(error.error.mensaje);
+          this.isSubmitting = false;
           // Aquí deberías manejar el error, tal vez mostrando un mensaje al usuario
         }
       });

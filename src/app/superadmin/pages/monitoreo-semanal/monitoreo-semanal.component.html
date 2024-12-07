@@ -1,11 +1,11 @@
 <app-header></app-header>
 
-<div class="flex bg-[#f4fbff] min-h-screen justify-center items-center px-4">
+<div class="flex bg-[#f4fbff] min-h-screen justify-center items-center pt-20 px-4">
     <div class="flex flex-col items-center w-full sm:w-3/4 lg:w-2/5 px-4 ml-56 mt-8">
         <!-- Tarjeta principal -->
         <div class="bg-white rounded-lg shadow-lg w-full p-6">
             <!-- Información del paciente -->
-            <div class="flex items-center mb-4">
+            <div class="flex items-center mb-4 overflow-auto">
                 <!-- Foto del paciente -->
                 <div
                     class="w-24 h-24 rounded-full border border-[#ff834d] flex items-center justify-center text-2xl font-semibold text-orange-500">
@@ -71,6 +71,16 @@
                 <ng-container *ngFor="let preco of preconsultas">
 
                     <!-- Lentes -->
+                    <div *ngIf="preco.uso_gafa_lentes == 0" id="preco.id" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>
+                            <button class="text-sm text-blue-500 bg-blue-100 rounded-lg px-2 py-1" (click)="abrirModal(preco.motivo_uso_gafas, false)">
+                                Ver motivo
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-700 w-10/12"> {{ preguntasConsulta.lentes }} </p>
+                    </div>
+
                     <div *ngIf="preco.uso_gafa_lentes == 0" id="preco.id" class="bg-[#f4fbff] p-4 rounded-lg mb-4 mt-4">
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-semibold text-blue-900"> {{ preco.fecha_preconsulta }} </span>

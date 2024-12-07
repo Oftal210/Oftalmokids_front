@@ -28,6 +28,7 @@ export class MonitoreoSemanalComponent {
   // variable para guardar los registros de los usuarios
   preconsultas: any[] = [];
   preconsultasFiltradas: any[] = [];
+  seMostroAlerta: boolean = false;
 
   // variable para guardar datos del hijo y de las consultas
   hijo = {
@@ -122,6 +123,8 @@ export class MonitoreoSemanalComponent {
       if (data.status != 200){
         // mensaje con el fallo que se encontro
         this.mostrarAlerta('', data.mensaje, 'warning');
+        this.seMostroAlerta = true;
+        
         // vaciamos la variable de preconsulta
         this.preconsultas = [];
       } else {
@@ -155,7 +158,9 @@ export class MonitoreoSemanalComponent {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if (data.status != 200){
-        this.mostrarAlerta('', data.mensaje, 'warning');
+        if(!this.seMostroAlerta){
+          this.mostrarAlerta('', data.mensaje, 'warning');
+        }
       } else {
         this.barraProgreso = data.promedio*100/6;
       }
