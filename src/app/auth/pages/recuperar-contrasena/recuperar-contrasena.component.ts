@@ -34,7 +34,7 @@ export class RecuperarContrasenaComponent {
     const email = this.contrasenaForm.get('email')?.value;
     this.recuperarContrasenaService.recuperarContrasena(email).subscribe({
       next: () => {
-        console.log('Correo de recuperación enviado');
+        //console.log('Correo de recuperación enviado');
         this.router.navigate(['/login']);
       },
       error: (error) => {

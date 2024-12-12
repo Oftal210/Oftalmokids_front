@@ -28,9 +28,9 @@ export class VerificacionComponent {
     this.route.queryParams.subscribe(params => {
       if ('email' in params) {
         this.email = params['email'];
-        console.log('El email es:', this.email);
+        //console.log('El email es:', this.email);
       } else {
-        console.log('No se encontró el parámetro "email" en la URL')
+        //console.log('No se encontró el parámetro "email" en la URL')
       }
     });
   }

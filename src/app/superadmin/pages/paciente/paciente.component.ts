@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
+import { Component, OnInit, AfterViewInit  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -19,7 +19,7 @@ import { AddPacienteComponent } from '../add-paciente/add-paciente.component';
   templateUrl: './paciente.component.html',
   styleUrl: './paciente.component.css'
 })
-export class PacienteComponent implements OnInit {
+export class PacienteComponent implements AfterViewInit {
   
   // variable para guardar los registros de los hijos
   hijos: any[] = [];
@@ -46,7 +46,7 @@ export class PacienteComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     // verificamos el rol para sacarlo al login
     if (this.documentoAdministrador) {
       var docAdministrador = JSON.parse(this.documentoAdministrador);
@@ -58,8 +58,10 @@ export class PacienteComponent implements OnInit {
     }
 
     // llamamos a la funcion para traer los datos
-    this.cargarRegistroHijos();
-    this.cargarControlesHijos();
+    this.cargarRegistroHijos().then(() => {
+      this.cargarControlesHijos();
+    });
+    
   }
 
   abrirModal(): void {
@@ -80,22 +82,28 @@ export class PacienteComponent implements OnInit {
   }
 
   // funcion para traer a los hijos 
-  cargarRegistroHijos(): void {
-    this.superadminservice.obtenerRegistroPaciente()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      // validamos que no venga un mensaje con el error
-      //console.log(data)
-      if(data.status == 200) {
-        this.hijos = data.hijo;
-      } else {
-        this.hijos = [];
-        this.mostrarAlerta('', data.mensaje, 'warning');
-      }
-      // clonamos los datos dentro de la siguiente variable
-      this.pacientesFiltro = [...this.hijos];
+  cargarRegistroHijos(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.superadminservice.obtenerRegistroPaciente()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          data => {
+            if (data.status === 200) {
+              this.hijos = data.hijo;
+            } else {
+              this.hijos = [];
+              this.mostrarAlerta('', data.mensaje, 'warning');
+            }
+            this.pacientesFiltro = [...this.hijos]; // Clonamos los datos dentro de la variable
+            resolve();
+          },
+          error => {
+            console.error('Error al cargar los registros:', error);
+            reject(error);
+          }
+        );
     });
-  }
+  }  
 
   // funcion para traer a los hijos 
   cargarControlesHijos(): void {
@@ -114,10 +122,10 @@ export class PacienteComponent implements OnInit {
           }
           return hijo;
         });
-        this.pacientesFiltro = [...this.pacientesFiltro];
       } else {
         this.controles = [];
       }
+      this.pacientesFiltro = [...this.pacientesFiltro];
     });
   }
 

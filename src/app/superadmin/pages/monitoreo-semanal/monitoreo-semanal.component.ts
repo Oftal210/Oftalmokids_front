@@ -84,7 +84,7 @@ export class MonitoreoSemanalComponent {
     // llamamos a la funcion para traer los datos
     this.cargarRegistroPaciente();
     this.cargarRegistrosPreconsulta();
-    this.cargarPromedioPreconsulta();
+    //this.cargarPromedioPreconsulta();
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
@@ -120,6 +120,7 @@ export class MonitoreoSemanalComponent {
     this.superadminservice.buscarPreconsultaReciente(this.documentohijo)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
+      
       if (data.status != 200){
         // mensaje con el fallo que se encontro
         this.mostrarAlerta('', data.mensaje, 'warning');
@@ -128,12 +129,11 @@ export class MonitoreoSemanalComponent {
         // vaciamos la variable de preconsulta
         this.preconsultas = [];
       } else {
-
         // tomamos el registro mas reciente que nos retorna
         this.preconsultas = [data.consultas];
-
         // tomamos el dato y lo agregamos para mostrarlo
         this.ultimaConsulta = data.consultas.fecha_preconsulta.split(' ')[0];
+        this.cargarPromedioPreconsulta();
       }
     })
   }
@@ -142,14 +142,14 @@ export class MonitoreoSemanalComponent {
     this.superadminservice.buscarPreconsultasHijoFechas(this.documentohijo, fechaInicio, fechaFin)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data)
+      
       if (data.status != 200){
         this.mostrarAlerta('', data.mensaje, 'warning');
         this.cargarRegistrosPreconsulta();
       } else {
         if (!data.consultas || data.consultas.length === 0) {
           // Si no hay registros, manejarlo sin retorno
-          console.log('No hay registros disponibles');
+          this.mostrarAlerta('', 'No hay registros en estas fechas', 'warning');
         } else {
           // Sumar los puntajes de todos los registros
           const sumaPuntajes = data.consultas.reduce((acumulador: number, consulta: any) => {
@@ -173,6 +173,7 @@ export class MonitoreoSemanalComponent {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if (data.status != 200){
+        
         if(!this.seMostroAlerta){
           this.mostrarAlerta('', data.mensaje, 'warning');
         }
