@@ -1653,7 +1653,6 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     this.superadminservice.obtenerRegistroAlineamiento(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      console.log(data);
       if(!data.mensaje){
         this.formularioForm.get('alineamientoForm')?.patchValue({
           hirschberg: data.test_hirschberg,
@@ -1670,7 +1669,6 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         this.formularioForm.get('alineamientoForm')?.reset();
         this.cajasForm.alinea = true;
       }
-      
     })
   }
 

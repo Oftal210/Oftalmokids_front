@@ -103,7 +103,6 @@ export class PacienteComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       // validamos que no venga un mensaje con el error
-      //console.log(data)
       if(data.status == 200) {
         this.controles = data.datos;
         this.controles = this.pacientesFiltro.map(hijo => {
@@ -115,6 +114,7 @@ export class PacienteComponent implements OnInit {
           }
           return hijo;
         });
+        this.pacientesFiltro = [...this.pacientesFiltro];
       } else {
         this.controles = [];
       }
