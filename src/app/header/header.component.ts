@@ -100,6 +100,9 @@ export class HeaderComponent {
     .subscribe(data => {
       if(data.status != 404) {
         this.notifi = data.notificacion;
+      } else {
+        this.iconoCampanitaVisible = false;
+        localStorage.setItem('campanitaOculta', 'true');
       }
     })
   }

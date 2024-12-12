@@ -94,7 +94,7 @@ export class ListHijoComponent {
     this.padreservice.obtenerTiempoControl(this.documentoPadre)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      //console.log(data.status)
+      //console.log(data)
       if(data.status == 200 ) {
         // this.hijos = data;
         this.controles = data.datos;
@@ -212,6 +212,13 @@ export class ListHijoComponent {
         customClass: {
             popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
         }
-    });
-}
+    }); 
+  }
+
+  abrirWhatsApp() {
+    const telefono = '573136923982'; // Número de teléfono en formato internacional sin símbolos ni espacios
+    const url = `https://wa.me/${telefono}`;
+    
+    window.open(url, '_blank'); // Abre el enlace en una nueva pestaña
+  }
 }

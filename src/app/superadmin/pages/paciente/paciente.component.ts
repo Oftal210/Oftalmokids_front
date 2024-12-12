@@ -23,6 +23,7 @@ export class PacienteComponent implements OnInit {
   
   // variable para guardar los registros de los hijos
   hijos: any[] = [];
+  controles: any[] = [];
 
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
@@ -58,6 +59,7 @@ export class PacienteComponent implements OnInit {
 
     // llamamos a la funcion para traer los datos
     this.cargarRegistroHijos();
+    this.cargarControlesHijos();
   }
 
   abrirModal(): void {
@@ -92,8 +94,31 @@ export class PacienteComponent implements OnInit {
       }
       // clonamos los datos dentro de la siguiente variable
       this.pacientesFiltro = [...this.hijos];
-      
-    })
+    });
+  }
+
+  // funcion para traer a los hijos 
+  cargarControlesHijos(): void {
+    this.superadminservice.obtenerControlesPaciente()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      // validamos que no venga un mensaje con el error
+      //console.log(data)
+      if(data.status == 200) {
+        this.controles = data.datos;
+        this.controles = this.pacientesFiltro.map(hijo => {
+          // Buscar el control correspondiente de v1
+          const control = this.controles.find(item => item.id_hijo === hijo.id)?.control;
+          // Si hay un control encontrado, lo añadimos al objeto hijo
+          if (control) {
+            hijo.control = control;
+          }
+          return hijo;
+        });
+      } else {
+        this.controles = [];
+      }
+    });
   }
 
   // funcion para calcular la edad del paciente
@@ -132,6 +157,18 @@ export class PacienteComponent implements OnInit {
         paciente.documento.toLowerCase().includes(dato) ||
         paciente.fecha_nacimiento.toLowerCase().includes(dato)
     );
+  }
+
+  // funcion para darle un formato a la fecha
+  formatDate(dateString: string): string {
+    const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    const date = new Date(dateString);
+  
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+  
+    return `${day} ${month} ${year}`;
   }
 
   // funcion para las alertas del sistema

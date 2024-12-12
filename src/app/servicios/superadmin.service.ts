@@ -99,6 +99,11 @@ export class SuperadminService {
     return this.http.get<any>(`${this.apiUrl}hijo`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
   }
 
+  // Metodo para traer los controles de los hijos
+  obtenerControlesPaciente(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}fechasdiaghijos`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
+  }
+
   // Metodo para buscar el paciente solicitado 
   buscarPaciente(hijo: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}hijo/${hijo}`);  // colocamos la ruta como esta en nuestro archivo de rutas del API
@@ -276,30 +281,48 @@ export class SuperadminService {
     historia_clinica: any,
     hirschberg: any,
     bruckner: any,
+    angulo_kapa: any,
     covet_test_vl: any,
     covet_test_vp: any,
-    esta_acomo_flex: any,
-    esta_acomo_aa: any,
+    esta_acomo_flex_od: any,
+    esta_acomo_flex_os: any,
+    esta_acomo_aa_od: any,
+    esta_acomo_aa_os: any,
   ) {
     return this.http.post<any>(this.apiUrl+'alineamientomotor', {
       historia_clinica: historia_clinica,
       hirschberg: hirschberg,
       bruckner: bruckner,
+      angulo_kapa: angulo_kapa,
       covet_test_vl: covet_test_vl,
       covet_test_vp: covet_test_vp,
-      esta_acomo_flex: esta_acomo_flex,
-      esta_acomo_aa: esta_acomo_aa
+      esta_acomo_flex_od: esta_acomo_flex_od,
+      esta_acomo_flex_os: esta_acomo_flex_os,
+      esta_acomo_aa_od: esta_acomo_aa_od,
+      esta_acomo_aa_os: esta_acomo_aa_os,
     });
   }
 
   // Metodo para guardar un registro de versiones
   guardarRegistroVersiones (
     historia_clinica: any,
-    observacion_versiones: any
+    observacion_versiones: any,
+    rsd_oii: any,
+    rld_rmi: any,
+    rid_osi: any,
+    oid_rsi: any,
+    rmd_rli: any,
+    osd_rii: any,
   ) {
     return this.http.post<any>(this.apiUrl+'version', {
       historia_clinica: historia_clinica,
-      observacion_versiones: observacion_versiones
+      observacion_versiones: observacion_versiones,
+      rsd_oii: rsd_oii,
+      rld_rmi: rld_rmi,
+      rid_osi: rid_osi,
+      oid_rsi: oid_rsi,
+      rmd_rli: rmd_rli,
+      osd_rii: osd_rii,
     });
   }
 
@@ -365,19 +388,19 @@ export class SuperadminService {
     refle_fovea_od: any,
     papila_od: any,
     excav_fisio_od: any,
-    profundidad_od: any,
+    
     vasos_od: any,
     rela_arte_od: any,
-    macula_od: any,
+    
     reti_perif_od: any,
     medi_refrin_os: any,
     refle_fovea_os: any,
     papila_os: any,
     excav_fisio_os: any,
-    profundidad_os: any,
+    
     vasos_os: any,
     rela_arte_os: any,
-    macula_os: any,
+    
     reti_perif_os: any,
   ) {
     return this.http.post<any>(this.apiUrl+'oftalmoscopia', {
@@ -386,19 +409,19 @@ export class SuperadminService {
       refle_fovea_od: refle_fovea_od,
       papila_od: papila_od,
       excav_fisio_od: excav_fisio_od,
-      profundidad_od: profundidad_od,
+      
       vasos_od: vasos_od,
       rela_arte_od: rela_arte_od,
-      macula_od: macula_od,
+      
       reti_perif_od: reti_perif_od,
       medi_refrin_os: medi_refrin_os,
       refle_fovea_os: refle_fovea_os,
       papila_os: papila_os,
       excav_fisio_os: excav_fisio_os,
-      profundidad_os: profundidad_os,
+      
       vasos_os: vasos_os,
       rela_arte_os: rela_arte_os,
-      macula_os: macula_os,
+      
       reti_perif_os: reti_perif_os
     });
   }
@@ -430,48 +453,48 @@ export class SuperadminService {
   }
 
   // Metodo para traer datos del antecedente visual del hijo
-  obtenerRegistroAnteVisual(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}antevisureciente/${historia}`);
+  obtenerRegistroAnteVisual(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}antevisureciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de la agudeza visual del hijo
-  obtenerRegistroAgudeza(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}agudezavisualreciente/${historia}`);
+  obtenerRegistroAgudeza(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}agudezavisualreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de la retinoscopia del hijo
-  obtenerRegistroRetinoscopia(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}retinoscopiareciente/${historia}`);
+  obtenerRegistroRetinoscopia(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}retinoscopiareciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos del alineamiento motor del hijo
-  obtenerRegistroAlineamiento(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}alineamientoreciente/${historia}`);
+  obtenerRegistroAlineamiento(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}alineamientoreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de las versiones del hijo
-  obtenerRegistroVersiones(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}versionreciente/${historia}`);
+  obtenerRegistroVersiones(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}versionreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de las ducciones del hijo
-  obtenerRegistroDucciones(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}duccionreciente/${historia}`);
+  obtenerRegistroDucciones(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}duccionreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de la motalidad ocular del hijo
-  obtenerRegistroMotalidad(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}motalidadxreciente/${historia}`);
+  obtenerRegistroMotalidad(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}motalidadxreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de la exploracion de externos del hijo
-  obtenerRegistroExploracion(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}exploracionreciente/${historia}`);
+  obtenerRegistroExploracion(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}exploracionreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos de la oftalmoscopia del hijo
-  obtenerRegistroOftalmoscopia(historia: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}oftalmoscopiaxreciente/${historia}`);
+  obtenerRegistroOftalmoscopia(historia: any, fecha: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}oftalmoscopiaxreciente/${historia}/${fecha}`);
   }
 
   // Metodo para traer datos del diagnostico x historia clinica del hijo

@@ -142,14 +142,29 @@ export class MonitoreoSemanalComponent {
     this.superadminservice.buscarPreconsultasHijoFechas(this.documentohijo, fechaInicio, fechaFin)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      //console.log(data)
+      console.log(data)
       if (data.status != 200){
         this.mostrarAlerta('', data.mensaje, 'warning');
         this.cargarRegistrosPreconsulta();
       } else {
+        if (!data.consultas || data.consultas.length === 0) {
+          // Si no hay registros, manejarlo sin retorno
+          console.log('No hay registros disponibles');
+        } else {
+          // Sumar los puntajes de todos los registros
+          const sumaPuntajes = data.consultas.reduce((acumulador: number, consulta: any) => {
+            return acumulador + (consulta.puntua_preconsulta || 0); // Asegurarse de sumar 0 si el puntaje no existe
+          }, 0);
+          // Calcular el promedio
+          const promedio = sumaPuntajes / data.consultas.length;
+          
+          // Realizar acciones con el promedio
+          this.barraProgreso = promedio*100/6;
+        }
+        // Actualizar las preconsultas
         this.preconsultas = data.consultas;
       }
-    })
+    });
   }
 
   // funcion para traer el promedio del puntaje de las preconsultas de este mes
@@ -179,10 +194,12 @@ export class MonitoreoSemanalComponent {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      if (result.fechaInicio != '' || result.fechaFin != ''){
-        this.cargarRegistrosFechas(result.fechaInicio, result.fechaFin);
-      } else {
-        this.mostrarAlerta('', 'No selecciono fechas para filtrar', 'info');
+      if(result){
+        if (result.fechaInicio != '' || result.fechaFin != ''){
+          this.cargarRegistrosFechas(result.fechaInicio, result.fechaFin);
+        } else {
+          this.mostrarAlerta('', 'No selecciono fechas para filtrar', 'info');
+        }
       }
     });
   }

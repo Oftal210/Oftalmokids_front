@@ -10,6 +10,8 @@ import { takeUntil } from 'rxjs/operators';
 // Servicio para comunicarse con el API
 import { SuperadminService } from '../../../servicios/superadmin.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn  } from '@angular/forms';
+import { BlobOptions } from 'buffer';
+import { DEFAULT_CIPHERS } from 'tls';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -40,6 +42,23 @@ export class HistoriaClinicaComponent implements AfterViewInit {
   existeHistoria: boolean = false;
   correctoInsercion: boolean = false;
   fechaActual!: string;
+  nombreBoton!: string;
+  limpiarCajas: boolean = true;
+  vistaCargara: boolean = false;
+  fechaDiagnosticoSelec!: string;
+
+  cajasForm = {
+    antevisua: false,
+    agudeza: false,
+    retino: false,
+    alinea: false,
+    version: false,
+    duccion: false,
+    motali: false,
+    explo: false,
+    oftalmo: false,
+    diag: false
+  }
   
 
   // tomamos elementos del HTML
@@ -174,38 +193,50 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
       // Hoja 6
       alineamientoForm: this.fb.group({
-        hirschberg:       ['', Validators.required],
-        bruckner:         ['', Validators.required],
-        covet_test_vl:    ['', Validators.required],
-        covet_test_vp:    ['', Validators.required],
-        esta_acomo_flex:  ['', Validators.required],
-        esta_acomo_aa:    ['', Validators.required],
+        hirschberg:           ['', Validators.required],
+        bruckner:             ['', Validators.required],
+        angulo_kapa:          ['', Validators.required],
+        covet_test_vl:        ['', Validators.required],
+        covet_test_vp:        ['', Validators.required],
+        esta_acomo_flex_od:   ['', Validators.required],
+        esta_acomo_flex_os:   ['', Validators.required],
+        esta_acomo_aa_od:     ['', Validators.required],
+        esta_acomo_aa_os:     ['', Validators.required],
       }),
 
       // Hoja 7
       versionesForm: this.fb.group({
         observacion_versiones: ['', Validators.required],
+        rsd_oii: ['', Validators.required],
+        rld_rmi: ['', Validators.required],
+        rid_osi: ['', Validators.required],
+        oid_rsi: ['', Validators.required],
+        rmd_rli: ['', Validators.required],
+        osd_rii: ['', Validators.required],
       }),
 
       // Hoja 8
-      duccMotaliExploForm: this.fb.group({
-        // PARA DUCCIONES
+      duccionForm: this.fb.group({
         ducc_normal_od:     ['', Validators.required],
         ducc_parecia_od:    ['', Validators.required],
         ducc_paralisis_od:  ['', Validators.required],
         ducc_normal_os:     ['', Validators.required],
         ducc_parecia_os:    ['', Validators.required],
         ducc_paralisis_os:  ['', Validators.required],
+      }),
 
-        // PARA MOTALIDAD OCULAR
+      // Hoja 8
+      motalidadForm: this.fb.group({
         mo_seguimiento_od:  ['', Validators.required],
         mo_sacadicos_od:    ['', Validators.required],
         mo_seguimiento_os:  ['', Validators.required],
         mo_sacadicos_os:    ['', Validators.required],
         mo_seguimiento_ao:  ['', Validators.required],
         mo_sacadicos_ao:    ['', Validators.required],
+      }),
 
-        // PARA EXPLORACION DE EXTERNOS
+      // Hoja 8
+      exploracionForm: this.fb.group({
         explo_exter_od: ['', Validators.required],
         explo_exter_os: ['', Validators.required],
       }),
@@ -216,20 +247,18 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         refle_fovea_od: ['', Validators.required],
         papila_od:      ['', Validators.required],
         excav_fisio_od: ['', Validators.required],
-        profundidad_od: ['', Validators.required],
+        
         vasos_od:       ['', Validators.required],
         rela_arte_od:   ['', Validators.required],
-        macula_od:      ['', Validators.required],
         reti_perif_od:  ['', Validators.required],
 
         medi_refrin_os: ['', Validators.required],
         refle_fovea_os: ['', Validators.required],
         papila_os:      ['', Validators.required],
         excav_fisio_os: ['', Validators.required],
-        profundidad_os: ['', Validators.required],
+        
         vasos_os:       ['', Validators.required],
         rela_arte_os:   ['', Validators.required],
-        macula_os:      ['', Validators.required],
         reti_perif_os:  ['', Validators.required],
       }),
 
@@ -393,18 +422,23 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       } else {
         // si no lo es se desabilita y se quita que sea requerido
         input?.disable();
+        input?.reset();
         input?.clearValidators();
 
         input2?.disable();
+        input2?.reset();
         input2?.clearValidators();
 
         input3?.disable();
+        input3?.reset();
         input3?.clearValidators();
 
         input4?.disable();
+        input4?.reset();
         input4?.clearValidators();
 
         input5?.disable();
+        input5?.reset();
         input5?.clearValidators();
       }
       // reinciamos validaciones y valores
@@ -472,28 +506,8 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     };
   }
 
-  // metodo para validar la fecha de control que sea diferente a hoy a la actual
-  // fechaPosteriorValidator(): ValidatorFn {
-  //   return (control: AbstractControl): ValidationErrors | null => {
-  //     const inputDate = new Date(control.value);
-  //     const today = new Date();
-  //     today.setHours(0, 0, 0, 0); // Asegura que solo compares la fecha, no la hora
-  
-  //     if (control.value && inputDate < today) {
-  //       this.formularioForm.get('diagnostico.control_diagnostico')?.reset();
-  //       return { fechaAnterior: true }; // Si la fecha es anterior, retorna un error
-  //     }
-  //     return null; // Si la fecha es válida, retorna null
-  //   };
-  // }
-  // FUNCIONES PARA VALIDAR LOS INPUT's ↑
-
-
   // metodo que incia al iniciar el componente
   ngAfterViewInit(): void {
-
-    const today = new Date();
-    this.fechaActual = today.toISOString().split('T')[0];
     // verificamos el rol para sacarlo al login
     if (this.documentoAdministrador) {
 
@@ -516,6 +530,8 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     
     // tomamos de la URL el documento del hijo
     this.accionModulo = this.route.snapshot.paramMap.get('flag') || '';
+
+    this.cargarRegistroDiagnostico();
     
     // metodo para esperar hasta que se termine de realizar al completo
     this.cargarDocumentoHijo().then(() => {
@@ -537,36 +553,39 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           this.cargarRegistroHistoria().then(() => {
 
             // llamamos a la funcion para traer los datos de la historia clinica
-            this.cargarRegistrosDiagnosticos();
+            this.cargarRegistrosDiagnosticos().then(() => {
+              // llamamos a la funcion para traer los datos de antecedente visual
+              this.cargarRegistroAnteceVisual();
 
-            // llamamos a la funcion para traer los datos de antecedente visual
-            this.cargarRegistroAnteceVisual();
+              // llamamos a la funcion para traer los datos de agudeza visual
+              this.cargarRegistroAgudezaVisual();
 
-            // llamamos a la funcion para traer los datos de agudeza visual
-            this.cargarRegistroAgudezaVisual();
+              // llamamos a la funcion para traer los datos de retinoscopia
+              this.cargarRegistroRetinoscopia();
 
-            // llamamos a la funcion para traer los datos de retinoscopia
-            this.cargarRegistroRetinoscopia();
+              // llamamos a la funcion para traer los datos del alineamiento motor
+              this.cargarRegistroAlineamiento();
 
-            // llamamos a la funcion para traer los datos del alineamiento motor
-            this.cargarRegistroAlineamiento();
+              // llamamos a la funcion para traer los datos de las versiones
+              this.cargarRegistroVersiones();
 
-            // llamamos a la funcion para traer los datos de las versiones
-            this.cargarRegistroVersiones();
+              // llamamos a la funcion para traer los datos de las ducciones
+              this.cargarRegistroDucciones();
 
-            // llamamos a la funcion para traer los datos de las ducciones
-            this.cargarRegistroDucciones();
+              // llamamos a la funcion para traer los datos de la motalidad ocular
+              this.cargarRegistroMotalidad();
 
-            // llamamos a la funcion para traer los datos de la motalidad ocular
-            this.cargarRegistroMotalidad();
+              // llamamos a la funcion para traer los datos de la exploracion de externo
+              this.cargarRegistroExploracion();
 
-            // llamamos a la funcion para traer los datos de la exploracion de externo
-            this.cargarRegistroExploracion();
-
-            // llamamos a la funcion para traer los datos de la oftalmoscopia
-            this.cargarRegistroOftalmoscopia();
+              // llamamos a la funcion para traer los datos de la oftalmoscopia
+              this.cargarRegistroOftalmoscopia();
+            });
           });
         } else {
+          const today = new Date();
+          this.fechaActual = today.toISOString().split('T')[0];
+
           // metodo para tomar los datos del localstorage en caso de que existan
           const savedValues = JSON.parse(localStorage.getItem(`formValues_${this.documentoHijo}`) || '{}');
 
@@ -593,11 +612,13 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           });
         }
       });
-    }) 
+      setTimeout(() => {
+        this.vistaCargara = true;
+      }, 1000);
+    })
     .catch((error) => { 
       console.error('Error en la obtención del documento del padre:', error); 
     });
-    this.cargarRegistroDiagnostico();
   }
 
   // funcion para finalizar la consulta y evitar que la pagina se quede cargando
@@ -675,6 +696,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     if (num && num > 0 && num <= 10) {
       this.currentStep = num;
     }
+    this.cambiarNombreBoton();
   }
 
   // funcion para traer el dato del padre
@@ -704,6 +726,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     if (this.currentStep < 10) {
       this.currentStep++;
     }
+    this.cambiarNombreBoton();
   }
 
   // Función para ir al paso anterior
@@ -711,6 +734,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
+    this.cambiarNombreBoton();
   }
 
   totalSteps(): number { return Object.keys(this.formularioForm.controls).length; }
@@ -737,8 +761,6 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     return control ? control.invalid && control.touched : false; 
   }
   // FUNCIONES PARA EL FUNCIONAMIENTO DEL FORMULARIO
-
-
 
   async guardarHistoriaClinica() { 
     // validamos que el fomrulario este correctamn
@@ -820,7 +842,9 @@ export class HistoriaClinicaComponent implements AfterViewInit {
     const retinoscopiaForm    = this.formularioForm.get('retinoscopiaForm')?.invalid;
     const alineamientoForm    = this.formularioForm.get('alineamientoForm')?.invalid;
     const versionesForm       = this.formularioForm.get('versionesForm')?.invalid;
-    const duccMotaliExploForm = this.formularioForm.get('duccMotaliExploForm')?.invalid;
+    const duccionForm = this.formularioForm.get('duccionForm')?.invalid;
+    const motalidadForm = this.formularioForm.get('motalidadForm')?.invalid;
+    const exploracionForm = this.formularioForm.get('exploracionForm')?.invalid;
     const oftalmoscipiaForma  = this.formularioForm.get('oftalmoscipiaForma')?.invalid;
     const diagnostico         = this.formularioForm.get('diagnostico')?.invalid;
   
@@ -853,8 +877,16 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         this.mostrarAlerta('', 'Faltan Datos en Antecedente Versiones, Septima Hoja', 'warning');
         this.currentStep = 7;
         break;
-      case duccMotaliExploForm:
+      case duccionForm:
         this.mostrarAlerta('', 'Faltan Datos en Ducciones, Octava Hoja', 'warning');
+        this.currentStep = 8;
+        break;
+      case motalidadForm:
+        this.mostrarAlerta('', 'Faltan Datos en Motalidad, Octava Hoja', 'warning');
+        this.currentStep = 8;
+        break;
+      case exploracionForm:
+        this.mostrarAlerta('', 'Faltan Datos en Exploracion, Octava Hoja', 'warning');
         this.currentStep = 8;
         break;
       case oftalmoscipiaForma:
@@ -880,29 +912,29 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         const historiaFormValues = this.formularioForm.get('historiaForm')?.value;
         const antePersoFormValues = this.formularioForm.get('antePersoForm')?.value;
 
-        this.superadminservice.guardarRegistroHistoriaClinica( 
+        this.superadminservice.guardarRegistroHistoriaClinica(
           this.idHijo,
           this.documentoPadre, 
           antePersoFormValues.edad_embarazo_madre, 
-          Boolean(antePersoFormValues.fue_alto_riesgo), 
+          Boolean(antePersoFormValues.fue_alto_riesgo === 'true'),
           antePersoFormValues.especifique_riesgo, 
           antePersoFormValues.semanas_gestacion, 
           antePersoFormValues.tipo_parto, 
-          Boolean(antePersoFormValues.complicaciones_parto),
+          Boolean(antePersoFormValues.complicaciones_parto === 'true'),
           antePersoFormValues.especifique_complicaciones,
-          Boolean(antePersoFormValues.uso_incubadora),
+          Boolean(antePersoFormValues.uso_incubadora === 'true'),
           antePersoFormValues.tiempo_incubadora,
           antePersoFormValues.puntaje_apgar,
-          Boolean(antePersoFormValues.respiro_lloro_alnacer),
-          Boolean(antePersoFormValues.emfermedad_en_embarazo),
+          Boolean(antePersoFormValues.respiro_lloro_alnacer === 'true'),
+          Boolean(antePersoFormValues.emfermedad_en_embarazo === 'true'),
           antePersoFormValues.especifque_enfermedad_emb,
-          Boolean(antePersoFormValues.medicamente_en_embarazo),
+          Boolean(antePersoFormValues.medicamente_en_embarazo === 'true'),
           antePersoFormValues.especifique_medicamento,
-          Boolean(antePersoFormValues.emfermedad_sistemica),
+          Boolean(antePersoFormValues.emfermedad_sistemica === 'true'),
           antePersoFormValues.especifique_enfer_sistemica,
-          Boolean(antePersoFormValues.alergia), 
+          Boolean(antePersoFormValues.alergia === 'true'), 
           antePersoFormValues.especifique_alergia,
-          Boolean(antePersoFormValues.cirugia_general_ocular),
+          Boolean(antePersoFormValues.cirugia_general_ocular === 'true'),
           historiaFormValues.fecha,
           historiaFormValues.hora,
           historiaFormValues.direccion,
@@ -952,7 +984,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           this.superadminservice.guardarRegistroAntecedenteVisual(
 
             this.idHistoriaClinica,
-            Boolean(anteceVisualDatos.correcion_optica),
+            Boolean(anteceVisualDatos.correcion_optica === 'true'),
             anteceVisualDatos.edad_lente_primera_vez,
             anteceVisualDatos.cuantos_cambio_rx,
             anteceVisualDatos.motivo_cambio_rx,
@@ -1117,10 +1149,13 @@ export class HistoriaClinicaComponent implements AfterViewInit {
             this.idHistoriaClinica,
             alineamientoDatos.hirschberg,
             alineamientoDatos.bruckner,
+            alineamientoDatos.angulo_kapa,
             alineamientoDatos.covet_test_vl,
             alineamientoDatos.covet_test_vp,
-            alineamientoDatos.esta_acomo_flex,
-            alineamientoDatos.esta_acomo_aa,
+            alineamientoDatos.esta_acomo_flex_od,
+            alineamientoDatos.esta_acomo_flex_os,
+            alineamientoDatos.esta_acomo_aa_od,
+            alineamientoDatos.esta_acomo_aa_os,
             
             
           ).pipe(takeUntil(this.unsubscribe$))
@@ -1166,6 +1201,12 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
             this.idHistoriaClinica,
             versionDatos.observacion_versiones,
+            versionDatos.rsd_oii,
+            versionDatos.rld_rmi,
+            versionDatos.rid_osi,
+            versionDatos.oid_rsi,
+            versionDatos.rmd_rli,
+            versionDatos.osd_rii,
             
           ).pipe(takeUntil(this.unsubscribe$))
           .subscribe(response => { 
@@ -1204,7 +1245,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
           //console.log('es verdadero');
-          const duccionDatos = this.formularioForm.get('duccMotaliExploForm')?.value;
+          const duccionDatos = this.formularioForm.get('duccionForm')?.value;
   
           this.superadminservice.guardarRegistroDucciones(
 
@@ -1253,7 +1294,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
           //console.log('es verdadero');
-          const motalidadDatos = this.formularioForm.get('duccMotaliExploForm')?.value;
+          const motalidadDatos = this.formularioForm.get('motalidadForm')?.value;
   
           this.superadminservice.guardarRegistroMotalidadOcular(
 
@@ -1302,7 +1343,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       if (this.datoInsertado) {
         if(!this.formularioForm.invalid){
           //console.log('es verdadero');
-          const exploracionDatos = this.formularioForm.get('duccMotaliExploForm')?.value;
+          const exploracionDatos = this.formularioForm.get('exploracionForm')?.value;
   
           this.superadminservice.guardarRegistroExploracionExternos(
 
@@ -1357,19 +1398,19 @@ export class HistoriaClinicaComponent implements AfterViewInit {
             oftalmosDatos.refle_fovea_od,
             oftalmosDatos.papila_od,
             oftalmosDatos.excav_fisio_od,
-            oftalmosDatos.profundidad_od,
+            
             oftalmosDatos.vasos_od,
             oftalmosDatos.rela_arte_od,
-            oftalmosDatos.macula_od,
+            
             oftalmosDatos.reti_perif_od,
             oftalmosDatos.medi_refrin_os,
             oftalmosDatos.refle_fovea_os,
             oftalmosDatos.papila_os,
             oftalmosDatos.excav_fisio_os,
-            oftalmosDatos.profundidad_os,
+            
             oftalmosDatos.vasos_os,
             oftalmosDatos.rela_arte_os,
-            oftalmosDatos.macula_os,
+            
             oftalmosDatos.reti_perif_os,
             
           ).pipe(takeUntil(this.unsubscribe$))
@@ -1529,7 +1570,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   // Funcion para obtener datos de antecedente visual
   cargarRegistroAnteceVisual () {
-    this.superadminservice.obtenerRegistroAnteVisual(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroAnteVisual(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
@@ -1543,8 +1584,8 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           fecha_ultimo_examen:          data.fecha_ultimo_examen,
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro Antecedente Visual del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('anteVisualForm')?.reset();
+        this.cajasForm.antevisua   = true;
       }
       
     })
@@ -1552,7 +1593,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   // Funcion para obtener datos de antecedente visual
   cargarRegistroAgudezaVisual () {
-    this.superadminservice.obtenerRegistroAgudeza(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroAgudeza(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
@@ -1575,15 +1616,15 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           queratome_os:   data.queratome_os,
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro Agudeza Visual del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('agudezaForm')?.reset();
+        this.cajasForm.agudeza = true;
       }
     })
   }
 
   // Funcion para obtener datos de la retinoscopia
   cargarRegistroRetinoscopia () {
-    this.superadminservice.obtenerRegistroRetinoscopia(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroRetinoscopia(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
@@ -1598,30 +1639,36 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           retino_final_os:    data.retino_final_os
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro Retinoscopia del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('retinoscopiaForm')?.reset();
+        this.cajasForm.retino = true;
       }
-      
     })
+    if(!this.vistaCargara){
+      this.vistaCargara = true;
+    }
   }
 
   // Funcion para obtener datos del alineamiento motor
   cargarRegistroAlineamiento () {
-    this.superadminservice.obtenerRegistroAlineamiento(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroAlineamiento(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
+      console.log(data);
       if(!data.mensaje){
         this.formularioForm.get('alineamientoForm')?.patchValue({
-          hirschberg:       data.test_hirschberg,
-          bruckner:         data.test_bruckner,
-          covet_test_vl:    data.covet_test_vl,
-          covet_test_vp:    data.covet_test_vp,
-          esta_acomo_flex:  data.esta_acomo_flex,
-          esta_acomo_aa:    data.esta_acomo_aa,
+          hirschberg: data.test_hirschberg,
+          bruckner: data.test_bruckner,
+          angulo_kapa: data.angulo_kapa,
+          covet_test_vl: data.covet_test_vl,
+          covet_test_vp: data.covet_test_vp,
+          esta_acomo_flex_od: data.esta_acomo_flex_od,
+          esta_acomo_flex_os: data.esta_acomo_flex_os,
+          esta_acomo_aa_od: data.esta_acomo_aa_od,
+          esta_acomo_aa_os: data.esta_acomo_aa_os,
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro Alineamiento Motor del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('alineamientoForm')?.reset();
+        this.cajasForm.alinea = true;
       }
       
     })
@@ -1629,28 +1676,33 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   // Funcion para obtener datos de las versiones
   cargarRegistroVersiones () {
-    this.superadminservice.obtenerRegistroVersiones(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroVersiones(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
         this.formularioForm.get('versionesForm')?.patchValue({
-          observacion_versiones:  data.observacion
+          observacion_versiones:  data.observacion,
+          oid_rsi: data.oid_rsi,
+          osd_rii: data.osd_rii,
+          rid_osi: data.rid_osi,
+          rld_rmi: data.rld_rmi,
+          rmd_rli: data.rmd_rli,
+          rsd_oii: data.rsd_oii,
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro registro de Versiones del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('versionesForm')?.reset();
+        this.cajasForm.version = true;
       }
-      
     })
   }
 
   // Funcion para obtener datos de las ducciones
   cargarRegistroDucciones () {
-    this.superadminservice.obtenerRegistroDucciones(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroDucciones(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
-        this.formularioForm.get('duccMotaliExploForm')?.patchValue({
+        this.formularioForm.get('duccionForm')?.patchValue({
           ducc_normal_od:     data.ducc_normal_od,
           ducc_parecia_od:    data.ducc_parecia_od,
           ducc_paralisis_od:  data.ducc_paralisis_od,
@@ -1658,21 +1710,21 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           ducc_parecia_os:    data.ducc_parecia_os,
           ducc_paralisis_os:  data.ducc_paralisis_os,
         });
+        this.cajasForm.duccion = false;
       } else {
-        this.mostrarAlerta('', 'No se encontro registro de Ducciones del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('duccionForm')?.reset();
+        this.cajasForm.duccion = true;
       }
-      
     })
   }
 
   // Funcion para obtener datos de la motalidad ocular
   cargarRegistroMotalidad () {
-    this.superadminservice.obtenerRegistroMotalidad(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroMotalidad(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
-        this.formularioForm.get('duccMotaliExploForm')?.patchValue({
+        this.formularioForm.get('motalidadForm')?.patchValue({
           mo_seguimiento_od:  data.mo_seguimiento_od,
           mo_sacadicos_od:    data.mo_sacadicos_od,
           mo_seguimiento_os:  data.mo_seguimiento_os,
@@ -1681,8 +1733,8 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           mo_sacadicos_ao:    data.mo_sacadicos_ao,
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro registro de Motalidad del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('motalidadForm')?.reset();
+        this.cajasForm.motali = true;
       }
       
     })
@@ -1690,17 +1742,17 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   // Funcion para obtener datos de la exploracion de externos
   cargarRegistroExploracion () {
-    this.superadminservice.obtenerRegistroExploracion(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroExploracion(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
-        this.formularioForm.get('duccMotaliExploForm')?.patchValue({
+        this.formularioForm.get('exploracionForm')?.patchValue({
           explo_exter_od:  data.explo_exter_od,
           explo_exter_os:  data.explo_exter_os,
         });
       } else {
-        this.mostrarAlerta('', 'No se encontro registro de Exploración de Externos del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('exploracionForm')?.reset();
+        this.cajasForm.explo = true;
       }
       
     })
@@ -1708,7 +1760,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   // Funcion para obtener datos de la oftalmoscopia
   cargarRegistroOftalmoscopia () {
-    this.superadminservice.obtenerRegistroOftalmoscopia(this.idHistoriaClinica)
+    this.superadminservice.obtenerRegistroOftalmoscopia(this.idHistoriaClinica, this.fechaDiagnosticoSelec)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if(!data.mensaje){
@@ -1717,71 +1769,87 @@ export class HistoriaClinicaComponent implements AfterViewInit {
           refle_fovea_od:   data.refle_fovea_od,
           papila_od:        data.papila_od,
           excav_fisio_od:   data.excav_fisio_od,
-          profundidad_od:   data.profundidad_od,
+          
           vasos_od:         data.vasos_od,
           rela_arte_od:     data.rela_arte_od,
-          macula_od:        data.macula_od,
+          
           reti_perif_od:    data.reti_perif_od,
           medi_refrin_os:   data.medi_refrin_os,
           refle_fovea_os:   data.refle_fovea_os,
           papila_os:        data.papila_os,
           excav_fisio_os:   data.excav_fisio_os,
-          profundidad_os:   data.profundidad_os,
+          
           vasos_os:         data.vasos_os,
           rela_arte_os:     data.rela_arte_os,
-          macula_os:        data.macula_os,
+          
           reti_perif_os:    data.reti_perif_os,
         });
+        this.cajasForm.oftalmo = false;
+        this.cambiarNombreBoton();
       } else {
-        this.mostrarAlerta('', 'No se encontro Oftalmoscopia del paciente', 'info');
-        //this.router.navigate(['/paciente']);
+        this.formularioForm.get('oftalmoscipiaForma')?.reset();
+        this.cajasForm.oftalmo = true;
       }
       
     })
   }
 
   // Funcion para obtener datos de la historia clinica
-  cargarRegistrosDiagnosticos(): void {
-    this.superadminservice.obtenerRegistrosDiagnosticos(this.idHistoriaClinica)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      if(!data.mensaje){
-        //console.log(data);
-        this.diagnosticoHechos = data;
-        const objetoMasReciente = this.diagnosticoHechos.reduce((a, b) => new Date(a.fecha) > new Date(b.fecha) ? a : b);
-        this.formularioForm.get('diagnostico')?.patchValue({
-          diagnostico:               objetoMasReciente.id_diagnostico,
-          tratamiento_diagnostico:   objetoMasReciente.tratamiento,
-          pronostico_diagnostico:    objetoMasReciente.pronostico,
-        });
-
-        const fechaFormato = objetoMasReciente.control.split(" ")[0];
-
-        this.formularioForm.get('diagnostico')?.patchValue({
-          control_diagnostico:  fechaFormato,
-        });
-        
-        this.formularioForm.get('historiaForm')?.patchValue({
-          motivoConsulta: objetoMasReciente.motivo_consulta,
-        })
-
-        setTimeout(() => {
-          if (this.selectDiag){
-            this.selectDiag.nativeElement.value = objetoMasReciente.id.toString();
+  cargarRegistrosDiagnosticos(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.superadminservice.obtenerRegistrosDiagnosticos(this.idHistoriaClinica)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe({
+          next: (data) => {
+            if (!data.mensaje) {
+              this.diagnosticoHechos = data;
+              const objetoMasReciente = this.diagnosticoHechos.reduce((a, b) => new Date(a.fecha) > new Date(b.fecha) ? a : b);
+              this.fechaDiagnosticoSelec = objetoMasReciente.fecha;
+              
+              this.formularioForm.get('diagnostico')?.patchValue({
+                diagnostico: objetoMasReciente.id_diagnostico,
+                tratamiento_diagnostico: objetoMasReciente.tratamiento,
+                pronostico_diagnostico: objetoMasReciente.pronostico,
+              });
+  
+              const fechaFormato = objetoMasReciente.control.split(" ")[0];
+  
+              this.formularioForm.get('diagnostico')?.patchValue({
+                control_diagnostico: fechaFormato,
+              });
+  
+              this.formularioForm.get('historiaForm')?.patchValue({
+                motivoConsulta: objetoMasReciente.motivo_consulta,
+              });
+  
+              setTimeout(() => {
+                if (this.selectDiag) {
+                  this.selectDiag.nativeElement.value = objetoMasReciente.id.toString();
+                }
+              }, 1000);
+  
+              // Resolver la promesa una vez que se han realizado todas las actualizaciones
+              resolve();
+            } else {
+              this.mostrarAlerta('', 'No se encontró registro de Diagnósticos del paciente', 'info');
+              // Rechazar la promesa si no hay datos
+              reject('No se encontraron datos');
+            }
+          },
+          error: (error) => {
+            // Rechazar la promesa en caso de error
+            reject(error);
           }
-          
-        }, 1000);
-      } else {
-        this.mostrarAlerta('', 'No se encontro registro de Diagnosticos del paciente', 'info');
-      }
-    })
-  }
+        });
+    });
+  }  
 
   // Funcion para llenar los cambios al cambiar de consulta
   cambioDatoSelectFecha(event: Event): void{
 
     // cambiso el valor para quitar la caja de texto
     this.ocultarMotivoConsulta = false;
+    this.cajasForm.diag = false;
 
     // tomamos el target de elemento
     const target = event.target as HTMLSelectElement;
@@ -1802,14 +1870,47 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
       const fechaFormato = registroSelect.control.split(" ")[0];
 
+      this.fechaDiagnosticoSelec = registroSelect.fecha;
+
       this.formularioForm.get('diagnostico')?.patchValue({
         control_diagnostico:  fechaFormato,
       });
 
       this.formularioForm.get('historiaForm')?.patchValue({
         motivoConsulta: registroSelect.motivo_consulta,
-      })
+      });
+
+      this.vistaCargara = false;
+      
+      // llamamos a la funcion para traer los datos de la oftalmoscopia
+      this.cargarRegistroOftalmoscopia();
+
+      // llamamos a la funcion para traer los datos de la exploracion de externo
+      this.cargarRegistroExploracion();
+
+      // llamamos a la funcion para traer los datos de la motalidad ocular
+      this.cargarRegistroMotalidad();
+
+      // llamamos a la funcion para traer los datos de las ducciones
+      this.cargarRegistroDucciones();
+
+      // llamamos a la funcion para traer los datos de las versiones
+      this.cargarRegistroVersiones();
+
+      // llamamos a la funcion para traer los datos del alineamiento motor
+      this.cargarRegistroAlineamiento();
+
+      // llamamos a la funcion para traer los dato de anteceden visual
+      this.cargarRegistroAnteceVisual();
+
+      // llamamos a la funcion para traer los datos de agudeza visual
+      this.cargarRegistroAgudezaVisual();
+
+      // llamamos a la funcion para traer los datos de retinoscopia
+      this.cargarRegistroRetinoscopia();  
     }
+    this.vistaCargara = true;
+    
   }
 
   // funcion para limpiar las cajas de texto
@@ -1819,6 +1920,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       this.selectDiag.nativeElement.value = ''; // Reinicia al valor predeterminado
     }
     this.ocultarMotivoConsulta = true;
+    this.cajasForm.diag = true;
   }
 
   // funcion para agregar un diagnostico nuevo
@@ -1886,5 +1988,454 @@ export class HistoriaClinicaComponent implements AfterViewInit {
             popup: 'custom-popup'  // Aplica una clase personalizada para más ajustes (opcional)
         }
     });
-}
+  }
+
+  // funcion para generar la funcion y nombre del boron
+  cambiarNombreBoton(): void{
+    switch(this.currentStep){
+
+      case 3:
+        if(this.cajasForm.antevisua){
+          this.nombreBoton = 'Guardar Ante. Visual';
+        } else {
+          this.nombreBoton = 'Limpiar Ante. Visual';
+        }
+      break;
+
+      case 4:
+        if(this.cajasForm.agudeza){
+          this.nombreBoton = 'Guardar Agudeza Visual';
+        } else {
+          this.nombreBoton = 'Limpiar Agudeza Visual';
+        }
+      break;
+
+      case 5:
+        if(this.cajasForm.retino){
+          this.nombreBoton = 'Guardar Retinoscopia';
+        } else {
+          this.nombreBoton = 'Limpiar Retinoscopia';
+        } 
+      break;
+
+      case 6:
+        if(this.cajasForm.alinea){
+          this.nombreBoton = 'Guardar Alineamiento';
+        } else {
+          this.nombreBoton = 'Limpiar Alineamiento';
+        } 
+      break;
+
+      case 7:
+        if(this.cajasForm.version){
+          this.nombreBoton = 'Guardar Versión';
+        } else {
+          this.nombreBoton = 'Limpiar Versión';
+        } 
+        
+      break;
+
+      case 9:
+        if(this.cajasForm.oftalmo){
+          this.nombreBoton = 'Guardar Oftalmoscopia';
+        } else {
+          this.nombreBoton = 'Limpiar Oftalmoscopia';
+        } 
+      break;
+
+    };
+  }
+
+  guardarSwitchAnteceVisual(){
+    if(!this.formularioForm.get('anteVisualForm')?.invalid){
+      //console.log('es verdadero');
+      const anteceVisualDatos = this.formularioForm.get('anteVisualForm')?.value;
+      this.superadminservice.guardarRegistroAntecedenteVisual(
+        this.idHistoriaClinica,
+        Boolean(anteceVisualDatos.correcion_optica === 'true'),
+        anteceVisualDatos.edad_lente_primera_vez,
+        anteceVisualDatos.cuantos_cambio_rx,
+        anteceVisualDatos.motivo_cambio_rx,
+        anteceVisualDatos.material_tratamiento_optico,
+        anteceVisualDatos.indicaciones_uso,
+        anteceVisualDatos.fecha_ultimo_examen,
+      ).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => { 
+        if (response.status != 200 && response.status != 201) {
+          // hubo error
+          this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+        } else {
+          // salio bien   
+          this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+          this.cajasForm.antevisua = false;
+        }
+      }, error => {
+        console.error('Error al guardar el registro', error);
+        this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+      });
+    } else {
+      this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+    }
+  }
+
+  guardarSwitchAgudezaVisual(){
+    if(!this.formularioForm.get('agudezaForm')?.invalid){
+      //console.log('es verdadero');
+      const agudezaVisuDatos = this.formularioForm.get('agudezaForm')?.value;
+
+      this.superadminservice.guardarRegistroAgudezaVisual(
+        this.idHistoriaClinica,
+        agudezaVisuDatos.test,
+        agudezaVisuDatos.distancia,
+        agudezaVisuDatos.od_sc_vl,
+        agudezaVisuDatos.od_vp,
+        agudezaVisuDatos.od_ph,
+        agudezaVisuDatos.os_sc_vl,
+        agudezaVisuDatos.os_vp,
+        agudezaVisuDatos.os_ph,
+        agudezaVisuDatos.lensome_od,
+        agudezaVisuDatos.lensome_os,
+        agudezaVisuDatos.od_cc_vl,
+        agudezaVisuDatos.od_vp_lenso,
+        agudezaVisuDatos.os_cc_vl,
+        agudezaVisuDatos.os_vp_lenso,
+        agudezaVisuDatos.queratome_od,
+        agudezaVisuDatos.queratome_os,
+      ).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => {
+        // varificamos si se inserto o hubo error
+        if (response.status != 200 && response.status != 201) {
+          // hubo error
+          this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+        } else {   
+          this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+          this.cajasForm.agudeza = false;
+        }
+      }, error => {
+        this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+      })
+    } else {
+      this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+    }
+  }
+
+  guardarSwitchRetinoscopia(){
+    if(!this.formularioForm.get('retinoscopiaForm')?.invalid){
+      //console.log('es verdadero');
+      const retinoscopiaDatos = this.formularioForm.get('retinoscopiaForm')?.value;
+      this.superadminservice.guardarRegistroRetinoscopia(
+        this.idHistoriaClinica,
+        retinoscopiaDatos.retino_tecnica,
+        retinoscopiaDatos. retino_ciclople,
+        retinoscopiaDatos. retino_refrac_od,
+        retinoscopiaDatos. retino_subjet_od,
+        retinoscopiaDatos. retino_final_od,
+        retinoscopiaDatos. retino_refrac_os,
+        retinoscopiaDatos. retino_subjet_os,
+        retinoscopiaDatos.retino_final_os,
+      ).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => {
+        // varificamos si se inserto o hubo error
+        if (response.status != 200 && response.status != 201) {
+          // hubo error
+          this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+        } else {
+          this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+          this.cajasForm.retino = false;
+        }
+      }, error => {
+        console.error('Error al guardar el registro', error);
+        this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+      });
+    } else {
+      this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+    }
+  }
+
+  guardarSwitchAlineamiento(){
+    if(!this.formularioForm.get('alineamientoForm')?.invalid){
+      const alineamientoDatos = this.formularioForm.get('alineamientoForm')?.value;
+      this.superadminservice.guardarRegistroAlineamientoMotor(
+        this.idHistoriaClinica,
+        alineamientoDatos.hirschberg,
+        alineamientoDatos.bruckner,
+        alineamientoDatos.angulo_kapa,
+        alineamientoDatos.covet_test_vl,
+        alineamientoDatos.covet_test_vp,
+        alineamientoDatos.esta_acomo_flex_od,
+        alineamientoDatos.esta_acomo_flex_os,
+        alineamientoDatos.esta_acomo_aa_od,
+        alineamientoDatos.esta_acomo_aa_os,
+      ).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => { 
+        // varificamos si se inserto o hubo error
+        if (response.status != 200 && response.status != 201) {
+          this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+        } else {
+          this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+          this.cajasForm.alinea = false;
+        }
+      }, error => {
+        console.error('Error al guardar el registro', error);
+        this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+      });
+    } else {
+      this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+    }
+  }
+
+  guardarSwitchVersiones(){
+    if(!this.formularioForm.get('versionesForm')?.invalid){
+      const versionDatos = this.formularioForm.get('versionesForm')?.value;
+      this.superadminservice.guardarRegistroVersiones(
+        this.idHistoriaClinica,
+        versionDatos.observacion_versiones,
+        versionDatos.rsd_oii,
+        versionDatos.rld_rmi,
+        versionDatos.rid_osi,
+        versionDatos.oid_rsi,
+        versionDatos.rmd_rli,
+        versionDatos.osd_rii,
+      ).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => { 
+        // varificamos si se inserto o hubo error
+        if (response.status != 200 && response.status != 201) {
+          this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+        } else {
+          this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+          this.cajasForm.version = false;
+        }
+      }, error => {
+        console.error('Error al guardar el registro', error);
+        this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+      });
+    } else {
+      this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+    }
+  }
+
+  guardarSwitchDuccion(event: Event){
+    const boton = event.target as HTMLButtonElement;
+    if(!this.cajasForm.duccion){
+      this.formularioForm.get('duccionForm')?.reset();
+      this.cajasForm.duccion = true;
+      boton.textContent = 'Guardar Ducciones';
+    } else {
+      if(!this.formularioForm.get('duccionForm')?.invalid){
+        //console.log('es verdadero');
+        const duccionDatos = this.formularioForm.get('duccionForm')?.value;
+
+        this.superadminservice.guardarRegistroDucciones(
+
+          this.idHistoriaClinica,
+          duccionDatos.ducc_normal_od,
+          duccionDatos.ducc_parecia_od,
+          duccionDatos.ducc_paralisis_od,
+          duccionDatos.ducc_normal_os,
+          duccionDatos.ducc_parecia_os,
+          duccionDatos.ducc_paralisis_os,
+          
+        ).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(response => { 
+          // varificamos si se inserto o hubo error
+          if (response.status != 200 && response.status != 201) {
+            this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+          } else {
+            this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+            this.cajasForm.duccion = false;
+            boton.textContent = 'Limpiar Ducciones';
+          }
+        }, error => {
+          console.error('Error al guardar el registro', error);
+          this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+        });
+      } else {
+        this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+      }
+    }
+  }
+
+  guardarSwitchMotalidad(event:Event){
+    const boton = event.target as HTMLButtonElement;
+    if(!this.cajasForm.motali){
+      this.formularioForm.get('motalidadForm')?.reset();
+      this.cajasForm.motali = true;
+      boton.textContent = 'Guardar Motalidad';
+    } else {
+      if(!this.formularioForm.get('motalidadForm')?.invalid){
+        //console.log('es verdadero');
+        const motalidadDatos = this.formularioForm.get('motalidadForm')?.value;
+  
+        this.superadminservice.guardarRegistroMotalidadOcular(
+  
+          this.idHistoriaClinica,
+          motalidadDatos.mo_seguimiento_od,
+          motalidadDatos.mo_sacadicos_od,
+          motalidadDatos.mo_seguimiento_os,
+          motalidadDatos.mo_sacadicos_os,
+          motalidadDatos.mo_seguimiento_ao,
+          motalidadDatos.mo_sacadicos_ao,
+          
+        ).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(response => { 
+          // varificamos si se inserto o hubo error
+          if (response.status != 200 && response.status != 201) {
+            this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+          } else {
+            this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+            this.cajasForm.motali = false;
+            boton.textContent = 'Limpiar Motalidad';
+          }
+        }, error => {
+          console.error('Error al guardar el registro', error);
+          this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+        });
+      } else {
+        this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+      }
+    }    
+  }
+
+  guardarSwitchExploracion(event:Event){
+    const boton = event.target as HTMLButtonElement;
+    if(!this.cajasForm.explo){
+      this.formularioForm.get('exploracionForm')?.reset();
+      this.cajasForm.explo = true;
+      boton.textContent = 'Guardar Exploración';
+    } else {
+      if(!this.formularioForm.get('exploracionForm')?.invalid){
+        //console.log('es verdadero');
+        const exploracionDatos = this.formularioForm.get('exploracionForm')?.value;
+        this.superadminservice.guardarRegistroExploracionExternos(
+          this.idHistoriaClinica,
+          exploracionDatos.explo_exter_od,
+          exploracionDatos.explo_exter_os,
+        ).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(response => { 
+          /// varificamos si se inserto o hubo error
+          if (response.status != 200 && response.status != 201) {
+            this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+          } else {
+            this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+            this.cajasForm.explo = false;
+            boton.textContent = 'Limpiar Exploración';
+          }
+        }, error => {
+          console.error('Error al guardar el registro', error);
+          this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+        });
+      } else {
+        this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+      }
+    }
+  }
+
+  guardarSwitchOftalmoscopia(){
+    if(!this.formularioForm.get('oftalmoscipiaForma')?.invalid){
+      const oftalmosDatos = this.formularioForm.get('oftalmoscipiaForma')?.value;
+      this.superadminservice.guardarRegistroOftalmoscopia(
+        this.idHistoriaClinica,
+        oftalmosDatos.medi_refrin_od,
+        oftalmosDatos.refle_fovea_od,
+        oftalmosDatos.papila_od,
+        oftalmosDatos.excav_fisio_od,
+        oftalmosDatos.vasos_od,
+        oftalmosDatos.rela_arte_od,
+        oftalmosDatos.reti_perif_od,
+        oftalmosDatos.medi_refrin_os,
+        oftalmosDatos.refle_fovea_os,
+        oftalmosDatos.papila_os,
+        oftalmosDatos.excav_fisio_os,
+        oftalmosDatos.vasos_os,
+        oftalmosDatos.rela_arte_os,
+        oftalmosDatos.reti_perif_os,
+      ).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(response => { 
+        // varificamos si se inserto o hubo error
+        if (response.status != 200 && response.status != 201) {
+          this.mostrarAlerta('', 'No se pudo Guardar el Registro', 'error');
+        } else {
+          this.mostrarAlerta('', 'Se Guardo Correctamente', 'success');
+          this.cajasForm.oftalmo = false;
+        }
+        }, error => {
+          console.error('Error al guardar el registro', error);
+          this.mostrarAlerta('', 'Error al Guardar el Registro', 'error');
+      });
+    } else {
+      this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+    }
+  }
+
+  //funcion para guardar la informacion del formulario actual
+  guardarFormularioActual(): void {
+    switch(this.currentStep){
+
+      case 3:
+        if(this.cajasForm.antevisua){
+          this.guardarSwitchAnteceVisual();
+        } else {
+          this.formularioForm.get('anteVisualForm')?.reset();
+          this.cajasForm.antevisua = true;
+          this.nombreBoton = 'Guardar Antece. Visual';
+        }
+      break;
+
+      case 4:
+        if(this.cajasForm.agudeza){
+          this.guardarSwitchAgudezaVisual();
+        } else {
+          this.formularioForm.get('agudezaForm')?.reset();
+          this.cajasForm.agudeza = true;
+          this.nombreBoton = 'Guardar Agudeza Visual';
+        }
+      break;
+
+      case 5:
+        if(this.cajasForm.retino){
+          this.guardarSwitchRetinoscopia();
+        } else {
+          this.formularioForm.get('retinoscopiaForm')?.reset();
+          setTimeout(() => {
+            this.nombreBoton = 'Guardar Retinoscopia';
+          }, 300);
+          this.cajasForm.retino = true;
+        }
+      break;
+
+      case 6:
+        if(this.cajasForm.alinea){
+          this.guardarSwitchAlineamiento();
+        } else {
+          this.formularioForm.get('alineamientoForm')?.reset();
+          this.cajasForm.alinea = true;
+          this.nombreBoton = 'Guardar Alineamiento';
+        }
+      break;
+
+      case 7:
+        if(this.cajasForm.version){
+          this.guardarSwitchVersiones();
+        } else {
+          this.formularioForm.get('versionesForm')?.reset();
+        this.cajasForm.version = true;
+        this.nombreBoton = 'Guardar Versión';
+        }
+      break;
+
+      case 9:
+        if(this.cajasForm.oftalmo){
+          this.guardarSwitchOftalmoscopia();
+        } else {
+          this.formularioForm.get('oftalmoscipiaForma')?.reset();
+          this.cajasForm.oftalmo = true;
+          this.nombreBoton = 'Guardar Oftalmoscopia';
+        }
+      break;
+
+    };
+    
+
+  }
+  
 }

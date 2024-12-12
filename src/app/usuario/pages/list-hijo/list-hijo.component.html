@@ -47,8 +47,7 @@
                             <p class="text-lg font-bold mt-6 text-center">{{ hijo.nombre }}</p>
                             <p class="text-lg font-bold mt-[-8px] text-center">{{ hijo.apellido }}</p>
                             <p class="text-gray-600 mt-4" [ngClass]="{'mt-2': hijo.control, 'mt-4': !hijo.control}"  >{{ hijo.tipo_documento }}: {{ hijo.documento }}</p>
-                            <p class="text-gray-600">Fecha nac: {{ hijo.fecha_nacimiento }}</p>
-                            <p *ngIf="hijo.control" class="text-gray-600">Control: {{ formatDate(hijo.control) }}</p>
+                            <p *ngIf="hijo.control" class="text-gray-600"><b>Control: {{ formatDate(hijo.control) }}</b></p>
                         </div>
                         <!-- Cara trasera -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center justify-center backface-hidden p-5 back-face rotate-y-180"
@@ -107,6 +106,20 @@
                 <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente">
                 </pagination-controls>
             </div>
+
+            <!-- Elementos del WhatsApp -->
+            <div class="relative flex items-center cursor-pointer" (click)="abrirWhatsApp()">
+                <!-- Ícono SVG -->
+                <div class="bg-[#15b3ec] p-2 rounded-full flex justify-center items-center text-white w-14 h-14 z-50 border-2 border-white">
+                  <i class="fa-brands fa-whatsapp" style="font-size: 2.5rem;"></i>
+                </div>
+              
+                <!-- Texto con borde redondeado -->
+                <div class="absolute left-5 bg-[#15b3ec] text-white font-bold pl-10 p-1.5 pr-2.5 py-2.5 rounded-full shadow-md z-10 border-2 border-white">
+                  Pide tu Cita!
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

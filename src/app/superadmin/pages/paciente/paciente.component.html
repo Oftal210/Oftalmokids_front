@@ -42,7 +42,7 @@
                             <p class="text-lg font-bold mt-6 text-center">{{ hijo.nombre }}</p>
                             <p class="text-lg font-bold mt-[-8px] text-center">{{ hijo.apellido }}</p>
                             <p class="text-gray-600 mt-4">{{ hijo.tipo_documento }}: {{ hijo.documento }}</p>
-                            <p class="text-gray-600">Fecha nac: {{ hijo.fecha_nacimiento }}</p>
+                            <p *ngIf="hijo.control" class="text-gray-600"><b>Control: {{ formatDate(hijo.control) }}</b></p>
                         </div>
                         <!-- Cara trasera -->
                         <div class="absolute w-full h-full rounded-lg shadow-lg flex flex-col items-center justify-center backface-hidden p-5 back-face rotate-y-180"

@@ -2,11 +2,46 @@
 
 <div class="overlay" id="overlay"></div>
 
-<div class="relative flex items-center justify-center bg-[#f4fbff] min-h-screen">
+<div *ngIf="!vistaCargara" class="relative flex items-center justify-center bg-[#f4fbff] min-h-screen">
+    <div class="loading-text">
+      <div class="loader"></div>
+      Cargando Formulario...
+    </div>
+</div>
+
+<div *ngIf="vistaCargara" class="relative flex items-center justify-center bg-[#f4fbff] min-h-screen">
     <div class="flex flex-col items-center p-4">
         <!-- Título y barra de progreso -->
         <div class="w-full mb-4 mt-6">
-            <h2 class="text-3xl font-bold text-center">Historia Clínica</h2>
+            <h2 class="text-3xl font-bold text-center" 
+            [ngClass]="{'mt-[60px]': currentStep !== 5 && currentStep !== 10}"
+            >Historia Clínica</h2>
+            
+            <div *ngIf="existeHistoria" class="flex flex-col text-sm mb-4 mt-4">
+                <div *ngIf="rolUsuarioActual == 1" class="flex flex-col text-xs">
+                    <label for="" class="block font-medium text-base mb-1">Diagnosticos
+                        Anteriores</label>
+                    <select name="" #selectDiagnosticos
+                        class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
+                        (change)="cambioDatoSelectFecha($event)">
+                        <option disabled selected value="">Seleccione uno</option>
+                        <option *ngFor="let diag of diagnosticoHechos" [value]="diag.id"> {{diag.fecha |
+                            uppercase}}</option>
+                    </select>
+                </div>
+                <div *ngIf="rolUsuarioActual == 2" class="flex flex-col text-xs">
+                    <label for="" class="block font-medium text-base mb-1">Diagnosticos
+                        Anteriores</label>
+                    <select name="" #selectDiagnosticos
+                        class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
+                        (change)="cambioDatoSelectFecha($event)">
+                        <option disabled selected value="">Seleccione uno</option>
+                        <option *ngFor="let diag of diagnosticoHechos" [value]="diag.id"> {{diag.fecha |
+                            uppercase}}</option>
+                    </select>
+                </div>
+            </div>
+            
             <div class="flex justify-center mt-6 gap-2">
                 <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(1)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 1, 'bg-gray-300': currentStep < 1 }"></div>
@@ -92,7 +127,7 @@
                     <div class="flex flex-col text-sm">
                         <label for="" class="block font-medium text-base mb-1">Motivo de la consulta</label>
                         <textarea type="text" id="" formControlName="motivoConsulta"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
+                            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                     </div>
                 </ng-container>
 
@@ -348,13 +383,16 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_sc_vl" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="od_sc_vl" (keydown)="validarTecla($event)" />
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_vp" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="od_vp" (keydown)="validarTecla($event)" />
                                     </td>
                                     <td class="p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_ph" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="od_ph" (keydown)="validarTecla($event)" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -377,13 +415,16 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_sc_vl" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="os_sc_vl" (keydown)="validarTecla($event)" />
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_vp" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="os_vp" (keydown)="validarTecla($event)" />
                                     </td>
                                     <td class="p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_ph" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="os_ph" (keydown)="validarTecla($event)" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -395,7 +436,8 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Lensometria</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="lensome_od" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="lensome_od" (keydown)="validarTecla($event)" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -407,7 +449,8 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Lensometria</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="lensome_os" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="lensome_os" (keydown)="validarTecla($event)" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -424,10 +467,12 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_cc_vl" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="od_cc_vl" (keydown)="validarTecla($event)" />
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="od_vp_lenso" (keydown)="validarTecla($event)"/>
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="od_vp_lenso" (keydown)="validarTecla($event)" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -444,10 +489,12 @@
                                 <!-- Fila con inputs -->
                                 <tr>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_cc_vl" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="os_cc_vl" (keydown)="validarTecla($event)">
                                     </td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="os_vp_lenso" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="os_vp_lenso" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                             </tbody>
@@ -465,10 +512,12 @@
                             <!-- Fila con inputs -->
                             <tr>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="queratome_od" (keydown)="validarTecla($event)">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="queratome_od" (keydown)="validarTecla($event)">
                                 </td>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="queratome_os" (keydown)="validarTecla($event)">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="queratome_os" (keydown)="validarTecla($event)">
                                 </td>
                             </tr>
                         </tbody>
@@ -503,19 +552,22 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Refracción</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_refrac_od" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="retino_refrac_od" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Subjetivo</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_subjet_od" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="retino_subjet_od" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Final</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_final_od" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="retino_final_od" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                             </tbody>
@@ -532,19 +584,22 @@
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Refracción</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_refrac_os" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="retino_refrac_os" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Subjetivo</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_subjet_os" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="retino_subjet_os" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                                 <tr class="border-b border-gray-300">
                                     <td class="border-r border-gray-300 p-2">Final</td>
                                     <td class="border-r border-gray-300 p-2">
-                                        <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="retino_final_os" (keydown)="validarTecla($event)">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="retino_final_os" (keydown)="validarTecla($event)">
                                     </td>
                                 </tr>
                             </tbody>
@@ -560,16 +615,22 @@
                     <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
                         <tbody>
                             <tr>
-                                <th rowspan="2" class="border border-gray-300 p-2 w-32">Ángulo KAPPA</th>
-                                <td class="border border-gray-300 p-2">HIRSCHBERG</td>
-                                <td class="border border-gray-300 p-2">TEST DE BRUCKNER</td>
+                                <th class="border border-gray-300 p-2">Ángulo KAPPA</th>
+                                <th class="border border-gray-300 p-2">HIRSCHBERG</th>
+                                <th class="border border-gray-300 p-2">TEST DE BRUCKNER</th>
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="hirschberg">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="angulo_kapa">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="bruckner">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="hirschberg">
+                                </td>
+                                <td class="border border-gray-300 p-2">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="bruckner">
                                 </td>
                             </tr>
                         </tbody>
@@ -585,17 +646,19 @@
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="covet_test_vl" (keydown)="validarTecla($event)">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="covet_test_vl" (keydown)="validarTecla($event)">
                                 </td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="covet_test_vp" (keydown)="validarTecla($event)">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="covet_test_vp" (keydown)="validarTecla($event)">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
                     <!-- Tabla 3 -->
-                    <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
+                    <!-- <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
                         <tbody>
                             <tr>
                                 <th rowspan="2" class="border border-gray-300 p-2 w-32">Estado acomodativo</th>
@@ -604,123 +667,254 @@
                             </tr>
                             <tr class="border-b border-gray-300">
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="esta_acomo_flex">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="esta_acomo_flex">
                                 </td>
+
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="esta_acomo_aa">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="esta_acomo_aa">
                                 </td>
                             </tr>
                         </tbody>
+                    </table> -->
+
+                    <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
+                        <tbody>
+                            <!-- Fila 1: Una celda que ocupa 4 columnas -->
+                            <tr>
+                                <th colspan="4" class="border border-gray-300 p-2 w-32">
+                                    Estado Acomodativo
+                                </th>
+                            </tr>
+
+                            <!-- Fila 2: Dos celdas, cada una ocupando 2 columnas -->
+                            <tr>
+                                <td colspan="2" class="border border-gray-300">
+                                    FLEX
+                                </td>
+                                <td colspan="2" class="border border-gray-300">
+                                    AA
+                                </td>
+                            </tr>
+
+                            <!-- Fila 3: Cuatro celdas -->
+                            <tr class="border-b border-gray-300">
+                                <td class="border border-gray-300 w-24 py-2">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="esta_acomo_flex_od" placeholder="OD">
+                                </td>
+                                <td class="border border-gray-300 w-24">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="esta_acomo_flex_os" placeholder="OS">
+                                </td>
+                                <td class="border border-gray-300 w-24">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="esta_acomo_aa_od" placeholder="OD">
+                                </td>
+                                <td class="border border-gray-300 w-24">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="esta_acomo_aa_os" placeholder="OS">
+                                </td>
+                            </tr>
+                        </tbody>    
                     </table>
                 </ng-container>
 
                 <!-------- Formulario 7: Versiones -------->
                 <ng-container *ngIf="currentStep === 7" formGroupName="versionesForm">
                     <h2 class="text-xl font-bold text-center">Versiones</h2>
-                    <img src="../../../../assets/images/versiones.png" class="mt-4" alt="versiones">
+                    <img src="../../../../assets/images/versiones.png" class="mx-auto mt-4" alt="versiones">
                     <div class="flex flex-col text-xs mt-8">
                         <label for="" class="block font-medium text-base mb-1">Observaciones</label>
                         <textarea type="text" id="" formControlName="observacion_versiones"
                             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                     </div>
+                    <table class="w-full max-w-4xl mx-auto text-center border border-gray-300 rounded-lg mt-4">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="border-b text-center border-gray-300 font-semibold">Datos
+                                    Versiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td class="border border-gray-300 text-sm px-2">RSD OII</td>
+                                <td class="border border-gray-300">
+                                    <input type="text" class="w-12 border-none focus:outline-none text-center" formControlName="rsd_oii">
+                                </td>
+                                <td class="border border-gray-300">
+                                    <input type="text" class="w-12 border-none focus:outline-none text-center" formControlName="oid_rsi">
+                                </td>
+                                <td class="border border-gray-300 text-sm px-2">OID RSI</td>
+                            </tr>
+                            <tr>
+
+                                <td class="border border-gray-300 text-sm px-2">RLD RMI</td>
+                                <td class="border border-gray-300">
+                                    <input type="text" class="w-12 border-none focus:outline-none text-center" formControlName="rld_rmi">
+                                </td>
+                                <td class="border border-gray-300">
+                                    <input type="text" class="w-12 border-none focus:outline-none text-center" formControlName="rmd_rli">
+                                </td>
+                                <td class="border border-gray-300 px-2">RMD RLI</td>
+                            </tr>
+                            <tr>
+
+                                <td class="border border-gray-300 text-sm px-2">RID OSI</td>
+                                <td class="border border-gray-300">
+                                    <input type="text" class="w-12 border-none focus:outline-none text-center" formControlName="rid_osi">
+                                </td>
+                                <td class="border border-gray-300">
+                                    <input type="text" class="w-12 border-none focus:outline-none text-center" formControlName="osd_rii">
+                                </td>
+                                <td class="border border-gray-300 px-2">OSD RII</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </ng-container>
 
                 <!-------- Formulario 8: Ducciones, Motilidad ocular, exploracion de segmento anterior -------->
-                <ng-container *ngIf="currentStep === 8" formGroupName="duccMotaliExploForm">
-                    <h2 class="text-xl font-bold text-center">Ducciones</h2>
-                    <!-- Tabla 1 -->
-                    <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
-                        <tbody>
-                            <tr>
-                                <th class="border border-gray-300 p-2">HABILIDADES</th>
-                                <th class="border border-gray-300 p-2">OD</th>
-                                <th class="border border-gray-300 p-2">OS</th>
-                            </tr>
-                            <tr class="border-b border-gray-300">
-                                <td class="border border-gray-300 p-2">NORMAL</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_normal_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_normal_os">
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-300">
-                                <td class="border border-gray-300 p-2">PARECÍA</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_parecia_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_parecia_os">
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-300">
-                                <td class="border border-gray-300 p-2">PARÁLISIS</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_paralisis_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="ducc_paralisis_os">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <ng-container *ngIf="currentStep === 8">
+                    <ng-container formGroupName="duccionForm">
+                        <h2 class="text-xl font-bold text-center">Ducciones</h2>
+                        <!-- Tabla 1 -->
+                        <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
+                            <tbody>
+                                <tr>
+                                    <th class="border border-gray-300 ">HABILIDADES</th>
+                                    <th class="border border-gray-300 ">OD</th>
+                                    <th class="border border-gray-300 ">OS</th>
+                                </tr>
+                                <tr class="border-b border-gray-300">
+                                    <td class="border border-gray-300 ">NORMAL</td>
+                                    <td class="border border-gray-300 ">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="ducc_normal_od">
+                                    </td>
+                                    <td class="border border-gray-300 ">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="ducc_normal_os">
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-300">
+                                    <td class="border border-gray-300 ">PARECÍA</td>
+                                    <td class="border border-gray-300 ">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="ducc_parecia_od">
+                                    </td>
+                                    <td class="border border-gray-300 ">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="ducc_parecia_os">
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-300">
+                                    <td class="border border-gray-300 ">PARÁLISIS</td>
+                                    <td class="border border-gray-300 ">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="ducc_paralisis_od">
+                                    </td>
+                                    <td class="border border-gray-300 ">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="ducc_paralisis_os">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-container>
+                    
+                    <div class="flex justify-center items-center w-full mt-4">
+                        <!-- Botón de Guardar Formulario -->
+                        <button *ngIf="existeHistoria && currentStep == 8" type="button" (click)="guardarSwitchDuccion($event)"
+                            class="px-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec] h-8 truncate" id="botonDuccion">
+                            {{ cajasForm.duccion ? 'Guardar Ducciones ' : 'Limpiar Ducciones'}}
+                        </button>
+                    </div>
 
-                    <h2 class="text-xl font-bold text-center mt-4">Motilidad ocular</h2>
-                    <!-- Tabla 2 -->
-                    <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
-                        <tbody>
-                            <tr>
-                                <th class="border border-gray-300 p-2">PRUEBA</th>
-                                <th class="border border-gray-300 p-2">OD</th>
-                                <th class="border border-gray-300 p-2">OS</th>
-                                <th class="border border-gray-300 p-2">AO</th>
-                            </tr>
-                            <tr class="border-b border-gray-300">
-                                <td class="border border-gray-300 p-2">SEGUIMIENTO</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_seguimiento_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_seguimiento_os">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_seguimiento_ao">
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-300">
-                                <td class="border border-gray-300 p-2">SACÁDICOS</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_sacadicos_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_sacadicos_os">
-                                </td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="mo_sacadicos_ao">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <ng-container formGroupName="motalidadForm">
+                        <h2 class="text-xl font-bold text-center mt-4">Motilidad ocular</h2>
+                        <!-- Tabla 2 -->
+                        <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
+                            <tbody>
+                                <tr>
+                                    <th class="border border-gray-300 p-2">PRUEBA</th>
+                                    <th class="border border-gray-300 p-2">OD</th>
+                                    <th class="border border-gray-300 p-2">OS</th>
+                                    <th class="border border-gray-300 p-2">AO</th>
+                                </tr>
+                                <tr class="border-b border-gray-300">
+                                    <td class="border border-gray-300 p-2">SEGUIMIENTO</td>
+                                    <td class="border border-gray-300 p-2">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="mo_seguimiento_od">
+                                    </td>
+                                    <td class="border border-gray-300 p-2">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="mo_seguimiento_os">
+                                    </td>
+                                    <td class="border border-gray-300 p-2">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="mo_seguimiento_ao">
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-300">
+                                    <td class="border border-gray-300 p-2">SACÁDICOS</td>
+                                    <td class="border border-gray-300 p-2">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="mo_sacadicos_od">
+                                    </td>
+                                    <td class="border border-gray-300 p-2">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="mo_sacadicos_os">
+                                    </td>
+                                    <td class="border border-gray-300 p-2">
+                                        <input type="text" class="w-full border-none focus:outline-none text-center"
+                                            formControlName="mo_sacadicos_ao">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-container>
 
-                    <h2 class="text-xl font-bold text-center mt-4">Exploración de segmento anterior</h2>
-                    <!--  Tabla 3 -->
-                    <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
-                        <tbody>
-                            <tr class="border-b border-gray-300">
-                                <td class="border-r border-gray-300 p-2">OD</td>
-                                <td class="border-r border-gray-300 p-2">OS</td>
-                            </tr>
-                            <tr>
-                                <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="explo_exter_od">
-                                </td>
-                                <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="explo_exter_os">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="flex justify-center items-center w-full mt-4">
+                        <!-- Botón de Guardar Formulario -->
+                        <button *ngIf="existeHistoria && currentStep == 8" type="button" (click)="guardarSwitchMotalidad($event)"
+                            class="px-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec] h-8 truncate">
+                            {{ cajasForm.motali ? 'Guardar Motalidad ' : 'Limpiar Motalidad'}}
+                        </button>
+                    </div>
+
+                    <ng-container formGroupName="exploracionForm">
+                        <h2 class="text-xl font-bold text-center mt-4">Exploración de segmento anterior</h2>
+                        <!--  Tabla 3 -->
+                        <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
+                            <tbody>
+                                <tr class="border-b border-gray-300">
+                                    <td class="border-r border-gray-300 p-2">OD</td>
+                                    <td class="border-r border-gray-300 p-2">OS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-r border-gray-300 p-2">
+                                        <textarea type="text" class="w-full border-none focus:outline-none text-center"
+                                            rows="4" formControlName="explo_exter_od"></textarea>
+                                    </td>
+                                    <td class="border-r border-gray-300 p-2">
+                                        <textarea type="text" class="w-full border-none focus:outline-none text-center"
+                                            rows="4" formControlName="explo_exter_os"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-container>
+
+                    <div class="flex justify-center items-center w-full mt-4">
+                        <!-- Botón de Guardar Formulario -->
+                        <button *ngIf="existeHistoria && currentStep == 8" type="button" (click)="guardarSwitchExploracion($event)"
+                            class="px-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec] h-8 truncate">
+                            {{ cajasForm.explo ? 'Guardar Exploración ' : 'Limpiar Exploración'}}
+                        </button>
+                    </div>
                 </ng-container>
 
                 <!-------- Formulario 9: Oftalmoscopía -------->
@@ -729,101 +923,100 @@
                     <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
                         <tbody>
                             <tr class="border-b border-gray-300">
-                                <td class="border-r border-gray-300 p-2 flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                <td class="border-r border-gray-300 flex justify-center items-center font-bold">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-circle text-[#ff834d]">
                                         <circle cx="12" cy="12" r="10" />
-                                    </svg>
+                                    </svg> -->
+                                    OD
                                 </td>
-                                <td class="border-r border-gray-300 p-2"></td>
-                                <td class="border-r border-gray-300 p-2 flex justify-center items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                <td class="border-r border-gray-300"></td>
+                                <td class="border-r border-gray-300 flex justify-center items-center font-bold">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="lucide lucide-circle text-[#ff834d]">
                                         <circle cx="12" cy="12" r="10" />
-                                    </svg>
+                                    </svg> -->
+                                    OS
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border-r border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="medi_refrin_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="medi_refrin_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Medios refringentes</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="medi_refrin_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="medi_refrin_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="refle_fovea_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="refle_fovea_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Reflejo fóvea</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="refle_fovea_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="refle_fovea_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="papila_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="papila_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Papila</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="papila_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="papila_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="excav_fisio_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="excav_fisio_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Excavación fisiológica</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="excav_fisio_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="excav_fisio_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="profundidad_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">Profundidad</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="profundidad_os">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="vasos_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="vasos_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Vasos</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="vasos_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="vasos_os">
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="rela_arte_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="rela_arte_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Relación arteria-vena</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="rela_arte_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="rela_arte_os">
                                 </td>
                             </tr>
+
                             <tr>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="macula_od">
-                                </td>
-                                <td class="border border-gray-300 p-2">Mácula</td>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="macula_os">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="reti_perif_od">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="reti_perif_od">
                                 </td>
                                 <td class="border border-gray-300 p-2">Retina periférica</td>
                                 <td class="border border-gray-300 p-2">
-                                    <input type="text" class="w-full border-none focus:outline-none text-center" formControlName="reti_perif_os">
+                                    <input type="text" class="w-full border-none focus:outline-none text-center"
+                                        formControlName="reti_perif_os">
                                 </td>
                             </tr>
                         </tbody>
@@ -833,41 +1026,15 @@
                 <!-------- Formulario 10: Diagnostico, pronóstico, tratamiento, controles -------->
                 <ng-container *ngIf="currentStep === 10" formGroupName="diagnostico">
 
-                    <div *ngIf="existeHistoria" class="flex flex-col text-sm mb-4">
-                        <div *ngIf="rolUsuarioActual == 1" class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 max-w-4xl mx-auto">
-                            <div class="flex flex-col text-xs">
-                                <label for="" class="block font-medium text-base mb-1">Fechas de Diagnosticos Anteriores</label>
-                                <select name="" #selectDiagnosticos
-                                    class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
-                                    (change)="cambioDatoSelectFecha($event)">
-                                    <option disabled selected value="">Seleccione uno</option>
-                                    <option *ngFor="let diag of diagnosticoHechos" [value]="diag.id"> {{diag.fecha | uppercase}}</option>
-                                </select>
-                            </div>
-                            <div class="flex items-center justify-center flex-col text-xs">
-                                <button *ngIf="currentStep === 10 && existeHistoria && rolUsuarioActual == 1" type="button" (click)="limpiarCajasDiagnostico()"
-                                    class="flex items-center justify-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec] text-base">
-                                    Agregar <br> Diagnostico
-                                </button>
-                            </div>
-                        </div>
-                        <div *ngIf="rolUsuarioActual == 2" class="flex flex-col text-xs">
-                            <label for="" class="block font-medium text-base mb-1">Fechas de Diagnosticos Anteriores</label>
-                            <select name="" #selectDiagnosticos
-                                class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"
-                                (change)="cambioDatoSelectFecha($event)">
-                                <option disabled selected value="">Seleccione uno</option>
-                                <option *ngFor="let diag of diagnosticoHechos" [value]="diag.id"> {{diag.fecha | uppercase}}</option>
-                            </select>
-                        </div>
-                    </div>
+                    
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 max-w-4xl mx-auto">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Diagnóstico</label>
                             <select id="" formControlName="diagnostico"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] max-w-60 truncate">
-                                <option *ngFor="let diag of diagnosticos " [value]="diag.id"> {{diag.codigo | uppercase}} {{diag.descripcion}}</option>
+                                <option *ngFor="let diag of diagnosticos " [value]="diag.id"> {{diag.codigo |
+                                    uppercase}} {{diag.descripcion}}</option>
                             </select>
                         </div>
 
@@ -879,7 +1046,7 @@
                         </div>
 
                         <div class="flex flex-col text-xs">
-                            <label for="" class="block font-medium text-base mb-1">Pronóstico</label>
+                            <label for="" class="block font-medium text-base mb-1">Recomendaciones</label>
                             <textarea type="text" id="" formControlName="pronostico_diagnostico"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                         </div>
@@ -891,9 +1058,9 @@
                     </div>
 
                     <div *ngIf="ocultarMotivoConsulta" class="flex flex-col text-sm mt-4">
-                        <label for="" class="block font-medium text-base mb-1">Motivo de la consulta</label>
+                        <label for="" class="block font-medium text-base mb-1">Seguimiento</label>
                         <textarea type="text" id="" #motivoConsulta
-                        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
+                            class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                     </div>
                 </ng-container>
 
@@ -911,6 +1078,25 @@
                         </svg>
                         Anterior
                     </button>
+                    
+                    <!-- Botón de Guardar Formulario -->
+                    <button *ngIf="existeHistoria && currentStep !== 1 && currentStep !== 2 && currentStep !== 8 && currentStep !== 10" type="button" (click)="guardarFormularioActual()"
+                        class="flex items-center px-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec] truncate"
+                        [ngClass]="{'w-min': currentStep !== 7}">
+                        {{ nombreBoton == '' ? 'Formulario' : nombreBoton }}
+                    </button>
+
+                    <button *ngIf="existeHistoria && currentStep == 10 && rolUsuarioActual == 1 && !cajasForm.diag"
+                        (click)="limpiarCajasDiagnostico()" type="button" id="limpiarCajasDiagnostico"
+                        class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
+                        Limpiar <br> Diagnostico
+                    </button>
+
+                    <button *ngIf="currentStep == 10 && existeHistoria && rolUsuarioActual == 1 && cajasForm.diag"
+                        (click)="agregarDiagnosticoNuevo()" type="button" id="botonDiagnosticoGuardar"
+                        class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
+                        Guardar <br> Diagnostico
+                    </button>
 
                     <!-- Botón Siguiente/Guardar -->
                     <button *ngIf="currentStep < 10" type="button" (click)="nextStep()"
@@ -927,11 +1113,6 @@
                     <button *ngIf="currentStep === 10 && !existeHistoria && rolUsuarioActual == 1" type="submit"
                         class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
                         Guardar
-                    </button>
-
-                    <button *ngIf="currentStep === 10 && existeHistoria && rolUsuarioActual == 1" (click)="agregarDiagnosticoNuevo()" type="button"
-                        class="flex items-center px-2 py-2 bg-[#2EBBEE] text-white rounded gap-x-1 hover:bg-[#15b3ec]">
-                        Guardar <br> Diagnostico
                     </button>
                 </div>
 
