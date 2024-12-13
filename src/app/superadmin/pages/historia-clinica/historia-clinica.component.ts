@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -1878,7 +1878,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         motivoConsulta: registroSelect.motivo_consulta,
       });
 
-      this.vistaCargara = false;
+      this.mostrarAlerta('', 'Se estan cargando los datos', 'info');
       
       // llamamos a la funcion para traer los datos de la oftalmoscopia
       this.cargarRegistroOftalmoscopia();
@@ -1907,8 +1907,6 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       // llamamos a la funcion para traer los datos de retinoscopia
       this.cargarRegistroRetinoscopia();  
     }
-    this.vistaCargara = true;
-    
   }
 
   // funcion para limpiar las cajas de texto
