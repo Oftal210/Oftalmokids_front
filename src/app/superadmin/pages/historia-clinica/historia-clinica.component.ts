@@ -1974,7 +1974,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         icon: icono,
         text: mensaje,
         confirmButtonText: 'Aceptar',
-        timer: 3000, // Duración en milisegundos (3 segundos)
+        timer: 5500, // Duración en milisegundos (3 segundos)
         background: '#fff', // Color de fondo
         color: '#333', // Color del texto
         heightAuto: false,
