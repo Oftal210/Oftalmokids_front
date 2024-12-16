@@ -216,7 +216,7 @@ export class ListHijoComponent {
   }
 
   abrirWhatsApp() {
-    const telefono = '573136923982'; // Número de teléfono en formato internacional sin símbolos ni espacios
+    const telefono = '573118809096'; // Número de teléfono en formato internacional sin símbolos ni espacios
     const url = `https://wa.me/${telefono}`;
     
     window.open(url, '_blank'); // Abre el enlace en una nueva pestaña
