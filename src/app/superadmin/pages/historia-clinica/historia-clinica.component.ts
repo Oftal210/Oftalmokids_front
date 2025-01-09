@@ -365,7 +365,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       // si el valor es true pasa a ser requerido para enviar
       if(valor === 'true'){
         input?.enable();
-        input?.setValidators([Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]);
+        input?.setValidators(Validators.required);
       } else {
         // si no lo es se desabilita y se quita que sea requerido
         input?.disable();
@@ -382,7 +382,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       // si el valor es true pasa a ser requerido para enviar
       if(valor === 'true'){
         input?.enable();
-        input?.setValidators([Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]);
+        input?.setValidators(Validators.required);
       } else {
         // si no lo es se desabilita y se quita que sea requerido
         input?.disable();
@@ -775,6 +775,8 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         // realizamos las siguientes funciones para insertar cada dato necesario
         await this.guardarRegistrosHistoriaClinica();
 
+        await this.guardarRegistrosDiagnostico();
+
         await this.guardarRegistrosAntecedenteVisual();
 
         await this.guardarRegistrosAgudezaVisual();
@@ -792,8 +794,6 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         await this.guardarRegistrosExploracion();
 
         await this.guardarRegistrosOftalmoscopias();
-        
-        await this.guardarRegistrosDiagnostico();
 
         //console.log(this.datoInsertado);
 

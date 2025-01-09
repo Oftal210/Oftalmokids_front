@@ -39,7 +39,8 @@ export class AddPacienteComponent {
 
   // metodo para validar el formulario de padre
   padreForm = this.fb.group({
-    documento: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
+    documento: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{5,14}$')]],
+    tipodocumento: ['', [Validators.required, this.validarSelect()]],
     nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
     apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
     telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -51,7 +52,7 @@ export class AddPacienteComponent {
   // metodo para validar el formulario de paciente
   pacienteForm = this.fb.group({
     tipodocumento: ['', [Validators.required, this.validarSelect()]],
-    documento: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
+    documento: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{5,14}$')]],
     nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
     apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,50}$/)]],
     fechanacimiento: ['', [Validators.required, this.validarFecha()]],
@@ -287,17 +288,18 @@ export class AddPacienteComponent {
   }
 
 
-  async tomarDatosPadre(){ 
+  async tomarDatosPadre(){
     // si el formulario no es invalido hacemos
-    if(!this.padreForm.invalid) {
+    if(!this.padreForm.invalid) {      
       //console.log('agregen datos')
       // tomamos los datos necesarios de los inputs que necesitamos
-      const documento = this.padreForm.get('documento')?.value;
-      const nombre    = this.padreForm.get('nombre')?.value;
-      const apellido  = this.padreForm.get('apellido')?.value;
-      const email     = this.padreForm.get('email')?.value;
-      const telefono  = this.padreForm.get('telefono')?.value;
-      const password  = this.padreForm.get('password')?.value;
+      const documento     = this.padreForm.get('documento')?.value;
+      const tipodocumento = this.padreForm.get('tipodocumento')?.value;
+      const nombre        = this.padreForm.get('nombre')?.value;
+      const apellido      = this.padreForm.get('apellido')?.value;
+      const email         = this.padreForm.get('email')?.value;
+      const telefono      = this.padreForm.get('telefono')?.value;
+      const password      = this.padreForm.get('password')?.value;
 
       // cambiamos la variable para que no salgan las alertas ahora
       this.verificacioDato = true;
@@ -311,7 +313,7 @@ export class AddPacienteComponent {
       // si no existe el padre lo agregamos
       if(!this.existePadre){
         // realizamos la insercion de los datos
-        this.superadminservice.guardarRegistroPadre(documento, 2, nombre, apellido, email, telefono,  password)
+        this.superadminservice.guardarRegistroPadre(documento, 2, nombre, apellido, email, telefono,  password, tipodocumento)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(response => {
           //console.log('Respuesta del servidor:', response);

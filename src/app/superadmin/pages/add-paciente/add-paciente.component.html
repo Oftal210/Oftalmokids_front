@@ -12,7 +12,7 @@
                     <div class="mb-4">
                         <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
                         <div class="relative w-full md:w-[95%] lg:w-10/12">
-                            <input type="text" name="documento" formControlName="documento" (input)="onInputChangeNoEspacioPadre($event)" maxlength="10"
+                            <input type="text" name="documento" formControlName="documento" (input)="onInputChangeNoEspacioPadre($event)" maxlength="14"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             required>
                             <button type="button" (click)="buscarPadre()"
@@ -27,7 +27,31 @@
                         <div
                             *ngIf="padreForm.get('documento')?.hasError('pattern') && padreForm.get('documento')?.touched"
                             class="text-red-500 font-medium text-sm">
-                            El documento solo numeros, max 10.
+                            Caracteres minimo 5 y maximo 14.
+                        </div>
+                    </div>
+
+                    <!-- Tipo documento -->
+                    <div class="mb-4">
+                        <label for="" class="block text-sm font-medium text-gray-700">Tipo de documento</label> 
+                        <select name="tipodocumento" formControlName="tipodocumento" 
+                            class="mt-1 block w-full md:w-[95%] lg:w-10/12 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+
+                            <option selected hidden>Seleccione uno</option> <!-- EXCEPTO AQUI QUE SIEMPRE SE DEJA VACIO EL VALUE -->
+                            <option value="Cedula de ciudadania">Cédula de ciudadanía</option>  <!-- ESTO PARA TODOS LOS OPTIONS -->
+                            <option value="Cedula de extranjeria">Cédula de extranjería</option>  <!-- SI EL VALOR SE VA A CAMBIAR HACERLO EN EL VALUE Y EN EL TEXTO QUE SAlE -->
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="NIP">NIP</option>
+                            <option value="DNI">DNI</option>
+                        </select>
+                        <div *ngIf="padreForm.get('tipodocumento')?.hasError('required') && padreForm.get('tipodocumento')?.touched"
+                            class="text-red-500 font-medium text-sm">
+                            El tipo de documento es requerido.
+                        </div>
+                        <div
+                            *ngIf="padreForm.get('tipodocumento')?.hasError('seleccionInvalida') && padreForm.get('tipodocumento')?.touched"
+                            class="text-red-500 font-medium text-sm">
+                            Seleccione uno de los tipos de documento
                         </div>
                     </div>
 
@@ -129,6 +153,7 @@
                         <option selected hidden>Seleccione uno</option> <!-- EXCEPTO AQUI QUE SIEMPRE SE DEJA VACIO EL VALUE -->
                         <option value="Registro Civil">Registro Civil</option>  <!-- ESTO PARA TODOS LOS OPTIONS -->
                         <option value="T.I">T.I</option>  <!-- SI EL VALOR SE VA A CAMBIAR HACERLO EN EL VALUE Y EN EL TEXTO QUE SAlE -->
+                        <option value="Pasaporte">Pasaporte</option>
                     </select>
                     <div *ngIf="pacienteForm.get('tipodocumento')?.hasError('required') && pacienteForm.get('tipodocumento')?.touched"
                         class="text-red-500 font-medium text-sm">
@@ -145,7 +170,7 @@
                 <div class="mb-4">
                     <label for="" class="block text-sm font-medium text-gray-700">N° documento</label>
                     <div class="relative w-full md:w-[95%] lg:w-10/12">
-                        <input type="text" name="documento" formControlName="documento" (input)="onInputChangeNoEspacioPaciente($event)" maxlength="10"
+                        <input type="text" name="documento" formControlName="documento" (input)="onInputChangeNoEspacioPaciente($event)" maxlength="14"
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required>
                         <button type="button" (click)="buscarPaciente()"
@@ -161,7 +186,7 @@
                     <div
                         *ngIf="pacienteForm.get('documento')?.hasError('pattern') && pacienteForm.get('documento')?.touched"
                         class="text-red-500 font-medium text-sm">
-                        El documento solo numeros, max 10.
+                        Caracteres minimo 5 y maximo 14.
                     </div>
                 </div>
 

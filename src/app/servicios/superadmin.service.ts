@@ -571,8 +571,8 @@ export class SuperadminService {
   
   // METODO PARA PADRE ↓
   // Metodo para guardar o insertar un Padre
-  guardarRegistroPadre(documento: any, id_rol: any, nombre: any, apellido: any, email: any, telefono: any, contrasena: any,) {
-    return this.http.post<any>(this.apiUrl+'usuariopadre', {documento: documento, rol: id_rol, nombre: nombre, apellido:apellido, email:email, telefono:telefono, password:contrasena});
+  guardarRegistroPadre(documento: any, id_rol: any, nombre: any, apellido: any, email: any, telefono: any, contrasena: any, tipodocumento: any) {
+    return this.http.post<any>(this.apiUrl+'usuariopadre', {documento: documento, rol: id_rol, nombre: nombre, apellido:apellido, email:email, telefono:telefono, password:contrasena, tipodocumento:tipodocumento});
   }
   // METODO PARA PADRE ↑
   
