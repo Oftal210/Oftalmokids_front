@@ -23,6 +23,8 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   formularioForm: FormGroup;
 
+  readonlyPadre: boolean = false;
+
   // variable para tomar el documento de usuario
   documentoAdministrador = sessionStorage.getItem('identity')?.replace(/^"|"$/g, '');
 
@@ -543,10 +545,11 @@ export class HistoriaClinicaComponent implements AfterViewInit {
       this.buscarHisoriaClinica().then(() =>{
         // verificamos si se va a agregar todo o solo el diagnostico
         if (this.existeHistoria){
-
-          if (this.rolUsuarioActual == 1) {
-            // pasamos al usuario a la pagina 10 donde esta lo que se va a modificar
-            this.currentStep = 10;
+          
+          this.currentStep = 10;
+          
+          if(this.rolUsuarioActual == 2){
+            this.readonlyPadre = true;
           }
 
           // llamamos a la funcion para traer los datos de la historia clinica
@@ -583,33 +586,39 @@ export class HistoriaClinicaComponent implements AfterViewInit {
             });
           });
         } else {
-          const today = new Date();
-          this.fechaActual = today.toISOString().split('T')[0];
 
-          // metodo para tomar los datos del localstorage en caso de que existan
-          const savedValues = JSON.parse(localStorage.getItem(`formValues_${this.documentoHijo}`) || '{}');
+          if(this.rolUsuarioActual == 1) {
+            const today = new Date();
+            this.fechaActual = today.toISOString().split('T')[0];
 
-          // Eliminamos el grupo `historiaForm` del objeto `savedValues`
-          if (savedValues.historiaForm) {
-            delete savedValues.historiaForm; // Excluir valores de historiaForm
+            // metodo para tomar los datos del localstorage en caso de que existan
+            const savedValues = JSON.parse(localStorage.getItem(`formValues_${this.documentoHijo}`) || '{}');
+
+            // Eliminamos el grupo `historiaForm` del objeto `savedValues`
+            if (savedValues.historiaForm) {
+              delete savedValues.historiaForm; // Excluir valores de historiaForm
+            }
+
+            // aplicamos lo que tengamos en el localstorage
+            this.formularioForm.patchValue(savedValues);
+      
+            // Escuchar cambios en el formulario principal y guardar en localStorage 
+            this.formularioForm.valueChanges.subscribe(values => { 
+              localStorage.setItem(`formValues_${this.documentoHijo}`, JSON.stringify(values));
+            });
+      
+            // Establecer fecha y hora actuales en los controles del formulario 
+            const currentDate = new Date(); 
+            const currentDateString = currentDate.toISOString().split('T')[0]; 
+            const currentTimeString = currentDate.toTimeString().split(' ')[0].substring(0, 5);
+            this.formularioForm.get('historiaForm')?.patchValue({
+              fecha: currentDateString,
+              hora: currentTimeString,
+            });
+          } else {
+            this.mostrarAlerta('', 'Este paciente no tiene historia clinica', 'info');
+            this.router.navigate(['/hijo']);
           }
-
-          // aplicamos lo que tengamos en el localstorage
-          this.formularioForm.patchValue(savedValues);
-    
-          // Escuchar cambios en el formulario principal y guardar en localStorage 
-          this.formularioForm.valueChanges.subscribe(values => { 
-            localStorage.setItem(`formValues_${this.documentoHijo}`, JSON.stringify(values));
-          });
-    
-          // Establecer fecha y hora actuales en los controles del formulario 
-          const currentDate = new Date(); 
-          const currentDateString = currentDate.toISOString().split('T')[0]; 
-          const currentTimeString = currentDate.toTimeString().split(' ')[0].substring(0, 5);
-          this.formularioForm.get('historiaForm')?.patchValue({
-            fecha: currentDateString,
-            hora: currentTimeString,
-          });
         }
       });
       setTimeout(() => {
@@ -2044,7 +2053,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
 
   guardarSwitchAnteceVisual(){
     if(!this.formularioForm.get('anteVisualForm')?.invalid){
-      //console.log('es verdadero');
+      console.log('es verdadero');
       const anteceVisualDatos = this.formularioForm.get('anteVisualForm')?.value;
       this.superadminservice.guardarRegistroAntecedenteVisual(
         this.idHistoriaClinica,
@@ -2067,7 +2076,7 @@ export class HistoriaClinicaComponent implements AfterViewInit {
         }
       }, error => {
         console.error('Error al guardar el registro', error);
-        this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');
+        this.mostrarAlerta('', 'Error al guardar el registro, intentelo de nuevo', 'info');
       });
     } else {
       this.mostrarAlerta('', 'Faltan Datos por Llenar', 'info');

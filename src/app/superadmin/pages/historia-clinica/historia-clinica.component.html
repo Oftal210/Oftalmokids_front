@@ -42,26 +42,26 @@
                 </div>
             </div>
             
-            <div class="flex justify-center mt-6 gap-2">
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(1)"
+            <div *ngIf="rolUsuarioActual == 1"   class="flex justify-center mt-6 gap-2">
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(1)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 1, 'bg-gray-300': currentStep < 1 }"></div>
-                <div class="w-1/4 h-1 mx-2 rounded-full cursor-pointer" (click)="accederSeciones(2)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 mx-2 rounded-full cursor-pointer" (click)="accederSeciones(2)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 2, 'bg-gray-300': currentStep < 2 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(3)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(3)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 3, 'bg-gray-300': currentStep < 3 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(4)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(4)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 4, 'bg-gray-300': currentStep < 4 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(5)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(5)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 5, 'bg-gray-300': currentStep < 5 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(6)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(6)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 6, 'bg-gray-300': currentStep < 6 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(7)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(7)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 7, 'bg-gray-300': currentStep < 7 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(8)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(8)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 8, 'bg-gray-300': currentStep < 8 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(9)"
+                <div *ngIf="rolUsuarioActual == 1"  class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(9)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 9, 'bg-gray-300': currentStep < 9 }"></div>
-                <div class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(10)"
+                <div *ngIf="rolUsuarioActual == 1"   class="w-1/4 h-1 rounded-full cursor-pointer" (click)="accederSeciones(10)"
                     [ngClass]="{ 'bg-[#ff834d]': currentStep >= 10, 'bg-gray-300': currentStep < 10 }"></div>
             </div>
         </div>
@@ -918,7 +918,7 @@
                 </ng-container>
 
                 <!-------- Formulario 9: Oftalmoscopía -------->
-                <ng-container *ngIf="currentStep === 9" formGroupName="oftalmoscipiaForma">
+                <ng-container *ngIf="currentStep === 9 && rolUsuarioActual == 1" formGroupName="oftalmoscipiaForma">
                     <h2 class="text-xl font-bold text-center">Oftalmoscopía</h2>
                     <table class="w-full text-center border border-gray-300 rounded-lg mt-4">
                         <tbody>
@@ -1031,7 +1031,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-10 max-w-4xl mx-auto">
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Diagnóstico</label>
-                            <select id="" formControlName="diagnostico"
+                            <select id="" formControlName="diagnostico" [ngClass]="{'pointer-events-none': readonlyPadre}" 
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9] max-w-60 truncate">
                                 <option *ngFor="let diag of diagnosticos " [value]="diag.id"> {{diag.codigo |
                                     uppercase}} {{diag.descripcion}}</option>
@@ -1040,19 +1040,19 @@
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Controles</label>
-                            <input type="date" id="" formControlName="control_diagnostico" [min]="fechaActual"
+                            <input type="date" id="" formControlName="control_diagnostico" [min]="fechaActual" [readonly]="readonlyPadre ? true : null"
                                 [ngClass]="{'border-red-500 focus:border-[#EF4444]': isInvalid('diagnostico', 'control_diagnostico'), 'border-gray-300': !isInvalid('diagnostico', 'control_diagnostico')}"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]" />
                         </div>
 
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Recomendaciones</label>
-                            <textarea type="text" id="" formControlName="pronostico_diagnostico"
+                            <textarea type="text" id="" formControlName="pronostico_diagnostico" [readonly]="readonlyPadre ? true : null"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                         </div>
                         <div class="flex flex-col text-xs">
                             <label for="" class="block font-medium text-base mb-1">Tratamiento</label>
-                            <textarea type="text" id="" formControlName="tratamiento_diagnostico"
+                            <textarea type="text" id="" formControlName="tratamiento_diagnostico" [readonly]="readonlyPadre ? true : null"
                                 class="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#00acc9]"></textarea>
                         </div>
                     </div>
@@ -1066,7 +1066,7 @@
 
 
                 <!-- Botones de navegación -->
-                <div class="flex justify-between mt-6">
+                <div *ngIf="rolUsuarioActual == 1" class="flex justify-between mt-6">
                     <!-- Botón Anterior -->
                     <button type="button" (click)="previousStep()"
                         class="flex items-center px-2 py-2 bg-gray-200 rounded gap-x-1 hover:bg-[#dfdfdf]"
